@@ -1,0 +1,29 @@
+{
+  "name": "welight-api-ts",
+  "version": "1.0.0",
+  "description": "TypeScript client for Welight platform",
+  "main": "./lib/welight.js",
+  "directories": {
+    "doc": "doc",
+    "lib": "lib",
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mw-ferretti/welight-api-ts.git"
+  },
+  "keywords": [
+    "welight"
+  ],
+  "author": "Marcos William Ferretti",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/mw-ferretti/welight-api-ts/issues"
+  },
+  "homepage": "https://github.com/mw-ferretti/welight-api-ts#readme"
+}
