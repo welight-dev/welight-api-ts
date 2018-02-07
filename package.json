@@ -13,7 +13,9 @@
     "crypto-js": "^3.1.9-1",
     "ts-resource-tastypie": "^1.0.28"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^2.7.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
