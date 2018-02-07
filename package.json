@@ -8,7 +8,9 @@
     "lib": "lib",
     "test": "tests"
   },
-  "dependencies": {},
+  "dependencies": {
+    "ts-resource-tastypie": "^1.0.28"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
