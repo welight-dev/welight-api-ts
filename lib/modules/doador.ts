@@ -90,9 +90,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         }
     }
 
-    public create_account(name: string, email: string, password: string, kargs?:any): Promise<Doador> {
+    public create_account(name: string, email: string, password: string, kwargs?:any): Promise<Doador> {
         let _self = this;
-        return this._user.create_account(name, email, password, kargs).then(
+        return this._user.create_account(name, email, password, kwargs).then(
             function(user: weauth_models.User){
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){
@@ -104,9 +104,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         );
     }
 
-    public login(username: string, password: string, kargs?:any): Promise<Doador> {
+    public login(username: string, password: string, kwargs?:any): Promise<Doador> {
         let _self = this;
-        return this._user.login(username, password, kargs).then(
+        return this._user.login(username, password, kwargs).then(
             function(user: weauth_models.User){
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){
@@ -118,9 +118,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         );
     }
 
-    public login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kargs?:any): Promise<Doador> {
+    public login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<Doador> {
         let _self = this;
-        return this._user.login_facebook(username, facebook_uid, facebook_access_token, kargs).then(
+        return this._user.login_facebook(username, facebook_uid, facebook_access_token, kwargs).then(
             function(user: weauth_models.User){
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){
@@ -132,9 +132,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         );
     }
 
-    public quickLogin(auth?:{username: string, apikey: string}, kargs?:any): Promise<Doador> {
+    public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<Doador> {
         let _self = this;
-        return this._user.quickLogin(auth, kargs).then(
+        return this._user.quickLogin(auth, kwargs).then(
             function(user: weauth_models.User){
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){

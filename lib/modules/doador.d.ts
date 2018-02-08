@@ -24,13 +24,13 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     getPontos(): Promise<DoadorPontos>;
     getDoacao(): Promise<DoadorDoacao>;
     getCompraAfiliadora(): Promise<DoadorCompraAfiliadoraStatus>;
-    create_account(name: string, email: string, password: string, kargs?: any): Promise<Doador>;
-    login(username: string, password: string, kargs?: any): Promise<Doador>;
-    login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kargs?: any): Promise<Doador>;
+    create_account(name: string, email: string, password: string, kwargs?: any): Promise<Doador>;
+    login(username: string, password: string, kwargs?: any): Promise<Doador>;
+    login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<Doador>;
     quickLogin(auth?: {
         username: string;
         apikey: string;
-    }, kargs?: any): Promise<Doador>;
+    }, kwargs?: any): Promise<Doador>;
 }
 export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     static resource: api.Tastypie.Resource<DoadorPontos>;

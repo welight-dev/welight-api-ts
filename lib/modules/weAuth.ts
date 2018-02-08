@@ -123,7 +123,12 @@ export class User {
 
     public create_account(name: string, email: string, password: string, kwargs?:any): Promise<User> {
       let _self = this;
-      return _self._we_auth_user_create_account_resource.objects.create({name: name, email: email, password: password}).then(
+      return _self._we_auth_user_create_account_resource.objects.create({
+          name: name,
+          email: email,
+          password: password,
+          kwargs: kwargs
+      }).then(
           function(data: any){
               _self.setProfile(data);
               if(_self._is_authenticated){
