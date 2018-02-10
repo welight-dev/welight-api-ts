@@ -15,8 +15,5 @@
   ],
   "files": [
       "./lib/welight.ts"
-  ],
-  "include": [
-      "./lib/modules/*"
   ]
 }
