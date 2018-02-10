@@ -1,6 +1,6 @@
 {
   "name": "welight-api-ts",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "TypeScript client for Welight platform",
   "main": "./lib/welight.js",
   "types": "./lib/welight.d.ts",
@@ -15,11 +15,15 @@
     "ts-resource-tastypie": "^1.0.28"
   },
   "devDependencies": {
+    "@types/node": "^9.4.5",
     "typescript": "^2.7.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "files": [
+    "./lib/welight.js",
+    "./lib/welight.d.ts",
+    "./lib/modules/*.js",
+    "./lib/modules/*.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mw-ferretti/welight-api-ts.git"
