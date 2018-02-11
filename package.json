@@ -1,14 +1,9 @@
 {
   "name": "welight-api-ts",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "TypeScript client for Welight platform",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "directories": {
-    "doc": "doc",
-    "lib": "lib",
-    "test": "tests"
-  },
+  "main": "./lib/welight.js",
+  "types": "./lib/welight.d.ts",
   "dependencies": {
     "@types/crypto-js": "^3.1.38",
     "crypto-js": "^3.1.9-1",
@@ -21,8 +16,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "./lib/index.js",
-    "./lib/index.d.ts",
+    "./lib/welight.js",
+    "./lib/welight.d.ts",
     "./lib/modules/*.js",
     "./lib/modules/*.d.ts"
   ],
