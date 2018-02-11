@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [ "es2015", "dom", "es7" ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+  },
+  "files": [
+    "lib/welight.ts"
+  ],
+  "include": [
+    "lib/modules/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
