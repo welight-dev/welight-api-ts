@@ -1,6 +1,5 @@
-// Type definitions for [~Welight Platform~] [~1.0.9~]
+// Type definitions for [~Welight Platform~] [~1.0.10~]
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
-import * as Welight from './modules/index';
-export { Welight };
+export * from './modules/index';

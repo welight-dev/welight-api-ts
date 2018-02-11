@@ -1,2 +1,1 @@
-import * as Welight from './modules/index';
-export { Welight };
+export * from './modules/index';
