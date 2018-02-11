@@ -1,9 +1,9 @@
-// Type definitions for [~Welight Platform~] [~1.0.16~]
+// Type definitions for [~Welight Platform~] [~1.0.17~]
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
 import * as Utils from './modules/utils';
-import * as Config from './modules/./config';
+import * as Config from './modules/config';
 import * as WeAuth from './modules/weAuth';
 import * as WeNotify from './modules/weNotify';
 import * as Doador  from './modules/doador';

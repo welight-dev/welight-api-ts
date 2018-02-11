@@ -1,5 +1,5 @@
 import * as Utils from './modules/utils';
-import * as Config from './modules/./config';
+import * as Config from './modules/config';
 import * as WeAuth from './modules/weAuth';
 import * as WeNotify from './modules/weNotify';
 import * as Doador from './modules/doador';
