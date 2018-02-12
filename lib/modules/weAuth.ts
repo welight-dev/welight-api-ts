@@ -199,8 +199,12 @@ export class User {
         }else{
             if(utils.Tools.localStorageSuported){
                 let weUser: string = localStorage.getItem('weUser')
-                let auth_user = JSON.parse(crypto.AES.decrypt(weUser, _self._encrypt_key).toString(crypto.enc.Utf8));
-                return _self._quickLogin(auth_user.username, auth_user.apikey, kwargs);
+                if(weUser){
+                    let auth_user = JSON.parse(crypto.AES.decrypt(weUser, _self._encrypt_key).toString(crypto.enc.Utf8));
+                    return _self._quickLogin(auth_user.username, auth_user.apikey, kwargs);
+                }else{
+                    return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+                }
             }else{
                 return api.Tastypie.Tools.generate_exception("[WeAuth][quickLogin] Usuario não identificado");
             }
