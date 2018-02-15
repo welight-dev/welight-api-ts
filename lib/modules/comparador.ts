@@ -216,7 +216,7 @@ export class Comparador {
         let _self = this;
         let filters: string = _self.getQueryFilters();
 
-        let data: {q?:string, category_id?:number, filters_id?:string, order_by?:string};
+        let data: {q?:string, category_id?:number, filters_id?:string, order_by?:string} = {};
 
         data.q = _self.query_string;
 
