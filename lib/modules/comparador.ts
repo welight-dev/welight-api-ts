@@ -118,7 +118,7 @@ export class Comparador {
         let _self = this;
         _self.categories = [];
         _self.category_selected = null;
-        _self._filters_selected = [];
+        _self._filters_selected = {};
         _self.order_by = '';
         _self.query_string = q;
 
@@ -159,7 +159,7 @@ export class Comparador {
         let _self = this;
         _self.category_selected = category_id;
         _self.categories = [];
-        _self._filters_selected = [];
+        _self._filters_selected = {};
         _self.order_by = '';
         return _self.products.objects.find({q:_self.query_string, category_id: category_id}).then(
             function(page){
@@ -209,6 +209,10 @@ export class Comparador {
         let index = _self._filters_selected[grupo].indexOf(option_id, 0);
         if (index > -1) {
             _self._filters_selected[grupo].splice(index, 1);
+
+            if(_self._filters_selected[grupo].length == 0){
+                delete _self._filters_selected[grupo];
+            }
         }
     }
 
