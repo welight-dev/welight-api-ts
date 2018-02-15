@@ -114,13 +114,33 @@ export class Comparador {
         this.products = new api.Tastypie.Resource<Produto>('comparador/products/search', {model: Produto, defaults: defaults});
     }
 
-    public search(q:string): Promise<Comparador> {
+    public search(q:string, params?:{category_id?:number, order_by?:string, filters?:Array<{filter_name: string, option_id: number}>}): Promise<Comparador> {
         let _self = this;
         _self.categories = [];
         _self.category_selected = null;
         _self._filters_selected = [];
+        _self.order_by = '';
         _self.query_string = q;
-        return _self.products.objects.find({q:q}).then(
+
+        if(params){
+            if(params.category_id){
+                _self.category_selected = params.category_id;
+            }
+
+            if(params.order_by){
+                _self.order_by = params.order_by;
+            }
+
+            if(params.filters){
+                for(let filter of params.filters){
+                    _self.addFilter(filter.filter_name, filter.option_id);
+                }
+            }
+        }
+
+        let data_params = _self.getParams();
+
+        return _self.products.objects.find(data_params).then(
             function(page){
                 if(page.meta.kwargs.hasOwnProperty('categories')){
                     for(let cat of page.meta.kwargs.categories || []){
@@ -140,6 +160,7 @@ export class Comparador {
         _self.category_selected = category_id;
         _self.categories = [];
         _self._filters_selected = [];
+        _self.order_by = '';
         return _self.products.objects.find({q:_self.query_string, category_id: category_id}).then(
             function(page){
                 if(page.meta.kwargs.hasOwnProperty('categories')){
@@ -191,27 +212,33 @@ export class Comparador {
         }
     }
 
-    public filter(): Promise<Comparador> {
+    public getParams(): {q?:string, category_id?:number, filters_id?:string, order_by?:string} {
         let _self = this;
         let filters: string = _self.getQueryFilters();
 
-        let data: any = {
-            "q":_self.query_string
-        };
+        let data: {q?:string, category_id?:number, filters_id?:string, order_by?:string};
+
+        data.q = _self.query_string;
 
         if(_self.category_selected){
-          data["category_id"] = _self.category_selected;
+          data.category_id = _self.category_selected;
         }
 
         if(filters){
-            data["filters_id"] = filters;
+            data.filters_id = filters;
         }
 
         if(_self.order_by){
-            data["order_by"] = _self.order_by;
+            data.order_by = _self.order_by;
         }
 
-        return _self.products.objects.find(data).then(
+        return data;
+    }
+
+    public filter(): Promise<Comparador> {
+        let _self = this;
+        let params = _self.getParams();
+        return _self.products.objects.find(params).then(
             function(page){
                 return _self;
             }

@@ -59,12 +59,25 @@ export declare class Comparador {
     order_by: string;
     query_string: string;
     constructor(defaults?: any);
-    search(q: string): Promise<Comparador>;
+    search(q: string, params?: {
+        category_id?: number;
+        order_by?: string;
+        filters?: Array<{
+            filter_name: string;
+            option_id: number;
+        }>;
+    }): Promise<Comparador>;
     selectCategory(category_id: number): Promise<Comparador>;
     getFiltersSelected(): Array<number>;
     getGroupName(filter_name: string): string;
     addFilter(filter_name: string, option_id: number): void;
     removeFilter(filter_name: string, option_id: number): void;
+    getParams(): {
+        q?: string;
+        category_id?: number;
+        filters_id?: string;
+        order_by?: string;
+    };
     filter(): Promise<Comparador>;
     getQueryFilters(): string;
     cleanFilters(): void;
