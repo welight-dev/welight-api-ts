@@ -137,6 +137,7 @@ export class Comparador {
     private _filters_selected: any;
     public order_by: string;
     public query_string: string;
+    private products_categories: api.Tastypie.Resource<any>;
 
     constructor(defaults?:any){
         this.categories = [];
@@ -145,6 +146,7 @@ export class Comparador {
         this.order_by = '';
         this.query_string = "";
         this.products = new api.Tastypie.Resource<Produto>('comparador/products/search', {model: Produto, defaults: defaults});
+        this.products_categories = new api.Tastypie.Resource<any>('comparador/products-categories/search');
     }
 
     public search(q:string, params?:{category_id?:number, order_by?:string, filters?:Array<{filter_name: string, option_id: number}>}): Promise<Comparador> {
@@ -183,7 +185,26 @@ export class Comparador {
                         _self.categories.push(cat_filter);
                     }
                 }
-                return _self;
+
+                if(!_self.categories.length){
+                    if(!data_params.q && !params){
+                        _self.products_categories.objects.find({level:0, limit:0}).then(
+                            function(page_categories){
+                                for(let cat of page_categories.objects || []){
+                                    let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
+                                    cat_filter.setCatTree(cat.cat_tree);
+                                    cat_filter.setFilters(cat.filters);
+                                    _self.categories.push(cat_filter);
+                                }
+                                return _self;
+                            }
+                        )
+                    }else{
+                        return _self;
+                    }
+                }else{
+                    return _self;
+                }
             }
         )
     }
@@ -204,6 +225,8 @@ export class Comparador {
                         _self.categories.push(cat_filter);
                     }
                 }
+
+
                 return _self;
             }
         )
