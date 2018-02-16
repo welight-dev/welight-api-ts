@@ -26,6 +26,39 @@ export class Produto extends api.Tastypie.Model<Produto> {
     }
 }
 
+export class Categoria extends api.Tastypie.Model<Categoria> {
+    public static resource = new api.Tastypie.Resource<Categoria>('comparador/products-categories/search', {model: Categoria});
+
+    public name: string;
+    public doc_count: number;
+    public cat_tree: Array<CategorySumary>;
+    public filters: Array<Filter>;
+    public level: number;
+
+    constructor(obj?:any){
+        super(Categoria.resource, obj);
+        let _self = this;
+
+        if(_self.cat_tree){
+            let cat_tree = _self.cat_tree;
+            _self.cat_tree = [];
+            for(let obj of cat_tree){
+                _self.cat_tree.push(new CategorySumary(obj));
+            }
+        }
+
+        if(_self.filters){
+            let filters = _self.filters;
+            _self.filters = [];
+            for(let obj of filters){
+                let filter = new Filter(obj.name);
+                filter.setOptions(obj.options);
+                _self.filters.push(filter);
+            }
+        }
+    }
+}
+
 export class CategoryFilters {
     public id: number;
     public name: string;

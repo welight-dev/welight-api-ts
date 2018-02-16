@@ -17,6 +17,15 @@ export declare class Produto extends api.Tastypie.Model<Produto> {
     lojas: any;
     constructor(obj?: any);
 }
+export declare class Categoria extends api.Tastypie.Model<Categoria> {
+    static resource: api.Tastypie.Resource<Categoria>;
+    name: string;
+    doc_count: number;
+    cat_tree: Array<CategorySumary>;
+    filters: Array<Filter>;
+    level: number;
+    constructor(obj?: any);
+}
 export declare class CategoryFilters {
     id: number;
     name: string;
