@@ -188,7 +188,7 @@ export class Comparador {
 
                 if(_self.categories.length === 0){
                     if((!data_params.q || data_params.q === '') && (!params || Object.keys(params).length === 0)){
-                        _self.products_categories.objects.find({level:0, limit:0}).then(
+                        _self.products_categories.objects.find({level:0}).then(
                             function(page_categories){
                                 for(let cat of page_categories.objects || []){
                                     let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
