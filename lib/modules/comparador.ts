@@ -186,8 +186,8 @@ export class Comparador {
                     }
                 }
 
-                if(!_self.categories.length){
-                    if(!data_params.q && !params){
+                if(_self.categories.length === 0){
+                    if(data_params.q === '' && Object.keys(params).length === 0){
                         _self.products_categories.objects.find({level:0, limit:0}).then(
                             function(page_categories){
                                 for(let cat of page_categories.objects || []){
