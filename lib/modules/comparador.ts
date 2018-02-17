@@ -225,8 +225,6 @@ export class Comparador {
                         _self.categories.push(cat_filter);
                     }
                 }
-
-
                 return _self;
             }
         )

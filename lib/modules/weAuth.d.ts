@@ -1,3 +1,4 @@
+import * as api from "ts-resource-tastypie";
 export declare class Auth {
     private _username;
     private _api_key;
@@ -17,10 +18,12 @@ export declare class UserApp {
     readonly admin: boolean;
 }
 export declare class User {
-    private _name;
+    private id;
+    name: string;
     private _email;
     private _auth;
     private _apps;
+    private _account;
     private _is_authenticated;
     private _encrypt_key;
     private _we_auth_user_create_account_resource;
@@ -28,9 +31,12 @@ export declare class User {
     private _we_auth_user_logout_resource;
     private _we_auth_user_profile_resource;
     constructor();
-    readonly is_authenticated: any;
+    save(): Promise<User>;
+    readonly email: string;
     readonly auth: Auth;
     readonly apps: Array<UserApp>;
+    readonly account: UserAccount;
+    readonly is_authenticated: any;
     private setProfile(data);
     create_account(name: string, email: string, password: string, kwargs?: any): Promise<User>;
     login(username: string, password: string, kwargs?: any): Promise<User>;
@@ -41,4 +47,22 @@ export declare class User {
         apikey: string;
     }, kwargs?: any): Promise<User>;
     logout(): Promise<any>;
+}
+export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
+    static resource: api.Tastypie.Resource<UserAccount>;
+    user_id: number;
+    foto: string;
+    pais: string;
+    idioma: string;
+    moeda: string;
+    sexo: string;
+    cidade: string;
+    religiao: string;
+    estado_civil: string;
+    range_idade: string;
+    dt_nascimento: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+    save(): Promise<UserAccount>;
 }

@@ -54,10 +54,12 @@ export class UserApp {
 }
 
 export class User {
-    private _name: string;
+    private id: number;
+    public name: string;
     private _email: string;
     private _auth: Auth;
     private _apps: Array<UserApp>;
+    private _account: UserAccount;
     private _is_authenticated: boolean;
     private _encrypt_key: string = 's7hsj2d12easd63ksye598sdhw312ed8';
 
@@ -67,15 +69,25 @@ export class User {
     private _we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile')
 
     constructor(){
-        this._name = ''
+        this.name = ''
         this._email = ''
         this._is_authenticated = false;
         this._auth = new Auth('','');
+        this._account = new UserAccount();
         this._apps = [];
     }
 
-    public get is_authenticated(): any {
-        return this._is_authenticated;
+    public save(): Promise<User> {
+        let _self = this;
+        return _self._we_auth_user_profile_resource.objects.update(_self.id, {name: _self.name}).then(
+            function(){
+                return _self;
+            }
+        )
+    }
+
+    public get email(): string {
+      return this._email;
     }
 
     public get auth(): Auth {
@@ -86,18 +98,28 @@ export class User {
         return this._apps;
     }
 
+    public get account(): UserAccount {
+        return this._account;
+    }
+
+    public get is_authenticated(): any {
+        return this._is_authenticated;
+    }
+
     private setProfile(data: any): void{
       let _self = this;
       if(data &&
          data.hasOwnProperty('name') &&
          data.hasOwnProperty('email') &&
          data.hasOwnProperty('auth') &&
-         data.hasOwnProperty('apps')){
+         data.hasOwnProperty('apps') &&
+         data.hasOwnProperty('account')){
            api.Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
 
-           _self._name = data.name;
+           _self.name = data.name;
            _self._email = data.email;
-           _self._auth = new Auth(data.auth.username, data.auth.api_key)
+           _self._auth = new Auth(data.auth.username, data.auth.api_key);
+           _self._account = new UserAccount(data);
 
            for(let userapp of data.apps){
               _self._apps.push(new UserApp(userapp.app_name, userapp.app_token, userapp.app_profile_id, userapp.admin));
@@ -112,7 +134,7 @@ export class User {
               localStorage.setItem('weUser', encrypted_user);
             }
        }else{
-           _self._name = ''
+           _self.name = ''
            _self._email = ''
            _self._is_authenticated = false;
            _self._auth = new Auth('','');
@@ -216,13 +238,54 @@ export class User {
         if(utils.Tools.localStorageSuported) localStorage.removeItem('weUser');
         return _self._we_auth_user_logout_resource.objects.findOne().then(
             function(data: any){
-              _self._name = ''
+              _self.name = ''
               _self._email = ''
               _self._is_authenticated = false;
               _self._auth = new Auth('','');
               _self._apps = [];
               if(utils.Tools.localStorageSuported) localStorage.removeItem('weUser');
               return data;
+            }
+        )
+    }
+}
+
+export class UserAccount extends api.Tastypie.Model<UserAccount> {
+
+    public static resource = new api.Tastypie.Resource<UserAccount>('we-auth/user/profile', {model: UserAccount});
+
+    public user_id: number;
+    public foto: string;
+
+    public pais: string;
+    public idioma: string;
+
+    public moeda: string;
+    public sexo: string;
+    public cidade: string;
+
+    public religiao: string;
+    public estado_civil: string;
+    public range_idade: string;
+
+    public dt_nascimento: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(UserAccount.resource);
+        if(obj){
+            this.setData(obj.account);
+            this.user_id = obj.id
+        }
+    }
+
+    public save(): Promise<UserAccount> {
+        let _self = this;
+        return UserAccount.resource.objects.update(_self.user_id, {account: _self.getData()}).then(
+            function(data){
+                _self.setData(data);
+                return _self;
             }
         )
     }
