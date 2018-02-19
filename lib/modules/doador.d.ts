@@ -52,13 +52,7 @@ export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     readonly recebidos_cadastro: number;
     readonly recebidos_convite: number;
     readonly recebidos_compra: number;
-    readonly ong: api.Tastypie.Resource<DoadorOngPontos>;
-}
-export declare class DoadorOngPontos extends api.Tastypie.Model<DoadorOngPontos> {
-    static resource: api.Tastypie.Resource<DoadorOngPontos>;
-    ong: ong_models.Ong;
-    pontos: number;
-    constructor(obj?: any);
+    readonly ong: api.Tastypie.Resource<DoadorDoacaoOng>;
 }
 export declare class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     static resource: api.Tastypie.Resource<DoadorDoacao>;
@@ -145,6 +139,7 @@ export declare class DoadorDoacaoOng extends api.Tastypie.Model<DoadorDoacaoOng>
     doacao_direta: number;
     doacao_pool: number;
     doacao_total: number;
+    pontos: number;
     dt_updated: string;
     private _doacao_ods;
     constructor(obj?: any);

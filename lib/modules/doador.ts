@@ -158,7 +158,7 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     private _recebidos_convite: number;
     private _recebidos_compra: number;
 
-    private _ong: api.Tastypie.Resource<DoadorOngPontos>;
+    private _ong: api.Tastypie.Resource<DoadorDoacaoOng>;
     private _distribuicao_resource: api.Tastypie.Resource<any>;
 
     constructor(obj?:any){
@@ -173,7 +173,7 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
             this._recebidos_convite = obj.recebidos_convite;
             this._recebidos_compra = obj.recebidos_compra;
 
-            this._ong = new api.Tastypie.Resource<DoadorOngPontos>('doador/ong-pontos', {model: DoadorOngPontos, defaults: {doador_id: obj.doador_id}});
+            this._ong = new api.Tastypie.Resource<DoadorDoacaoOng>('doador/doacao-ong', {model: DoadorDoacaoOng, defaults: {doador_id: obj.doador_id}});
             this._distribuicao_resource = new api.Tastypie.Resource<any>('doador/profile/'+obj.doador_id+'/distribuir-pontos');
         } else {
             this._recebidos = 0;
@@ -234,21 +234,8 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
         return this._recebidos_compra;
     }
 
-    public get ong(): api.Tastypie.Resource<DoadorOngPontos> {
+    public get ong(): api.Tastypie.Resource<DoadorDoacaoOng> {
         return this._ong;
-    }
-}
-
-export class DoadorOngPontos extends api.Tastypie.Model<DoadorOngPontos> {
-    public static resource = new api.Tastypie.Resource<DoadorOngPontos>('doador/ong-pontos', {model: DoadorOngPontos});
-
-    public ong: ong_models.Ong;
-    public pontos: number;
-
-    constructor(obj?:any){
-        super(DoadorOngPontos.resource, obj);
-        let _self = this;
-        if(_self.ong) _self.ong = new ong_models.Ong(_self.ong);
     }
 }
 
@@ -494,6 +481,7 @@ export class DoadorDoacaoOng extends api.Tastypie.Model<DoadorDoacaoOng> {
     public doacao_direta: number;
     public doacao_pool: number;
     public doacao_total: number;
+    public pontos: number;
     public dt_updated: string;
     private _doacao_ods: api.Tastypie.Resource<DoadorDoacaoOds>;
 
