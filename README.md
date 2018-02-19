@@ -2,6 +2,9 @@
 
 TypeScript client for Welight platform
 
+### Install ###
+npm i welight-api-ts
+
 ### Modules ###
 * WeAuth
 * WeNotify

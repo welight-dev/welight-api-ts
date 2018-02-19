@@ -289,4 +289,24 @@ export class UserAccount extends api.Tastypie.Model<UserAccount> {
             }
         )
     }
+
+    public changeFoto(event: any): Promise<UserAccount> {
+        let _self = this;
+        let uploading = new Promise<UserAccount>(function(resolve, reject) {
+            let timeout = setTimeout(function(){ reject('timeout'); }, 15000);
+            let reader = new FileReader();
+            reader.onload = function(loadEvent: any){
+                let paramFile = loadEvent.target.result;
+                UserAccount.resource.objects.update(_self.user_id, {account:{foto:paramFile}}).then(function(data){
+                    clearTimeout(timeout);
+                    resolve(data);
+                }).catch(function(error){
+                    clearTimeout(timeout);
+                    reject(error);
+                });
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        });
+        return uploading;
+    }
 }

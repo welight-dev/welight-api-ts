@@ -37,8 +37,7 @@ export declare class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
     descricao: string;
     fotos: Array<string>;
     site_scraped: any;
-    instituicao: any;
-    criado_em: string;
-    atualizado_em: string;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }
