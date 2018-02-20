@@ -11,6 +11,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     private _we_notify;
     private _rede;
     private _ong_timeline;
+    private _doacao_mes;
     private _user;
     private _doador_logado;
     constructor(obj?: any);
@@ -19,6 +20,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     readonly dt_created: string;
     readonly rede: DoadorRede;
     readonly ong_timeline: api.Tastypie.Resource<ong_models.OngTimeLine>;
+    readonly doacao_mes: api.Tastypie.Resource<DoadorDoacaoMes>;
     readonly we_notify: api.Tastypie.Resource<we_notify_models.WeNotifyDoador>;
     readonly user: weauth_models.User;
     getPontos(): Promise<DoadorPontos>;
@@ -53,6 +55,36 @@ export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     readonly recebidos_convite: number;
     readonly recebidos_compra: number;
     readonly ong: api.Tastypie.Resource<DoadorDoacaoOng>;
+}
+export declare class DoadorDoacaoMes extends api.Tastypie.Model<DoadorDoacaoMes> {
+    static resource: api.Tastypie.Resource<DoadorDoacaoMes>;
+    doador_id: number;
+    mes: number;
+    ano: number;
+    moeda: string;
+    doador_doacao_pendente: number;
+    doador_doacao_direta: number;
+    doador_doacao_pool: number;
+    doador_doacao_total: number;
+    doador_doacao_impacto: number;
+    rede_acima_doacao_pendente: number;
+    rede_acima_doacao_direta: number;
+    rede_acima_doacao_pool: number;
+    rede_acima_doacao_total: number;
+    rede_abaixo_doacao_pendente: number;
+    rede_abaixo_doacao_direta: number;
+    rede_abaixo_doacao_pool: number;
+    rede_abaixo_doacao_total: number;
+    rede_direta_doacao_pendente: number;
+    rede_direta_doacao_direta: number;
+    rede_direta_doacao_pool: number;
+    rede_direta_doacao_total: number;
+    rede_indireta_doacao_pendente: number;
+    rede_indireta_doacao_direta: number;
+    rede_indireta_doacao_pool: number;
+    rede_indireta_doacao_total: number;
+    dt_created: string;
+    constructor(obj?: any);
 }
 export declare class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     static resource: api.Tastypie.Resource<DoadorDoacao>;

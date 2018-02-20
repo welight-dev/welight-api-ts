@@ -17,6 +17,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
     private _we_notify: api.Tastypie.Resource<we_notify_models.WeNotifyDoador>;
     private _rede: DoadorRede;
     private _ong_timeline: api.Tastypie.Resource<ong_models.OngTimeLine>;
+    private _doacao_mes: api.Tastypie.Resource<DoadorDoacaoMes>;
     private _user: weauth_models.User;
 
 
@@ -38,6 +39,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
             _self._dt_created = obj.dt_created;
             _self._rede = new DoadorRede(obj.id);
             _self._ong_timeline = new api.Tastypie.Resource<ong_models.OngTimeLine>('ong/timeline', {model: ong_models.OngTimeLine, defaults: {doador_id: obj.id}});
+            _self._doacao_mes = new api.Tastypie.Resource<DoadorDoacaoMes>('doador/doacao-mes', {model: DoadorDoacaoMes, defaults: {doador_id: obj.id}});
             _self._we_notify = new api.Tastypie.Resource<we_notify_models.WeNotifyDoador>('we-notify/doador', {model: we_notify_models.WeNotifyDoador, defaults: {doador_id: obj.id}});
         }
     }
@@ -56,6 +58,10 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
     public get ong_timeline(): api.Tastypie.Resource<ong_models.OngTimeLine> {
         return this._ong_timeline;
+    }
+
+    public get doacao_mes(): api.Tastypie.Resource<DoadorDoacaoMes> {
+        return this._doacao_mes;
     }
 
     public get we_notify(): api.Tastypie.Resource<we_notify_models.WeNotifyDoador> {
@@ -236,6 +242,47 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
 
     public get ong(): api.Tastypie.Resource<DoadorDoacaoOng> {
         return this._ong;
+    }
+}
+
+export class DoadorDoacaoMes extends api.Tastypie.Model<DoadorDoacaoMes> {
+    public static resource = new api.Tastypie.Resource<DoadorDoacaoMes>('doador/doacao-mes', {model: DoadorDoacaoMes});
+
+    public doador_id: number;
+    public mes: number;
+    public ano: number;
+    public moeda: string;
+
+    public doador_doacao_pendente: number;
+    public doador_doacao_direta: number;
+    public doador_doacao_pool: number;
+    public doador_doacao_total: number;
+    public doador_doacao_impacto: number;
+
+    public rede_acima_doacao_pendente: number;
+    public rede_acima_doacao_direta: number;
+    public rede_acima_doacao_pool: number;
+    public rede_acima_doacao_total: number;
+
+    public rede_abaixo_doacao_pendente: number;
+    public rede_abaixo_doacao_direta: number;
+    public rede_abaixo_doacao_pool: number;
+    public rede_abaixo_doacao_total: number;
+
+    public rede_direta_doacao_pendente: number;
+    public rede_direta_doacao_direta: number;
+    public rede_direta_doacao_pool: number;
+    public rede_direta_doacao_total: number;
+
+    public rede_indireta_doacao_pendente: number;
+    public rede_indireta_doacao_direta: number;
+    public rede_indireta_doacao_pool: number;
+    public rede_indireta_doacao_total: number;
+
+    public dt_created: string;
+
+    constructor(obj?:any){
+      super(DoadorDoacaoMes.resource, obj);
     }
 }
 
