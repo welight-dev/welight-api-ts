@@ -1,4 +1,4 @@
-// Type definitions for [~Welight Platform~] [~1.0.29~]
+// Type definitions for [~Welight Platform~] [~1.0.30~]
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 

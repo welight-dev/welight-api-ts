@@ -299,6 +299,7 @@ export class UserAccount extends api.Tastypie.Model<UserAccount> {
                 let paramFile = loadEvent.target.result;
                 UserAccount.resource.objects.update(_self.user_id, {account:{foto:paramFile}}).then(function(data){
                     clearTimeout(timeout);
+                    _self.setData(data);
                     resolve(data);
                 }).catch(function(error){
                     clearTimeout(timeout);
