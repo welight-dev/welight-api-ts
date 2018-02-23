@@ -36,6 +36,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
         if(obj){
             _self.id = obj.id;
             _self.nome = obj.nome;
+            _self.slug = obj.slug;
             _self._email = obj.email;
             _self._dt_created = obj.dt_created;
             _self._rede = new DoadorRede(obj.id);
