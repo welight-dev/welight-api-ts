@@ -161,6 +161,7 @@ export declare class DoadorRedeAmigos extends api.Tastypie.Model<DoadorRedeAmigo
     parent_nome: number;
     parent_email: number;
     parent_ativo: boolean;
+    parent_dt_created: string;
     constructor(obj?: any);
 }
 export declare class DoadorDoacaoOng extends api.Tastypie.Model<DoadorDoacaoOng> {

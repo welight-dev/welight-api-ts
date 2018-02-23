@@ -513,6 +513,7 @@ export class DoadorRedeAmigos extends api.Tastypie.Model<DoadorRedeAmigos> {
     public parent_nome: number;
     public parent_email: number;
     public parent_ativo: boolean;
+    public parent_dt_created: string;
 
     constructor(obj?:any){
         super(DoadorRedeAmigos.resource, obj);
