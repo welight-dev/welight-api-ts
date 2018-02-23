@@ -6,6 +6,7 @@ import * as we_notify_models from "./weNotify";
 export declare class Doador extends api.Tastypie.Model<Doador> {
     static resource: api.Tastypie.Resource<Doador>;
     nome: string;
+    slug: string;
     private _email;
     private _dt_created;
     private _we_notify;

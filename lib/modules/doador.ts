@@ -11,6 +11,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
     public static resource = new api.Tastypie.Resource<Doador>('doador/profile', {model: Doador});
 
     public nome: string;
+    public slug: string;
     private _email: string;
     private _dt_created: string;
 
