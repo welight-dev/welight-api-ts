@@ -11,6 +11,7 @@ export class Loja extends api.Tastypie.Model<Loja> {
     public site: string;
     public url_trackeada: string;
     public porcentagem_doacao: string;
+    public total_cupons_ativos: number;
     private _cupons: api.Tastypie.Resource<Cupom>;
 
     constructor(obj?:any){
