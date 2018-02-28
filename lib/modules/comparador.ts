@@ -23,6 +23,14 @@ export class Produto extends api.Tastypie.Model<Produto> {
 
     constructor(obj?:any){
         super(Produto.resource, obj);
+        let _self = this;
+        if(_self.cat_tree){
+            let cat_tree = _self.cat_tree;
+            _self.cat_tree = [];
+            for(let obj of cat_tree){
+                _self.cat_tree.push(new CategorySumary(obj));
+            }
+        }
     }
 }
 
