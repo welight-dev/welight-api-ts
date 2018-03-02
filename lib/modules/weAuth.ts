@@ -54,7 +54,7 @@ export class UserApp {
 }
 
 export class User {
-    private id: number;
+    private _id: number;
     public name: string;
     private _email: string;
     private _auth: Auth;
@@ -79,11 +79,15 @@ export class User {
 
     public save(): Promise<User> {
         let _self = this;
-        return _self._we_auth_user_profile_resource.objects.update(_self.id, {name: _self.name}).then(
+        return _self._we_auth_user_profile_resource.objects.update(_self._id, {name: _self.name}).then(
             function(){
                 return _self;
             }
         )
+    }
+
+    public get id(): number {
+      return this._id;
     }
 
     public get email(): string {
@@ -116,6 +120,7 @@ export class User {
          data.hasOwnProperty('account')){
            api.Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
 
+           _self._id = data.id;
            _self.name = data.name;
            _self._email = data.email;
            _self._auth = new Auth(data.auth.username, data.auth.api_key);

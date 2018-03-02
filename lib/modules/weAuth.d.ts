@@ -18,7 +18,7 @@ export declare class UserApp {
     readonly admin: boolean;
 }
 export declare class User {
-    private id;
+    private _id;
     name: string;
     private _email;
     private _auth;
@@ -32,6 +32,7 @@ export declare class User {
     private _we_auth_user_profile_resource;
     constructor();
     save(): Promise<User>;
+    readonly id: number;
     readonly email: string;
     readonly auth: Auth;
     readonly apps: Array<UserApp>;
