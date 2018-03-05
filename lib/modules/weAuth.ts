@@ -315,4 +315,12 @@ export class UserAccount extends api.Tastypie.Model<UserAccount> {
         });
         return uploading;
     }
+
+    public changeFotoBase64(dataBase64: any): Promise<UserAccount> {
+        let _self = this;
+        return UserAccount.resource.objects.update(_self.user_id, {account:{foto:dataBase64}}).then(function(data){
+            _self.setData(data);
+            return _self;
+        });
+    }
 }

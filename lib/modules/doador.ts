@@ -20,6 +20,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
     private _ong_timeline: api.Tastypie.Resource<ong_models.OngTimeLine>;
     private _doacao_mes: api.Tastypie.Resource<DoadorDoacaoMes>;
     private _user: weauth_models.User;
+    private _check_slug_resource: api.Tastypie.Resource<{available: boolean}>;
 
 
     private _doador_logado: api.Tastypie.Resource<Doador>;
@@ -28,7 +29,23 @@ export class Doador extends api.Tastypie.Model<Doador> {
         super(Doador.resource);
         this._doador_logado = new api.Tastypie.Resource<Doador>('doador/profile/me', {model: Doador});
         this._user = new weauth_models.User();
+        this._check_slug_resource = new api.Tastypie.Resource<{available: boolean}>('doador/profile/check-slug');
         this.initProfile(obj);
+    }
+
+    public check_slug(slug: string): Promise<{available: boolean}> {
+        return this._check_slug_resource.objects.findOne({slug: slug});
+    }
+
+    public save(): Promise<Doador> {
+        let _self = this;
+        return Doador.resource.objects.update(_self.id, {nome: _self.nome, slug: _self.slug}).then(
+            function(data: Doador){
+                _self.nome = data.nome;
+                _self.slug = data.slug;
+                return _self;
+            }
+        )
     }
 
     private initProfile(obj?: any): void {

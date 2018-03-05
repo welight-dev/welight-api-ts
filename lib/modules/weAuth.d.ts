@@ -67,4 +67,5 @@ export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
     constructor(obj?: any);
     save(): Promise<UserAccount>;
     changeFoto(event: any): Promise<UserAccount>;
+    changeFotoBase64(dataBase64: any): Promise<UserAccount>;
 }

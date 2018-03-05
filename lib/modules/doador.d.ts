@@ -14,8 +14,13 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     private _ong_timeline;
     private _doacao_mes;
     private _user;
+    private _check_slug_resource;
     private _doador_logado;
     constructor(obj?: any);
+    check_slug(slug: string): Promise<{
+        available: boolean;
+    }>;
+    save(): Promise<Doador>;
     private initProfile(obj?);
     readonly email: string;
     readonly dt_created: string;
