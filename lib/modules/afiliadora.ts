@@ -8,6 +8,7 @@ export class CategoriaLoja extends api.Tastypie.Model<CategoriaLoja> {
 
     public nome: string;
     public descricao: string;
+    public token: string;
     public tag: string;
 
     constructor(obj?:any){

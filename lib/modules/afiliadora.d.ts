@@ -3,6 +3,7 @@ export declare class CategoriaLoja extends api.Tastypie.Model<CategoriaLoja> {
     static resource: api.Tastypie.Resource<CategoriaLoja>;
     nome: string;
     descricao: string;
+    token: string;
     tag: string;
     constructor(obj?: any);
 }
