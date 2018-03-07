@@ -3,6 +3,18 @@
 
 import * as api from "ts-resource-tastypie";
 
+export class CategoriaLoja extends api.Tastypie.Model<CategoriaLoja> {
+    public static resource = new api.Tastypie.Resource<CategoriaLoja>('afiliadora/categoria-loja', {model: CategoriaLoja});
+
+    public nome: string;
+    public descricao: string;
+    public tag: string;
+
+    constructor(obj?:any){
+        super(CategoriaLoja.resource, obj);
+    }
+}
+
 export class Loja extends api.Tastypie.Model<Loja> {
     public static resource = new api.Tastypie.Resource<Loja>('afiliadora/loja', {model: Loja});
 

@@ -1,4 +1,11 @@
 import * as api from "ts-resource-tastypie";
+export declare class CategoriaLoja extends api.Tastypie.Model<CategoriaLoja> {
+    static resource: api.Tastypie.Resource<CategoriaLoja>;
+    nome: string;
+    descricao: string;
+    tag: string;
+    constructor(obj?: any);
+}
 export declare class Loja extends api.Tastypie.Model<Loja> {
     static resource: api.Tastypie.Resource<Loja>;
     nome: string;
