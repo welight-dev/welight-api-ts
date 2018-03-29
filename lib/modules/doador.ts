@@ -170,7 +170,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
                 if(!user_app){
                     _self._user = new weauth_models.User();
-                    return api.Tastypie.Tools.generate_exception("[Ong][quickLogin] Usuario não identificado");
+                    return api.Tastypie.Tools.generate_exception("[Doador][quickLogin] Usuario não identificado");
                 }
 
                 _self._user.current_user_app = user_app;
