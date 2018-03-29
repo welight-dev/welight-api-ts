@@ -7,14 +7,16 @@ export declare class Auth {
     readonly api_key: string;
 }
 export declare class UserApp {
+    private _id;
     private _app_name;
     private _app_token;
     private _app_profile_id;
     private _admin;
-    constructor(app_name: string, app_token: string, app_profile_id: string, admin: boolean);
+    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, admin: boolean);
+    readonly id: number;
     readonly app_name: string;
     readonly app_token: string;
-    readonly app_profile_id: string;
+    readonly app_profile_id: number;
     readonly admin: boolean;
 }
 export declare class User {
@@ -26,7 +28,9 @@ export declare class User {
     private _account;
     private _is_authenticated;
     private _encrypt_key;
+    private _current_user_app;
     private _we_auth_user_create_account_resource;
+    private _we_auth_user_create_account_ong_resource;
     private _we_auth_user_login_resource;
     private _we_auth_user_logout_resource;
     private _we_auth_user_profile_resource;
@@ -38,10 +42,14 @@ export declare class User {
     readonly apps: Array<UserApp>;
     readonly account: UserAccount;
     readonly is_authenticated: any;
-    private setProfile(data);
-    create_account(name: string, email: string, password: string, kwargs?: any): Promise<User>;
+    current_user_app: UserApp;
+    getUserAppAdmin(app_token: string): UserApp;
+    getUserAppById(id: number): UserApp;
+    private setProfile(data, kwargs?);
+    createAccount(name: string, email: string, password: string, kwargs?: any): Promise<User>;
+    createAccountOng(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<User>;
     login(username: string, password: string, kwargs?: any): Promise<User>;
-    login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<User>;
+    loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<User>;
     private _quickLogin(username, apikey, kwargs?);
     quickLogin(auth?: {
         username: string;

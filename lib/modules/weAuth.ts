@@ -24,16 +24,22 @@ export class Auth {
 }
 
 export class UserApp {
+    private _id: number;
     private _app_name: string;
     private _app_token: string;
-    private _app_profile_id: string;
+    private _app_profile_id: number;
     private _admin: boolean;
 
-    constructor(app_name: string, app_token: string, app_profile_id: string, admin: boolean){
+    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, admin: boolean){
+        this._id = id;
         this._app_name = app_name;
         this._app_token = app_token;
         this._app_profile_id = app_profile_id;
         this._admin = admin;
+    }
+
+    public get id(): number {
+        return this._id;
     }
 
     public get app_name(): string {
@@ -44,7 +50,7 @@ export class UserApp {
         return this._app_token;
     }
 
-    public get app_profile_id(): string {
+    public get app_profile_id(): number {
         return this._app_profile_id;
     }
 
@@ -62,8 +68,10 @@ export class User {
     private _account: UserAccount;
     private _is_authenticated: boolean;
     private _encrypt_key: string = 's7hsj2d12easd63ksye598sdhw312ed8';
+    private _current_user_app: UserApp;
 
-    private _we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create_account')
+    private _we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account')
+    private _we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong')
     private _we_auth_user_login_resource = new api.Tastypie.Resource('we-auth/user/login')
     private _we_auth_user_logout_resource = new api.Tastypie.Resource('we-auth/user/logout')
     private _we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile')
@@ -110,7 +118,39 @@ export class User {
         return this._is_authenticated;
     }
 
-    private setProfile(data: any): void{
+    public get current_user_app(): UserApp {
+        return this._current_user_app;
+    }
+
+    public set current_user_app(userapp:UserApp) {
+        this._current_user_app = userapp;
+    }
+
+    public getUserAppAdmin(app_token: string): UserApp {
+        let _self = this;
+        let userapp_return: UserApp;
+        for(let userapp of _self.apps){
+          if(userapp.app_token == app_token && userapp.admin){
+              userapp_return = userapp;
+              break;
+          }
+        }
+        return userapp_return;
+    }
+
+    public getUserAppById(id: number): UserApp {
+        let _self = this;
+        let userapp_return: UserApp;
+        for(let userapp of _self.apps){
+          if(userapp.id == id){
+              userapp_return = userapp;
+              break;
+          }
+        }
+        return userapp_return;
+    }
+
+    private setProfile(data: any, kwargs?: any): void{
       let _self = this;
       if(data &&
          data.hasOwnProperty('name') &&
@@ -127,14 +167,23 @@ export class User {
            _self._account = new UserAccount(data);
 
            for(let userapp of data.apps){
-              _self._apps.push(new UserApp(userapp.app_name, userapp.app_token, userapp.app_profile_id, userapp.admin));
+              _self._apps.push(new UserApp(userapp.id, userapp.app_name, userapp.app_token, userapp.app_profile_id, userapp.admin));
+           }
+
+           if(kwargs){
+              if(kwargs.hasOwnProperty('source')){
+                  if(kwargs.source.detail.hasOwnProperty('user_app_id')){
+                      _self._current_user_app = _self.getUserAppById(kwargs.source.detail.user_app_id);
+                  }
+              }
            }
 
            _self._is_authenticated = true;
            if(utils.Tools.localStorageSuported){
                let encrypted_user = crypto.AES.encrypt(JSON.stringify({
                   username: data.auth.username,
-                  apikey: data.auth.api_key
+                  apikey: data.auth.api_key,
+                  kwargs: kwargs
               }), _self._encrypt_key).toString();
               localStorage.setItem('weUser', encrypted_user);
             }
@@ -148,7 +197,7 @@ export class User {
        }
     }
 
-    public create_account(name: string, email: string, password: string, kwargs?:any): Promise<User> {
+    public createAccount(name: string, email: string, password: string, kwargs?:any): Promise<User> {
       let _self = this;
       return _self._we_auth_user_create_account_resource.objects.create({
           name: name,
@@ -157,11 +206,31 @@ export class User {
           kwargs: kwargs
       }).then(
           function(data: any){
-              _self.setProfile(data);
+              _self.setProfile(data, kwargs);
               if(_self._is_authenticated){
                   return _self;
               }else{
                   return api.Tastypie.Tools.generate_exception("[WeAuth][create_account] Usuario não identificado");
+              }
+          }
+      )
+    }
+
+    public createAccountOng(nome: string, email: string, razao_social: string, cnpj:string, kwargs?:any): Promise<User> {
+      let _self = this;
+      return _self._we_auth_user_create_account_ong_resource.objects.create({
+          nome: nome,
+          email: email,
+          razao_social: razao_social,
+          cnpj: cnpj,
+          kwargs: kwargs
+      }).then(
+          function(data: any){
+              _self.setProfile(data, kwargs);
+              if(_self._is_authenticated){
+                  return _self;
+              }else{
+                  return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
               }
           }
       )
@@ -175,7 +244,7 @@ export class User {
             kwargs: kwargs
         }).then(
             function(data: any){
-                _self.setProfile(data);
+                _self.setProfile(data, kwargs);
                 if(_self._is_authenticated){
                     return _self;
                 }else{
@@ -185,7 +254,7 @@ export class User {
         )
     }
 
-    public login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<User> {
+    public loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<User> {
         let _self = this;
         return _self._we_auth_user_login_resource.objects.create({
             username: username,
@@ -194,7 +263,7 @@ export class User {
             kwargs: kwargs
         }).then(
             function(data: any){
-                _self.setProfile(data);
+                _self.setProfile(data, kwargs);
                 if(_self._is_authenticated){
                     return _self;
                 }else{
@@ -209,7 +278,7 @@ export class User {
       api.Tastypie.Provider.setAuth('welight', username, apikey);
       return _self._we_auth_user_profile_resource.objects.findOne().then(
         function(data: any){
-            _self.setProfile(data);
+            _self.setProfile(data, kwargs);
             if(_self._is_authenticated){
                 return _self;
             }else{
@@ -228,7 +297,7 @@ export class User {
                 let weUser: string = localStorage.getItem('weUser')
                 if(weUser){
                     let auth_user = JSON.parse(crypto.AES.decrypt(weUser, _self._encrypt_key).toString(crypto.enc.Utf8));
-                    return _self._quickLogin(auth_user.username, auth_user.apikey, kwargs);
+                    return _self._quickLogin(auth_user.username, auth_user.apikey, auth_user.kwargs);
                 }else{
                     return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
                 }

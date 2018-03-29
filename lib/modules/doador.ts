@@ -115,9 +115,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         }
     }
 
-    public create_account(name: string, email: string, password: string, kwargs?:any): Promise<Doador> {
+    public createAccount(name: string, email: string, password: string, kwargs?:any): Promise<Doador> {
         let _self = this;
-        return this._user.create_account(name, email, password, kwargs).then(
+        return this._user.createAccount(name, email, password, kwargs).then(
             function(user: weauth_models.User){
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){
@@ -143,9 +143,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         );
     }
 
-    public login_facebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<Doador> {
+    public loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<Doador> {
         let _self = this;
-        return this._user.login_facebook(username, facebook_uid, facebook_access_token, kwargs).then(
+        return this._user.loginFacebook(username, facebook_uid, facebook_access_token, kwargs).then(
             function(user: weauth_models.User){
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){
@@ -161,6 +161,16 @@ export class Doador extends api.Tastypie.Model<Doador> {
         let _self = this;
         return this._user.quickLogin(auth, kwargs).then(
             function(user: weauth_models.User){
+
+                let user_app = user.getUserAppAdmin('doador');
+
+                if(!user_app){
+                    _self._user = new weauth_models.User();
+                    return api.Tastypie.Tools.generate_exception("[Ong][quickLogin] Usuario não identificado");
+                }
+
+                _self._user.current_user_app = user_app;
+
                 return _self._doador_logado.objects.findOne().then(
                     function(data: Doador){
                         _self.initProfile(data);
