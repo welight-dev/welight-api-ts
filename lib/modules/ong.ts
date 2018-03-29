@@ -105,20 +105,29 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
     public static resource = new api.Tastypie.Resource<OngDetail>('ong/profile/<id>/detail', {model: OngDetail});
 
+    public contato_fone: string;
+
     public missao: string;
     public missao_resumo: string;
 
     public realizacao: string;
     public realizacao_resumo: string;
 
-    public video_institucional: string;
-    public site: string;
-
     public img_avatar: string;
     public img_fundo: string;
     public cor_filtro: string;
 
+    public video_institucional: string;
+    public estatuto_social: string;
+    public ultima_assembleia: string;
+    public website: string;
+    public youtube: string;
+    public facebook: string;
+    public instagram: string;
+
     public dt_fundacao: string;
+    public dt_updated: string;
+    public dt_created: string;
 
     constructor(obj?:any){
       super(OngDetail.resource, obj);
@@ -134,7 +143,6 @@ export class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
     public site_scraped: any;
     public dt_updated: string;
     public dt_created: string;
-
 
     constructor(obj?:any){
         super(OngTimeLine.resource, obj);

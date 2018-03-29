@@ -31,16 +31,24 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
 }
 export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     static resource: api.Tastypie.Resource<OngDetail>;
+    contato_fone: string;
     missao: string;
     missao_resumo: string;
     realizacao: string;
     realizacao_resumo: string;
-    video_institucional: string;
-    site: string;
     img_avatar: string;
     img_fundo: string;
     cor_filtro: string;
+    video_institucional: string;
+    estatuto_social: string;
+    ultima_assembleia: string;
+    website: string;
+    youtube: string;
+    facebook: string;
+    instagram: string;
     dt_fundacao: string;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }
 export declare class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
