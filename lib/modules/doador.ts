@@ -162,7 +162,11 @@ export class Doador extends api.Tastypie.Model<Doador> {
         return this._user.quickLogin(auth, kwargs).then(
             function(user: weauth_models.User){
 
-                let user_app = user.getUserAppAdmin('doador');
+                let user_app = user.current_user_app;
+
+                if(!user_app){
+                    user_app = user.getUserAppAdmin('doador');
+                }
 
                 if(!user_app){
                     _self._user = new weauth_models.User();
