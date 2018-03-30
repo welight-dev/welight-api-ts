@@ -23,6 +23,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     readonly fotos: api.Tastypie.Resource<OngTimeLine>;
     readonly videos: api.Tastypie.Resource<OngTimeLine>;
     readonly user: weauth_models.User;
+    getEndereco(): Promise<OngEndereco>;
     createAccount(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<Ong>;
     quickLogin(auth?: {
         username: string;
@@ -49,6 +50,18 @@ export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     dt_fundacao: string;
     dt_updated: string;
     dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngEndereco extends api.Tastypie.Model<OngEndereco> {
+    static resource: api.Tastypie.Resource<OngEndereco>;
+    cep: string;
+    rua: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    pais: string;
     constructor(obj?: any);
 }
 export declare class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {

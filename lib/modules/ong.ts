@@ -56,6 +56,14 @@ export class Ong extends api.Tastypie.Model<Ong> {
         return this._user;
     }
 
+    public getEndereco(): Promise<OngEndereco> {
+        if(this.id){
+            return OngEndereco.resource.objects.findOne({ong_id: this.id});
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Ong][getEndereco] Ong não identificada");
+        }
+    }
+
     public createAccount(nome: string, email: string, razao_social: string, cnpj:string, kwargs?:any): Promise<Ong> {
         let _self = this;
         return this._user.createAccountOng(name, email, razao_social, cnpj, kwargs).then(
@@ -131,6 +139,24 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
     constructor(obj?:any){
       super(OngDetail.resource, obj);
+    }
+}
+
+export class OngEndereco extends api.Tastypie.Model<OngEndereco> {
+
+    public static resource = new api.Tastypie.Resource<OngEndereco>('ong/endereco', {model: OngEndereco});
+
+    public cep: string;
+    public rua: string;
+    public numero: string;
+    public complemento: string;
+    public bairro: string;
+    public cidade: string;
+    public estado: string;
+    public pais: string;
+
+    constructor(obj?:any){
+      super(OngEndereco.resource, obj);
     }
 }
 
