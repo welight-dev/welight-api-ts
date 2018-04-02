@@ -1,5 +1,6 @@
 import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
+import { Ods } from "./onu";
 export declare class Ong extends api.Tastypie.Model<Ong> {
     static resource: api.Tastypie.Resource<Ong>;
     nome: string;
@@ -7,23 +8,31 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     razao_social: string;
     cnpj: string;
     slug: string;
-    ativo: boolean;
-    qtde_pontos: string;
-    qtde_doadores: string;
+    private _ativo;
+    private _qtde_pontos;
+    private _qtde_doadores;
     private _profile_detail;
-    dt_updated: string;
-    dt_created: string;
+    private _dt_updated;
+    private _dt_created;
     private _user;
     private _timeline;
     private _fotos;
     private _videos;
+    private _projetos;
     constructor(obj?: any);
+    save(): Promise<Ong>;
     private initProfile(obj);
-    profile_detail: OngDetail;
+    readonly ativo: boolean;
+    readonly qtde_pontos: number;
+    readonly qtde_doadores: number;
+    readonly profile_detail: OngDetail;
+    readonly dt_updated: string;
+    readonly dt_created: string;
     readonly timeline: api.Tastypie.Resource<OngTimeLine>;
     readonly fotos: api.Tastypie.Resource<OngTimeLine>;
     readonly videos: api.Tastypie.Resource<OngTimeLine>;
     readonly user: weauth_models.User;
+    readonly projetos: api.Tastypie.Resource<OngProjeto>;
     getEndereco(): Promise<OngEndereco>;
     createAccount(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<Ong>;
     quickLogin(auth?: {
@@ -86,9 +95,11 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     sem_local: boolean;
     sem_local_obs: string;
     private _endereco;
+    private _ods;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
+    readonly ods: api.Tastypie.Resource<OngProjetoOds>;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     static resource: api.Tastypie.Resource<OngProjetoSobre>;
@@ -110,5 +121,12 @@ export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEnd
     estado: string;
     pais: string;
     coordenadas: string;
+    constructor(obj?: any);
+}
+export declare class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
+    static resource: api.Tastypie.Resource<OngProjetoOds>;
+    ong_projeto_id: number;
+    ods_id: number;
+    ods: Ods;
     constructor(obj?: any);
 }
