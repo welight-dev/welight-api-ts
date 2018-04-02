@@ -37,7 +37,11 @@ export class Ong extends api.Tastypie.Model<Ong> {
             _self._fotos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'fotos'}});
             _self._videos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'videos'}});
         }
-        if(obj.profile_detail) this._profile_detail = new OngDetail(obj.profile_detail);
+        if(obj) {          
+            if(obj.profile_detail) _self._profile_detail = new OngDetail(obj.profile_detail);
+        } else {
+            _self._profile_detail = new OngDetail();
+        }
     }
 
     public get profile_detail(): OngDetail {
