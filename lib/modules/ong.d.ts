@@ -10,7 +10,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     ativo: boolean;
     qtde_pontos: string;
     qtde_doadores: string;
-    profile_detail: OngDetail;
+    private _profile_detail;
     dt_updated: string;
     dt_created: string;
     private _user;
@@ -18,7 +18,8 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _fotos;
     private _videos;
     constructor(obj?: any);
-    private initProfile();
+    private initProfile(obj);
+    readonly profile_detail: OngDetail;
     readonly timeline: api.Tastypie.Resource<OngTimeLine>;
     readonly fotos: api.Tastypie.Resource<OngTimeLine>;
     readonly videos: api.Tastypie.Resource<OngTimeLine>;
