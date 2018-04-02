@@ -19,7 +19,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _videos;
     constructor(obj?: any);
     private initProfile(obj);
-    readonly profile_detail: OngDetail;
+    profile_detail: OngDetail;
     readonly timeline: api.Tastypie.Resource<OngTimeLine>;
     readonly fotos: api.Tastypie.Resource<OngTimeLine>;
     readonly videos: api.Tastypie.Resource<OngTimeLine>;

@@ -25,27 +25,29 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _videos: api.Tastypie.Resource<OngTimeLine>;
 
     constructor(obj?:any){
-        super(Ong.resource, obj);
+        super(Ong.resource);
         this._user = new weauth_models.User();
+        this._profile_detail = new OngDetail();
         this.initProfile(obj);
     }
 
     private initProfile(obj:any): void {
         let _self = this;
-        if(_self.id){
+        if(obj){
+            if(obj.profile_detail) obj.profile_detail = new OngDetail(obj.profile_detail);
+            _self.setData(obj);
             _self._timeline = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id}});
             _self._fotos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'fotos'}});
             _self._videos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'videos'}});
-        }
-        if(obj) {          
-            if(obj.profile_detail) _self._profile_detail = new OngDetail(obj.profile_detail);
-        } else {
-            _self._profile_detail = new OngDetail();
         }
     }
 
     public get profile_detail(): OngDetail {
         return this._profile_detail;
+    }
+
+    public set profile_detail(obj: OngDetail) {
+        this._profile_detail = obj;
     }
 
     public get timeline(): api.Tastypie.Resource<OngTimeLine> {
@@ -79,7 +81,6 @@ export class Ong extends api.Tastypie.Model<Ong> {
                 let user_app = user.getUserAppAdmin('ong');
                 return Ong.resource.objects.get(user_app.app_profile_id).then(
                     function(data: Ong){
-                        _self.setData(data);
                         _self.initProfile(data);
                         return _self;
                     }
@@ -107,7 +108,6 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
                 return Ong.resource.objects.get(user_app.app_profile_id).then(
                     function(data: Ong){
-                        _self.setData(data);
                         _self.initProfile(data);
                         return _self;
                     }
