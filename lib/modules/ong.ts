@@ -184,3 +184,66 @@ export class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
         if(_self.ong) _self.ong = new Ong(_self.ong);
     }
 }
+
+
+export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
+    public static resource = new api.Tastypie.Resource<OngProjeto>('ong/projeto', {model: OngProjeto});
+
+    public nome: string;
+    public descricao: string;
+    public img_capa: string;
+    public periodo_continuo: boolean;
+    public dt_inicio: string;
+    public dt_fim: string;
+    public sem_local: boolean;
+    public sem_local_obs: string;
+
+    private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
+
+    public getSobre(): Promise<OngProjetoSobre> {
+        return OngProjetoSobre.resource.objects.findOne({ong_projeto_id: this.id});
+    }
+
+    constructor(obj?:any){
+        super(OngProjeto.resource, obj);
+        if(this.id){
+            this._endereco = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco, defaults: {ong_projeto_id: this.id}});
+        }
+    }
+
+    public get endereco(): api.Tastypie.Resource<OngProjetoEndereco> {
+        return this._endereco;
+    }
+}
+
+export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
+    public static resource = new api.Tastypie.Resource<OngProjetoSobre>('ong/projeto-sobre', {model: OngProjetoSobre});
+
+    public problema: string;
+    public impacto: string;
+    public meta: string;
+    public como_alcacar_meta: string;
+    public como_medir_impacto: string;
+
+    constructor(obj?:any){
+        super(OngProjetoSobre.resource, obj);
+    }
+}
+
+export class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
+    public static resource = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco});
+
+    public cep: string;
+    public rua: string;
+    public numero: string;
+    public complemento: string;
+    public bairro: string;
+    public cidade: string;
+    public estado: string;
+    public pais: string;
+    public coordenadas: string;
+
+    constructor(obj?:any){
+        super(OngProjetoEndereco.resource, obj);
+    }
+}

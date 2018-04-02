@@ -75,3 +75,40 @@ export declare class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
     dt_created: string;
     constructor(obj?: any);
 }
+export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
+    static resource: api.Tastypie.Resource<OngProjeto>;
+    nome: string;
+    descricao: string;
+    img_capa: string;
+    periodo_continuo: boolean;
+    dt_inicio: string;
+    dt_fim: string;
+    sem_local: boolean;
+    sem_local_obs: string;
+    private _endereco;
+    getSobre(): Promise<OngProjetoSobre>;
+    constructor(obj?: any);
+    readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
+}
+export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
+    static resource: api.Tastypie.Resource<OngProjetoSobre>;
+    problema: string;
+    impacto: string;
+    meta: string;
+    como_alcacar_meta: string;
+    como_medir_impacto: string;
+    constructor(obj?: any);
+}
+export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
+    static resource: api.Tastypie.Resource<OngProjetoEndereco>;
+    cep: string;
+    rua: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    pais: string;
+    coordenadas: string;
+    constructor(obj?: any);
+}
