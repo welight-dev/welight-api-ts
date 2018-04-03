@@ -132,7 +132,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public createAccount(nome: string, email: string, razao_social: string, cnpj:string, kwargs?:any): Promise<Ong> {
         let _self = this;
-        return this._user.createAccountOng(name, email, razao_social, cnpj, kwargs).then(
+        return this._user.createAccountOng(nome, email, razao_social, cnpj, kwargs).then(
             function(user: weauth_models.User){
                 let user_app = user.getUserAppAdmin('ong');
                 return Ong.resource.objects.get(user_app.app_profile_id).then(
