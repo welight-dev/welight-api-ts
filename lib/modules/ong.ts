@@ -26,6 +26,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _fotos: api.Tastypie.Resource<OngTimeLine>;
     private _videos: api.Tastypie.Resource<OngTimeLine>;
     private _projetos: api.Tastypie.Resource<OngProjeto>;
+    private _bancos: api.Tastypie.Resource<OngBanco>;
 
     constructor(obj?:any){
         super(Ong.resource);
@@ -72,6 +73,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
                 _self._fotos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'fotos'}});
                 _self._videos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'videos'}});
                 _self._projetos = new api.Tastypie.Resource<OngProjeto>('ong/projeto', {model: OngProjeto, defaults: {ong_id: _self.id}});
+                _self._bancos = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco, defaults: {ong_id: _self.id}});
             }
         }else{
             _self._profile_detail = new OngDetail();
@@ -120,6 +122,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get projetos(): api.Tastypie.Resource<OngProjeto> {
         return this._projetos;
+    }
+
+    public get bancos(): api.Tastypie.Resource<OngBanco> {
+        return this._bancos;
     }
 
     public getEndereco(): Promise<OngEndereco> {
@@ -222,6 +228,26 @@ export class OngEndereco extends api.Tastypie.Model<OngEndereco> {
 
     constructor(obj?:any){
       super(OngEndereco.resource, obj);
+    }
+}
+
+export class OngBanco extends api.Tastypie.Model<OngBanco> {
+
+    public static resource = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco});
+
+    public ong_id: number;
+    public codigo: string;
+    public banco: string;
+    public conta_corrente: string;
+    public conta_corrente_digito: string;
+    public agencia: string;
+    public agencia_digito: string;
+    public pessoa_fisica: boolean;
+    public titular: string;
+    public cpf_cnpj: string;
+
+    constructor(obj?:any){
+      super(OngBanco.resource, obj);
     }
 }
 
