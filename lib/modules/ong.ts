@@ -210,6 +210,7 @@ export class OngEndereco extends api.Tastypie.Model<OngEndereco> {
 
     public static resource = new api.Tastypie.Resource<OngEndereco>('ong/endereco', {model: OngEndereco});
 
+    public ong_id: number;
     public cep: string;
     public rua: string;
     public numero: string;
