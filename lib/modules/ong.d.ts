@@ -117,10 +117,12 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     dt_created: string;
     private _endereco;
     private _ods;
+    private _indicadores;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     readonly ods: api.Tastypie.Resource<OngProjetoOds>;
+    readonly indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     static resource: api.Tastypie.Resource<OngProjetoSobre>;

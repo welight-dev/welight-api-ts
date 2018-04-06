@@ -287,6 +287,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _ods: api.Tastypie.Resource<OngProjetoOds>;
+    private _indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
 
     public getSobre(): Promise<OngProjetoSobre> {
         return OngProjetoSobre.resource.objects.findOne({ong_projeto_id: this.id});
@@ -297,6 +298,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
         if(this.id){
             this._endereco = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco, defaults: {ong_projeto_id: this.id}});
             this._ods = new api.Tastypie.Resource<OngProjetoOds>('ong/projeto-ods', {model: OngProjetoOds, defaults: {ong_projeto_id: this.id}});
+            this._indicadores = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador, defaults: {ong_projeto_id: this.id}});
         }
     }
 
@@ -306,6 +308,10 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     public get ods(): api.Tastypie.Resource<OngProjetoOds> {
         return this._ods;
+    }
+
+    public get indicadores(): api.Tastypie.Resource<OngProjetoIndicador> {
+        return this._indicadores;
     }
 }
 
