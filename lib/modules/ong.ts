@@ -393,13 +393,16 @@ export class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidade> {
 }
 
 export class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador> {
-    public static resource = new api.Tastypie.Resource<OngProjetoIndicador>('ong/indicador-projeto', {model: OngProjetoIndicador});
+    public static resource = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador});
 
     public ong_projeto_id: number;
     public indicador_id: number;
     public indicador_unidade_id: number;
     public indicador: Indicador;
     public indicador_unidade: IndicadorUnidade;
+    public ponto_zero: string;
+    public dt_ponto_zero: string;
+    public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){

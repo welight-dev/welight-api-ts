@@ -180,6 +180,9 @@ export declare class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIn
     indicador_unidade_id: number;
     indicador: Indicador;
     indicador_unidade: IndicadorUnidade;
+    ponto_zero: string;
+    dt_ponto_zero: string;
+    dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
 }
