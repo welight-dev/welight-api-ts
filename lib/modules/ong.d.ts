@@ -111,6 +111,8 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     dt_fim: string;
     sem_local: boolean;
     sem_local_obs: string;
+    ativo: boolean;
+    inicializado: boolean;
     dt_updated: string;
     dt_created: string;
     private _endereco;

@@ -280,6 +280,8 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public dt_fim: string;
     public sem_local: boolean;
     public sem_local_obs: string;
+    public ativo: boolean;
+    public inicializado: boolean;
     public dt_updated: string;
     public dt_created: string;
 
