@@ -111,6 +111,8 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     dt_fim: string;
     sem_local: boolean;
     sem_local_obs: string;
+    dt_updated: string;
+    dt_created: string;
     private _endereco;
     private _ods;
     getSobre(): Promise<OngProjetoSobre>;
@@ -125,6 +127,8 @@ export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre>
     meta: string;
     como_alcacar_meta: string;
     como_medir_impacto: string;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }
 export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
@@ -138,6 +142,8 @@ export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEnd
     estado: string;
     pais: string;
     coordenadas: string;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }
 export declare class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
@@ -145,5 +151,31 @@ export declare class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
     ong_projeto_id: number;
     ods_id: number;
     ods: Ods;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class Indicador extends api.Tastypie.Model<Indicador> {
+    static resource: api.Tastypie.Resource<Indicador>;
+    nome: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidade> {
+    static resource: api.Tastypie.Resource<IndicadorUnidade>;
+    unidade: string;
+    descricao: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador> {
+    static resource: api.Tastypie.Resource<OngProjetoIndicador>;
+    ong_projeto_id: number;
+    indicador_id: number;
+    indicador_unidade_id: number;
+    indicador: Indicador;
+    indicador_unidade: IndicadorUnidade;
+    dt_created: string;
     constructor(obj?: any);
 }

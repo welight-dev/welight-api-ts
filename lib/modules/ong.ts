@@ -280,6 +280,8 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public dt_fim: string;
     public sem_local: boolean;
     public sem_local_obs: string;
+    public dt_updated: string;
+    public dt_created: string;
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _ods: api.Tastypie.Resource<OngProjetoOds>;
@@ -313,6 +315,8 @@ export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     public meta: string;
     public como_alcacar_meta: string;
     public como_medir_impacto: string;
+    public dt_updated: string;
+    public dt_created: string;
 
     constructor(obj?:any){
         super(OngProjetoSobre.resource, obj);
@@ -331,6 +335,8 @@ export class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
     public estado: string;
     public pais: string;
     public coordenadas: string;
+    public dt_updated: string;
+    public dt_created: string;
 
     constructor(obj?:any){
         super(OngProjetoEndereco.resource, obj);
@@ -343,11 +349,56 @@ export class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
     public ong_projeto_id: number;
     public ods_id: number;
     public ods: Ods;
+    public dt_created: string;
 
     constructor(obj?:any){
         super(OngProjetoOds.resource, obj);
         if(obj){
             if(obj.ods) this.ods = new Ods(obj.ods);
+        }
+    }
+}
+
+export class Indicador extends api.Tastypie.Model<Indicador> {
+    public static resource = new api.Tastypie.Resource<Indicador>('ong/indicador', {model: Indicador});
+
+    public nome: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(Indicador.resource, obj);
+    }
+}
+
+export class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidade> {
+    public static resource = new api.Tastypie.Resource<IndicadorUnidade>('ong/indicador-unidade', {model: IndicadorUnidade});
+
+    public unidade: string;
+    public descricao: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(IndicadorUnidade.resource, obj);
+    }
+}
+
+export class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador> {
+    public static resource = new api.Tastypie.Resource<OngProjetoIndicador>('ong/indicador-projeto', {model: OngProjetoIndicador});
+
+    public ong_projeto_id: number;
+    public indicador_id: number;
+    public indicador_unidade_id: number;
+    public indicador: Indicador;
+    public indicador_unidade: IndicadorUnidade;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngProjetoIndicador.resource, obj);
+        if(obj){
+            if(obj.indicador) this.indicador = new Indicador(obj.indicador);
+            if(obj.indicador_unidade) this.indicador_unidade = new IndicadorUnidade(obj.indicador_unidade);
         }
     }
 }
