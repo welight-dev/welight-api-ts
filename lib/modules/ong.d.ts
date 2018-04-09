@@ -179,10 +179,9 @@ export declare class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidad
 export declare class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador> {
     static resource: api.Tastypie.Resource<OngProjetoIndicador>;
     ong_projeto_id: number;
-    indicador_id: number;
     indicador_unidade_id: number;
-    indicador: Indicador;
     indicador_unidade: IndicadorUnidade;
+    indicador: string;
     ponto_zero: string;
     dt_ponto_zero: string;
     dt_updated: string;
