@@ -9,6 +9,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     cnpj: string;
     slug: string;
     private _ativo;
+    private _parceira;
     private _qtde_pontos;
     private _qtde_doadores;
     private _profile_detail;
@@ -24,6 +25,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     save(): Promise<Ong>;
     private initProfile(obj);
     readonly ativo: boolean;
+    readonly parceira: boolean;
     readonly qtde_pontos: number;
     readonly qtde_doadores: number;
     readonly profile_detail: OngDetail;

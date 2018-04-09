@@ -15,6 +15,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     public slug: string;
 
     private _ativo: boolean;
+    private _parceira: boolean;
     private _qtde_pontos: number;
     private _qtde_doadores: number;
     private _profile_detail: OngDetail;
@@ -61,6 +62,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
             _self.slug = obj.slug;
 
             _self._ativo = obj.ativo;
+            _self._parceira = obj.parceira;
             _self._qtde_pontos = obj.qtde_pontos;
             _self._qtde_doadores = obj.qtde_doadores;
             _self._dt_updated = obj.dt_updated;
@@ -82,6 +84,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get ativo(): boolean {
         return this._ativo;
+    }
+
+    public get parceira(): boolean {
+        return this._parceira;
     }
 
     public get qtde_pontos(): number {
