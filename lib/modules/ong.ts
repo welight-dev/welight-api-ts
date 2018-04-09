@@ -371,6 +371,8 @@ export class Indicador extends api.Tastypie.Model<Indicador> {
     public static resource = new api.Tastypie.Resource<Indicador>('ong/indicador', {model: Indicador});
 
     public nome: string;
+    public ativo: boolean;
+    public aprovado: boolean;
     public dt_updated: string;
     public dt_created: string;
 
@@ -384,6 +386,7 @@ export class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidade> {
 
     public unidade: string;
     public descricao: string;
+    public texto: string;
     public dt_updated: string;
     public dt_created: string;
 

@@ -161,6 +161,8 @@ export declare class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
 export declare class Indicador extends api.Tastypie.Model<Indicador> {
     static resource: api.Tastypie.Resource<Indicador>;
     nome: string;
+    ativo: boolean;
+    aprovado: boolean;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
@@ -169,6 +171,7 @@ export declare class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidad
     static resource: api.Tastypie.Resource<IndicadorUnidade>;
     unidade: string;
     descricao: string;
+    texto: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
