@@ -11,12 +11,14 @@ export declare class UserApp {
     private _app_name;
     private _app_token;
     private _app_profile_id;
+    private _display_name;
     private _admin;
-    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, admin: boolean);
+    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, admin: boolean);
     readonly id: number;
     readonly app_name: string;
     readonly app_token: string;
     readonly app_profile_id: number;
+    readonly display_name: string;
     readonly admin: boolean;
 }
 export declare class User {

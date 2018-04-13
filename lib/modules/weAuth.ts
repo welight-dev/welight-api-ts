@@ -28,13 +28,15 @@ export class UserApp {
     private _app_name: string;
     private _app_token: string;
     private _app_profile_id: number;
+    private _display_name: string;
     private _admin: boolean;
 
-    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, admin: boolean){
+    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, admin: boolean){
         this._id = id;
         this._app_name = app_name;
         this._app_token = app_token;
         this._app_profile_id = app_profile_id;
+        this._display_name = display_name;
         this._admin = admin;
     }
 
@@ -52,6 +54,10 @@ export class UserApp {
 
     public get app_profile_id(): number {
         return this._app_profile_id;
+    }
+
+    public get display_name(): string {
+        return this._display_name;
     }
 
     public get admin(): boolean {
@@ -167,7 +173,7 @@ export class User {
            _self._account = new UserAccount(data);
 
            for(let userapp of data.apps){
-              _self._apps.push(new UserApp(userapp.id, userapp.app_name, userapp.app_token, userapp.app_profile_id, userapp.admin));
+              _self._apps.push(new UserApp(userapp.id, userapp.app_name, userapp.app_token, userapp.app_profile_id, userapp.display_name, userapp.admin));
            }
 
            if(kwargs){
