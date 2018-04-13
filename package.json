@@ -1,6 +1,6 @@
 {
   "name": "welight-api-ts",
-  "version": "1.0.62",
+  "version": "1.0.63",
   "description": "TypeScript client for Welight platform",
   "main": "./lib/welight.js",
   "types": "./lib/welight.d.ts",

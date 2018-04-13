@@ -257,23 +257,88 @@ export class OngBanco extends api.Tastypie.Model<OngBanco> {
     }
 }
 
-export class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
-    public static resource = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine});
+export class OngPostScrap extends api.Tastypie.Model<OngPostScrap> {
+    public static resource = new api.Tastypie.Resource<OngPostScrap>('ong/timeline-post-scraper', {model: OngPostScrap});
 
-    public ong: Ong;
-    public descricao: string;
-    public fotos: Array<string>;
-    public site_scraped: any;
-    public dt_updated: string;
-    public dt_created: string;
+    public description: string;
+    public image: string;
+    public source: string;
+    public title: string;
+    public url: string;
+    public video: string;
 
     constructor(obj?:any){
-        super(OngTimeLine.resource, obj);
-        let _self = this;
-        if(_self.ong) _self.ong = new Ong(_self.ong);
+        super(OngPostScrap.resource, obj);
     }
 }
 
+export class OngPost extends api.Tastypie.Model<OngPost> {
+    public static resource = new api.Tastypie.Resource<OngPost>('ong/timeline-post', {model: OngPost});
+
+    public descricao: string;
+    public fotos: Array<string>;
+    public site_scraped: OngPostScrap;
+    public dt_updated: string;
+    public dt_created: string;
+
+    private _fotos_resource: api.Tastypie.Resource<any>;
+
+    constructor(obj?:any, _resource?:api.Tastypie.Resource<OngPost>){
+        super((_resource || OngPost.resource), obj);
+        let _self = this;
+        _self._fotos_resource = new api.Tastypie.Resource<any>('ong/timeline-post-foto')
+        if(obj){
+            if(obj.site_scraped) _self.site_scraped = new OngPostScrap(obj.site_scraped);
+        }
+    }
+
+    public setScraper(url:string): Promise<OngPostScrap> {
+        let _self = this;
+        return OngPostScrap.resource.objects.findOne({url:url}).then(
+            function(data:OngPostScrap){
+                _self.site_scraped = data;
+                return _self.site_scraped;
+            }
+        )
+    }
+
+    public addFiles(event: any): Promise<Array<string>> {
+        let uploading = new Promise<Array<string>>(function(resolve, reject) {
+            let _self = this;
+            for (let ix=0; ix<event.target.files.length; ix++) {
+                let timeout = setTimeout(function(){ reject('timeout'); }, 15000);
+                let reader = new FileReader();
+                reader.onload = function(loadEvent: any){
+                    let paramFile = loadEvent.target.result;
+                    _self._fotos_resource.objects.create({foto:paramFile}).then(function(data:any){
+                        clearTimeout(timeout);
+                        _self.fotos.push(data.foto);
+                        if(ix == (event.target.files.length - 1)){
+                            resolve(_self.fotos);
+                        }
+                    }).catch(function(error:any){
+                        clearTimeout(timeout);
+                        reject(error);
+                    });
+                }
+                reader.readAsDataURL(event.target.files[ix]);
+            }
+        });
+        return uploading;
+    }
+}
+
+export class OngTimeLine extends OngPost {
+    public static resource = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine});
+    public ong: Ong;
+    constructor(obj?:any){
+        super(obj, OngTimeLine.resource);
+        let _self = this;
+        if(obj){
+            if(obj.ong) _self.ong = new Ong(obj.ong);
+        }
+    }
+}
 
 export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public static resource = new api.Tastypie.Resource<OngProjeto>('ong/projeto', {model: OngProjeto});

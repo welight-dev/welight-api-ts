@@ -93,14 +93,31 @@ export declare class OngBanco extends api.Tastypie.Model<OngBanco> {
     cpf_cnpj: string;
     constructor(obj?: any);
 }
-export declare class OngTimeLine extends api.Tastypie.Model<OngTimeLine> {
-    static resource: api.Tastypie.Resource<OngTimeLine>;
-    ong: Ong;
+export declare class OngPostScrap extends api.Tastypie.Model<OngPostScrap> {
+    static resource: api.Tastypie.Resource<OngPostScrap>;
+    description: string;
+    image: string;
+    source: string;
+    title: string;
+    url: string;
+    video: string;
+    constructor(obj?: any);
+}
+export declare class OngPost extends api.Tastypie.Model<OngPost> {
+    static resource: api.Tastypie.Resource<OngPost>;
     descricao: string;
     fotos: Array<string>;
-    site_scraped: any;
+    site_scraped: OngPostScrap;
     dt_updated: string;
     dt_created: string;
+    private _fotos_resource;
+    constructor(obj?: any, _resource?: api.Tastypie.Resource<OngPost>);
+    setScraper(url: string): Promise<OngPostScrap>;
+    addFiles(event: any): Promise<Array<string>>;
+}
+export declare class OngTimeLine extends OngPost {
+    static resource: api.Tastypie.Resource<OngTimeLine>;
+    ong: Ong;
     constructor(obj?: any);
 }
 export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
