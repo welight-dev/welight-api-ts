@@ -286,6 +286,11 @@ export class OngPost extends api.Tastypie.Model<OngPost> {
     constructor(obj?:any, _resource?:api.Tastypie.Resource<OngPost>){
         super((_resource || OngPost.resource), obj);
         let _self = this;
+
+        if(!_self.fotos){
+            _self.fotos = [];
+        }
+
         _self._fotos_resource = new api.Tastypie.Resource<any>('ong/timeline-post-foto')
         if(obj){
             if(obj.site_scraped) _self.site_scraped = new OngPostScrap(obj.site_scraped);
@@ -294,7 +299,7 @@ export class OngPost extends api.Tastypie.Model<OngPost> {
 
     public setScraper(url:string): Promise<OngPostScrap> {
         let _self = this;
-        return OngPostScrap.resource.objects.findOne({url:url}).then(
+        return OngPostScrap.resource.objects.create({url:url}).then(
             function(data:OngPostScrap){
                 _self.site_scraped = data;
                 return _self.site_scraped;
