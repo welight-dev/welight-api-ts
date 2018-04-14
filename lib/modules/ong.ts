@@ -303,8 +303,8 @@ export class OngPost extends api.Tastypie.Model<OngPost> {
     }
 
     public addFiles(event: any): Promise<Array<string>> {
+        let _self = this;
         let uploading = new Promise<Array<string>>(function(resolve, reject) {
-            let _self = this;
             for (let ix=0; ix<event.target.files.length; ix++) {
                 let timeout = setTimeout(function(){ reject('timeout'); }, 15000);
                 let reader = new FileReader();
