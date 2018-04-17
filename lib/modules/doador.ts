@@ -12,7 +12,10 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
     public nome: string;
     public slug: string;
+    private avaliador: boolean;
+    private empresa: boolean;
     private _email: string;
+    private _dt_updated: string;
     private _dt_created: string;
 
     private _we_notify: api.Tastypie.Resource<we_notify_models.WeNotifyDoador>;
@@ -54,7 +57,10 @@ export class Doador extends api.Tastypie.Model<Doador> {
             _self.id = obj.id;
             _self.nome = obj.nome;
             _self.slug = obj.slug;
+            _self.avaliador = obj.avaliador;
+            _self.empresa = obj.empresa;
             _self._email = obj.email;
+            _self._dt_updated = obj.dt_updated;
             _self._dt_created = obj.dt_created;
             _self._rede = new DoadorRede(obj.id);
             _self._ong_timeline = new api.Tastypie.Resource<ong_models.OngTimeLine>('ong/timeline', {model: ong_models.OngTimeLine, defaults: {doador_id: obj.id}});
@@ -69,6 +75,10 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
     public get dt_created(): string {
         return this._dt_created;
+    }
+
+    public get dt_updated(): string {
+        return this._dt_updated;
     }
 
     public get rede(): DoadorRede {

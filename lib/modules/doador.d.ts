@@ -7,7 +7,10 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     static resource: api.Tastypie.Resource<Doador>;
     nome: string;
     slug: string;
+    private avaliador;
+    private empresa;
     private _email;
+    private _dt_updated;
     private _dt_created;
     private _we_notify;
     private _rede;
@@ -24,6 +27,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     private initProfile(obj?);
     readonly email: string;
     readonly dt_created: string;
+    readonly dt_updated: string;
     readonly rede: DoadorRede;
     readonly ong_timeline: api.Tastypie.Resource<ong_models.OngTimeLine>;
     readonly doacao_mes: api.Tastypie.Resource<DoadorDoacaoMes>;
