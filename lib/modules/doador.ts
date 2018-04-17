@@ -115,6 +115,22 @@ export class Doador extends api.Tastypie.Model<Doador> {
         }
     }
 
+    public getAvaliador(): Promise<DoadorAvaliador> {
+        if(this.id){
+            return DoadorAvaliador.resource.objects.findOne({doador_id:this.id})
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Doador][getAvaliador] Avaliador não identificado");
+        }
+    }
+
+    public getPreferencia(): Promise<DoadorPreferencia> {
+        if(this.id){
+            return DoadorPreferencia.resource.objects.findOne({doador_id:this.id})
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Doador][getPreferencia] Preferencia não identificado");
+        }
+    }
+
     public createAccount(name: string, email: string, password: string, kwargs?:any): Promise<Doador> {
         let _self = this;
         return this._user.createAccount(name, email, password, kwargs).then(
@@ -183,6 +199,37 @@ export class Doador extends api.Tastypie.Model<Doador> {
                 );
             }
         );
+    }
+}
+
+export class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {
+    public static resource = new api.Tastypie.Resource<DoadorAvaliador>('doador/avaliador', {model: DoadorAvaliador});
+
+    public doador_id: number;
+    public cpf: string;
+    public rg: string;
+    public facebook: string;
+    public linkedin: string;
+    public cep: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+      super(DoadorAvaliador.resource, obj);
+    }
+}
+
+export class DoadorPreferencia extends api.Tastypie.Model<DoadorPreferencia> {
+    public static resource = new api.Tastypie.Resource<DoadorPreferencia>('doador/preferencia', {model: DoadorPreferencia});
+
+    public doador_id: number;
+    public email_ao_ganhar_ponto: boolean;
+    public email_postagens_ong_pontuada: boolean;
+    public email_newsletter_welight: boolean;
+    public ong_pode_acessar_meu_email: boolean;
+
+    constructor(obj?:any){
+      super(DoadorPreferencia.resource, obj);
     }
 }
 

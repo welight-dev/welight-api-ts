@@ -32,6 +32,8 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     getPontos(): Promise<DoadorPontos>;
     getDoacao(): Promise<DoadorDoacao>;
     getCompraAfiliadora(): Promise<DoadorCompraAfiliadoraStatus>;
+    getAvaliador(): Promise<DoadorAvaliador>;
+    getPreferencia(): Promise<DoadorPreferencia>;
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<Doador>;
     login(username: string, password: string, kwargs?: any): Promise<Doador>;
     loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<Doador>;
@@ -39,6 +41,27 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
         username: string;
         apikey: string;
     }, kwargs?: any): Promise<Doador>;
+}
+export declare class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {
+    static resource: api.Tastypie.Resource<DoadorAvaliador>;
+    doador_id: number;
+    cpf: string;
+    rg: string;
+    facebook: string;
+    linkedin: string;
+    cep: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class DoadorPreferencia extends api.Tastypie.Model<DoadorPreferencia> {
+    static resource: api.Tastypie.Resource<DoadorPreferencia>;
+    doador_id: number;
+    email_ao_ganhar_ponto: boolean;
+    email_postagens_ong_pontuada: boolean;
+    email_newsletter_welight: boolean;
+    ong_pode_acessar_meu_email: boolean;
+    constructor(obj?: any);
 }
 export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     static resource: api.Tastypie.Resource<DoadorPontos>;
