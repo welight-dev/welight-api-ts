@@ -12,8 +12,8 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
     public nome: string;
     public slug: string;
-    private avaliador: boolean;
-    private empresa: boolean;
+    public avaliador: boolean;
+    public empresa: boolean;
     private _email: string;
     private _dt_updated: string;
     private _dt_created: string;
