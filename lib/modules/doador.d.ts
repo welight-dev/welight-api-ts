@@ -49,6 +49,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
 export declare class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {
     static resource: api.Tastypie.Resource<DoadorAvaliador>;
     doador_id: number;
+    acesso_ativo: boolean;
     cpf: string;
     rg: string;
     facebook: string;

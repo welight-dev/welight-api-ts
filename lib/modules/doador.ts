@@ -216,6 +216,7 @@ export class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {
     public static resource = new api.Tastypie.Resource<DoadorAvaliador>('doador/avaliador', {model: DoadorAvaliador});
 
     public doador_id: number;
+    public acesso_ativo: boolean;
     public cpf: string;
     public rg: string;
     public facebook: string;
