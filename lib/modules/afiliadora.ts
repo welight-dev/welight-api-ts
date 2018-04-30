@@ -31,7 +31,7 @@ export class Loja extends api.Tastypie.Model<Loja> {
         super(Loja.resource, obj);
         let _self = this;
         if(_self.id){
-            _self._cupons = new api.Tastypie.Resource<Cupom>('afiliadora/cupom', {model: Cupom, defaults: {loja: _self.id}});
+            _self._cupons = new api.Tastypie.Resource<Cupom>('afiliadora/cupom', {model: Cupom, defaults: {loja_id: _self.id}});
         }
     }
 
@@ -52,8 +52,13 @@ export class Cupom extends api.Tastypie.Model<Cupom> {
     public restricoes: string;
     public regiao: string;
     public pais: Array<{codigo:number, nome: string}>;
+    public loja: Loja;
 
     constructor(obj?:any){
         super(Cupom.resource, obj);
+
+        if(obj){
+            if(obj.loja) this.loja = new Loja(obj.loja);
+        }
     }
 }

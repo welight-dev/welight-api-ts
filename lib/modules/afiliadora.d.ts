@@ -33,5 +33,6 @@ export declare class Cupom extends api.Tastypie.Model<Cupom> {
         codigo: number;
         nome: string;
     }>;
+    loja: Loja;
     constructor(obj?: any);
 }

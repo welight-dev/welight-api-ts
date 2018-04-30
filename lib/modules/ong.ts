@@ -14,6 +14,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     public cnpj: string;
     public slug: string;
 
+    private _status: OngStatus;
     private _ativo: boolean;
     private _parceira: boolean;
     private _qtde_pontos: number;
@@ -28,6 +29,8 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _videos: api.Tastypie.Resource<OngTimeLine>;
     private _projetos: api.Tastypie.Resource<OngProjeto>;
     private _bancos: api.Tastypie.Resource<OngBanco>;
+    private _recursos: api.Tastypie.Resource<OngRecurso>;
+    private _status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
 
     constructor(obj?:any){
         super(Ong.resource);
@@ -69,6 +72,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
             _self._dt_created = obj.dt_created;
 
             if(obj.profile_detail) _self._profile_detail = new OngDetail(obj.profile_detail);
+            if(obj.status) _self._status = new OngStatus(obj.status);
 
             if(_self.id){
                 _self._timeline = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id}});
@@ -76,10 +80,16 @@ export class Ong extends api.Tastypie.Model<Ong> {
                 _self._videos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'videos'}});
                 _self._projetos = new api.Tastypie.Resource<OngProjeto>('ong/projeto', {model: OngProjeto, defaults: {ong_id: _self.id}});
                 _self._bancos = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco, defaults: {ong_id: _self.id}});
+                _self._status_carteira = new api.Tastypie.Resource<OngStatusCarteira>('ong/status-carteira', {model: OngStatusCarteira, defaults: {ong_id: _self.id}});
+                _self._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_id: _self.id}});
             }
         }else{
             _self._profile_detail = new OngDetail();
         }
+    }
+
+    public get status(): OngStatus {
+        return this._status;
     }
 
     public get ativo(): boolean {
@@ -132,6 +142,14 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get bancos(): api.Tastypie.Resource<OngBanco> {
         return this._bancos;
+    }
+
+    public get status_carteira(): api.Tastypie.Resource<OngStatusCarteira> {
+        return this._status_carteira;
+    }
+
+    public get recursos(): api.Tastypie.Resource<OngRecurso> {
+        return this._recursos;
     }
 
     public getEndereco(): Promise<OngEndereco> {
@@ -336,11 +354,17 @@ export class OngPost extends api.Tastypie.Model<OngPost> {
 export class OngTimeLine extends OngPost {
     public static resource = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine});
     public ong: Ong;
+    public projeto: OngProjeto;
+    public doacao_credito: OngCarteira;
+    public recurso: OngRecurso;
     constructor(obj?:any){
         super(obj, OngTimeLine.resource);
         let _self = this;
         if(obj){
             if(obj.ong) _self.ong = new Ong(obj.ong);
+            if(obj.projeto) _self.projeto = new OngProjeto(obj.projeto);
+            if(obj.doacao_credito) _self.doacao_credito = new OngCarteira(obj.doacao_credito);
+            if(obj.recurso) _self.recurso = new OngRecurso(obj.recurso);
         }
     }
 }
@@ -364,6 +388,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _ods: api.Tastypie.Resource<OngProjetoOds>;
     private _indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
+    private _recursos: api.Tastypie.Resource<OngRecurso>;
 
     public getSobre(): Promise<OngProjetoSobre> {
         return OngProjetoSobre.resource.objects.findOne({ong_projeto_id: this.id});
@@ -375,6 +400,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
             this._endereco = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco, defaults: {ong_projeto_id: this.id}});
             this._ods = new api.Tastypie.Resource<OngProjetoOds>('ong/projeto-ods', {model: OngProjetoOds, defaults: {ong_projeto_id: this.id}});
             this._indicadores = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador, defaults: {ong_projeto_id: this.id}});
+            this._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_projeto_id: this.id}});
         }
     }
 
@@ -388,6 +414,10 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     public get indicadores(): api.Tastypie.Resource<OngProjetoIndicador> {
         return this._indicadores;
+    }
+
+    public get recursos(): api.Tastypie.Resource<OngRecurso> {
+        return this._recursos;
     }
 }
 
@@ -487,6 +517,168 @@ export class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador>
         super(OngProjetoIndicador.resource, obj);
         if(obj){
             if(obj.indicador_unidade) this.indicador_unidade = new IndicadorUnidade(obj.indicador_unidade);
+        }
+    }
+}
+
+export class OngStatus {
+    public qtde_pontos: number;
+    public qtde_doadores: number;
+    public qtde_avaliacao_positiva: number;
+    public total_credito: number;
+
+    constructor(obj?:any){
+        if(obj){
+            this.qtde_pontos = obj.qtde_pontos;
+            this.qtde_doadores = obj.qtde_doadores;
+            this.qtde_avaliacao_positiva = obj.qtde_avaliacao_positiva;
+            this.total_credito = obj.total_credito;
+        }
+    }
+}
+
+export class OngOrigemCredito {
+    public id: number;
+    public nome: string;
+    public grupo: string;
+
+    constructor(obj?:any){
+        if(obj){
+            this.id = obj.id;
+            this.nome = obj.nome;
+            this.grupo = obj.grupo;
+        }
+    }
+}
+
+export class OngRecurso extends api.Tastypie.Model<OngRecurso> {
+    public static resource = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso});
+
+    public ong_id: number;
+    public ong_projeto_id: number;
+    public destino: string;
+    public ativo: boolean;
+    public dt_aplicacao: string;
+    public dt_updated: string;
+    public dt_created: string;
+    private _doacao: api.Tastypie.Resource<OngRecursoDoacao>;
+    private _comprovante: api.Tastypie.Resource<OngRecursoComprovante>;
+
+    constructor(obj?:any){
+        super(OngRecurso.resource, obj);
+        if(this.id){
+            this._doacao = new api.Tastypie.Resource<OngRecursoDoacao>('ong/recurso-doacao', {model: OngRecursoDoacao, defaults: {ong_recurso_id:this.id}});
+            this._comprovante = new api.Tastypie.Resource<OngRecursoComprovante>('ong/recurso-comprovante', {model: OngRecursoComprovante, defaults: {ong_recurso_id:this.id}});
+        }
+    }
+
+    public get doacao(): api.Tastypie.Resource<OngRecursoDoacao> {
+        return this._doacao;
+    }
+
+    public get comprovante(): api.Tastypie.Resource<OngRecursoComprovante> {
+        return this._comprovante;
+    }
+}
+
+export class OngRecursoDoacao extends api.Tastypie.Model<OngRecursoDoacao> {
+    public static resource = new api.Tastypie.Resource<OngRecursoDoacao>('ong/recurso-doacao', {model: OngRecursoDoacao});
+
+    public ong_recurso_id: number;
+    public origem_credito: string;
+    public descricao: string;
+    public comprovante: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngRecursoDoacao.resource, obj);
+    }
+}
+
+export class OngRecursoComprovante extends api.Tastypie.Model<OngRecursoComprovante> {
+    public static resource = new api.Tastypie.Resource<OngRecursoComprovante>('ong/recurso-comprovante', {model: OngRecursoComprovante});
+
+    public ong_recurso_id: number;
+    public titulo: string;
+    public descricao: string;
+    public comprovante: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngRecursoComprovante.resource, obj);
+    }
+}
+
+export class OngStatusCarteira extends api.Tastypie.Model<OngStatusCarteira>{
+
+    public static resource = new api.Tastypie.Resource<OngStatusCarteira>('ong/status-carteira', {model: OngStatusCarteira});
+
+    public ong_id: number;
+    public origem_credito: OngOrigemCredito;
+    public total_credito: number;
+    public total_debito: number;
+    public total_debito_pendente: number;
+    public total_debito_comprovado: number;
+    public saldo: number;
+    public saldo_pendente: number;
+
+    constructor(obj?:any){
+        super(OngStatusCarteira.resource, obj);
+        if(obj){
+          if(obj.origem_credito) this.origem_credito = new OngOrigemCredito(obj.origem_credito);
+        }
+    }
+}
+
+export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
+
+    public static resource = new api.Tastypie.Resource<OngCarteira>('ong/carteira', {model: OngCarteira});
+    private static _creditar = new api.Tastypie.Resource<OngCarteira>('ong/carteira/creditar', {model: OngCarteira});
+
+    public ong_id: number;
+    public origem_credito_id: number;
+    public origem_credito: OngOrigemCredito;
+    public credito: boolean;
+    public moeda: string;
+    public valor: number;
+    public status: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngCarteira.resource, obj);
+        if(obj){
+          if(obj.origem_credito) this.origem_credito = new OngOrigemCredito(obj.origem_credito);
+        }
+    }
+
+    public static creditar(obj:{ong_id:number, origem_credito_id: number, valor: number}): Promise<OngCarteira> {
+        return this._creditar.objects.create(obj);
+    }
+}
+
+export class OngTimelineDoacao extends api.Tastypie.Model<OngTimelineDoacao>{
+
+    public static resource = new api.Tastypie.Resource<OngTimelineDoacao>('ong/timeline-doacao', {model: OngTimelineDoacao});
+
+    public ong_id: number;
+    public tipo: string;
+    public source_model_name: string;
+    public source_model_id: number;
+    public doacao_credito: OngCarteira;
+    public recurso: OngRecurso;
+    public projeto: OngProjeto;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngTimelineDoacao.resource, obj);
+        if(obj){
+          if(obj.doacao_credito) this.doacao_credito = new OngCarteira(obj.doacao_credito);
+          if(obj.recurso) this.recurso = new OngRecurso(obj.recurso);
+          if(obj.projeto) this.projeto = new OngProjeto(obj.projeto);
         }
     }
 }
