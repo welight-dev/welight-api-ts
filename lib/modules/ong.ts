@@ -293,6 +293,7 @@ export class OngPostScrap extends api.Tastypie.Model<OngPostScrap> {
 export class OngPost extends api.Tastypie.Model<OngPost> {
     public static resource = new api.Tastypie.Resource<OngPost>('ong/timeline-post', {model: OngPost});
 
+    public tipo: string;
     public descricao: string;
     public fotos: Array<string>;
     public site_scraped: OngPostScrap;

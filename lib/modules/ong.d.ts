@@ -111,6 +111,7 @@ export declare class OngPostScrap extends api.Tastypie.Model<OngPostScrap> {
 }
 export declare class OngPost extends api.Tastypie.Model<OngPost> {
     static resource: api.Tastypie.Resource<OngPost>;
+    tipo: string;
     descricao: string;
     fotos: Array<string>;
     site_scraped: OngPostScrap;
