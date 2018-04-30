@@ -237,6 +237,7 @@ export declare class OngRecurso extends api.Tastypie.Model<OngRecurso> {
     ong_projeto_id: number;
     destino: string;
     ativo: boolean;
+    total_doacao: number;
     dt_aplicacao: string;
     dt_updated: string;
     dt_created: string;
@@ -249,9 +250,9 @@ export declare class OngRecurso extends api.Tastypie.Model<OngRecurso> {
 export declare class OngRecursoDoacao extends api.Tastypie.Model<OngRecursoDoacao> {
     static resource: api.Tastypie.Resource<OngRecursoDoacao>;
     ong_recurso_id: number;
-    origem_credito: string;
-    descricao: string;
-    comprovante: string;
+    origem_credito: OngOrigemCredito;
+    moeda: string;
+    valor: number;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
@@ -274,6 +275,7 @@ export declare class OngStatusCarteira extends api.Tastypie.Model<OngStatusCarte
     total_debito: number;
     total_debito_pendente: number;
     total_debito_comprovado: number;
+    total_debito_nao_comprovado: number;
     saldo: number;
     saldo_pendente: number;
     constructor(obj?: any);

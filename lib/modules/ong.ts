@@ -558,6 +558,7 @@ export class OngRecurso extends api.Tastypie.Model<OngRecurso> {
     public ong_projeto_id: number;
     public destino: string;
     public ativo: boolean;
+    public total_doacao: number;
     public dt_aplicacao: string;
     public dt_updated: string;
     public dt_created: string;
@@ -585,14 +586,18 @@ export class OngRecursoDoacao extends api.Tastypie.Model<OngRecursoDoacao> {
     public static resource = new api.Tastypie.Resource<OngRecursoDoacao>('ong/recurso-doacao', {model: OngRecursoDoacao});
 
     public ong_recurso_id: number;
-    public origem_credito: string;
-    public descricao: string;
-    public comprovante: string;
+    public origem_credito: OngOrigemCredito;
+    public moeda: string;
+    public valor: number;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
         super(OngRecursoDoacao.resource, obj);
+
+        if(obj){
+            if(obj.origem_credito) this.origem_credito = new OngOrigemCredito(obj.origem_credito);
+        }
     }
 }
 
@@ -621,6 +626,7 @@ export class OngStatusCarteira extends api.Tastypie.Model<OngStatusCarteira>{
     public total_debito: number;
     public total_debito_pendente: number;
     public total_debito_comprovado: number;
+    public total_debito_nao_comprovado: number;
     public saldo: number;
     public saldo_pendente: number;
 
