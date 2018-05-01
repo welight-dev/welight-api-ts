@@ -587,6 +587,7 @@ export class OngRecursoDoacao extends api.Tastypie.Model<OngRecursoDoacao> {
     public static resource = new api.Tastypie.Resource<OngRecursoDoacao>('ong/recurso-doacao', {model: OngRecursoDoacao});
 
     public ong_recurso_id: number;
+    public origem_credito_id: number;
     public origem_credito: OngOrigemCredito;
     public moeda: string;
     public valor: number;

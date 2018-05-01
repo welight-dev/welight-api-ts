@@ -251,6 +251,7 @@ export declare class OngRecurso extends api.Tastypie.Model<OngRecurso> {
 export declare class OngRecursoDoacao extends api.Tastypie.Model<OngRecursoDoacao> {
     static resource: api.Tastypie.Resource<OngRecursoDoacao>;
     ong_recurso_id: number;
+    origem_credito_id: number;
     origem_credito: OngOrigemCredito;
     moeda: string;
     valor: number;
