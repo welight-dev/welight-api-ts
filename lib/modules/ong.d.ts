@@ -224,6 +224,8 @@ export declare class OngStatus {
     qtde_doadores: number;
     qtde_avaliacao_positiva: number;
     total_credito: number;
+    total_saldo: number;
+    total_debito_comprovado: number;
     constructor(obj?: any);
 }
 export declare class OngOrigemCredito {

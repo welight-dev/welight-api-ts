@@ -76,8 +76,8 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
             if(_self.id){
                 _self._timeline = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id}});
-                _self._fotos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'fotos'}});
-                _self._videos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo: 'videos'}});
+                _self._fotos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo_conteudo: 'fotos'}});
+                _self._videos = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id, tipo_conteudo: 'videos'}});
                 _self._projetos = new api.Tastypie.Resource<OngProjeto>('ong/projeto', {model: OngProjeto, defaults: {ong_id: _self.id}});
                 _self._bancos = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco, defaults: {ong_id: _self.id}});
                 _self._status_carteira = new api.Tastypie.Resource<OngStatusCarteira>('ong/status-carteira', {model: OngStatusCarteira, defaults: {ong_id: _self.id}});
@@ -527,6 +527,8 @@ export class OngStatus {
     public qtde_doadores: number;
     public qtde_avaliacao_positiva: number;
     public total_credito: number;
+    public total_saldo: number;
+    public total_debito_comprovado: number;
 
     constructor(obj?:any){
         if(obj){
@@ -534,6 +536,8 @@ export class OngStatus {
             this.qtde_doadores = obj.qtde_doadores;
             this.qtde_avaliacao_positiva = obj.qtde_avaliacao_positiva;
             this.total_credito = obj.total_credito;
+            this.total_saldo = obj.total_saldo;
+            this.total_debito_comprovado = obj.total_debito_comprovado;
         }
     }
 }
