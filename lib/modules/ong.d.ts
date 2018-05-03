@@ -24,6 +24,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _bancos;
     private _recursos;
     private _status_carteira;
+    private _projeto_entrega;
     constructor(obj?: any);
     save(): Promise<Ong>;
     private initProfile(obj);
@@ -312,6 +313,40 @@ export declare class OngTimelineDoacao extends api.Tastypie.Model<OngTimelineDoa
     doacao_credito: OngCarteira;
     recurso: OngRecurso;
     projeto: OngProjeto;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntrega> {
+    static resource: api.Tastypie.Resource<OngProjetoEntrega>;
+    ong_projeto_id: number;
+    titulo: string;
+    descricao: string;
+    ativo: boolean;
+    dt_entrega: string;
+    dt_updated: string;
+    dt_created: string;
+    projeto: OngProjeto;
+    private _endereco;
+    private _comprovante;
+    constructor(obj?: any);
+    readonly endereco: api.Tastypie.Resource<OngProjetoEntregaEndereco>;
+    readonly comprovante: api.Tastypie.Resource<OngProjetoEntregaComprovante>;
+}
+export declare class OngProjetoEntregaEndereco extends api.Tastypie.Model<OngProjetoEntregaEndereco> {
+    static resource: api.Tastypie.Resource<OngProjetoEntregaEndereco>;
+    projeto_entrega_id: number;
+    projeto_endereco_id: number;
+    endereco: OngProjetoEndereco;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngProjetoEntregaComprovante extends api.Tastypie.Model<OngProjetoEntregaComprovante> {
+    static resource: api.Tastypie.Resource<OngProjetoEntregaComprovante>;
+    projeto_entrega_id: number;
+    titulo: string;
+    descricao: string;
+    comprovante: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

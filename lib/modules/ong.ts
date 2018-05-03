@@ -31,6 +31,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _bancos: api.Tastypie.Resource<OngBanco>;
     private _recursos: api.Tastypie.Resource<OngRecurso>;
     private _status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
+    private _projeto_entrega: api.Tastypie.Resource<OngProjetoEntrega>;
 
     constructor(obj?:any){
         super(Ong.resource);
@@ -82,6 +83,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
                 _self._bancos = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco, defaults: {ong_id: _self.id}});
                 _self._status_carteira = new api.Tastypie.Resource<OngStatusCarteira>('ong/status-carteira', {model: OngStatusCarteira, defaults: {ong_id: _self.id}});
                 _self._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_id: _self.id}});
+                _self._projeto_entrega = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega, defaults: {ong_id: _self.id}});
             }
         }else{
             _self._profile_detail = new OngDetail();
@@ -692,5 +694,71 @@ export class OngTimelineDoacao extends api.Tastypie.Model<OngTimelineDoacao>{
           if(obj.recurso) this.recurso = new OngRecurso(obj.recurso);
           if(obj.projeto) this.projeto = new OngProjeto(obj.projeto);
         }
+    }
+}
+
+export class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntrega> {
+    public static resource = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega});
+
+    public ong_projeto_id: number;
+    public titulo: string;
+    public descricao: string;
+    public ativo: boolean;
+    public dt_entrega: string;
+    public dt_updated: string;
+    public dt_created: string;
+    public projeto: OngProjeto;
+    private _endereco: api.Tastypie.Resource<OngProjetoEntregaEndereco>;
+    private _comprovante: api.Tastypie.Resource<OngProjetoEntregaComprovante>;
+
+    constructor(obj?:any){
+        super(OngProjetoEntrega.resource, obj);
+        if(obj){
+            if(obj.id){
+                this._endereco = new api.Tastypie.Resource<OngProjetoEntregaEndereco>('ong/projeto-entrega-endereco', {model: OngProjetoEntregaEndereco, defaults: {projeto_entrega_id:obj.id}});
+                this._comprovante = new api.Tastypie.Resource<OngProjetoEntregaComprovante>('ong/projeto-entrega-comprovante', {model: OngProjetoEntregaComprovante, defaults: {projeto_entrega_id:obj.id}});
+            }
+            if(obj.projeto) this.projeto = new OngProjeto(obj.projeto);
+        }
+    }
+
+    public get endereco(): api.Tastypie.Resource<OngProjetoEntregaEndereco> {
+        return this._endereco;
+    }
+
+    public get comprovante(): api.Tastypie.Resource<OngProjetoEntregaComprovante> {
+        return this._comprovante;
+    }
+}
+
+export class OngProjetoEntregaEndereco extends api.Tastypie.Model<OngProjetoEntregaEndereco> {
+    public static resource = new api.Tastypie.Resource<OngProjetoEntregaEndereco>('ong/projeto-entrega-endereco', {model: OngProjetoEntregaEndereco});
+
+    public projeto_entrega_id: number;
+    public projeto_endereco_id: number;
+    public endereco: OngProjetoEndereco;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngProjetoEntregaEndereco.resource, obj);
+
+        if(obj){
+            if(obj.endereco) this.endereco = new OngProjetoEndereco(obj.endereco);
+        }
+    }
+}
+
+export class OngProjetoEntregaComprovante extends api.Tastypie.Model<OngProjetoEntregaComprovante> {
+    public static resource = new api.Tastypie.Resource<OngProjetoEntregaComprovante>('ong/projeto-entrega-comprovante', {model: OngProjetoEntregaComprovante});
+
+    public projeto_entrega_id: number;
+    public titulo: string;
+    public descricao: string;
+    public comprovante: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngProjetoEntregaComprovante.resource, obj);
     }
 }
