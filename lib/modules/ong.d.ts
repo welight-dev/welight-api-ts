@@ -42,8 +42,9 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     readonly user: weauth_models.User;
     readonly projetos: api.Tastypie.Resource<OngProjeto>;
     readonly bancos: api.Tastypie.Resource<OngBanco>;
-    readonly status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
     readonly recursos: api.Tastypie.Resource<OngRecurso>;
+    readonly status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
+    readonly projeto_entrega: api.Tastypie.Resource<OngProjetoEntrega>;
     getEndereco(): Promise<OngEndereco>;
     createAccount(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<Ong>;
     quickLogin(auth?: {

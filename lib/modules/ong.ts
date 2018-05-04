@@ -146,12 +146,16 @@ export class Ong extends api.Tastypie.Model<Ong> {
         return this._bancos;
     }
 
+    public get recursos(): api.Tastypie.Resource<OngRecurso> {
+        return this._recursos;
+    }
+
     public get status_carteira(): api.Tastypie.Resource<OngStatusCarteira> {
         return this._status_carteira;
     }
 
-    public get recursos(): api.Tastypie.Resource<OngRecurso> {
-        return this._recursos;
+    public get projeto_entrega(): api.Tastypie.Resource<OngProjetoEntrega> {
+        return this._projeto_entrega;
     }
 
     public getEndereco(): Promise<OngEndereco> {
