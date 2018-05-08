@@ -130,6 +130,7 @@ export declare class OngTimeLine extends OngPost {
     projeto: OngProjeto;
     doacao_credito: OngCarteira;
     recurso: OngRecurso;
+    entrega: OngProjetoEntrega;
     constructor(obj?: any);
 }
 export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {

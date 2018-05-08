@@ -81,6 +81,9 @@ export class User {
     private _we_auth_user_login_resource = new api.Tastypie.Resource('we-auth/user/login')
     private _we_auth_user_logout_resource = new api.Tastypie.Resource('we-auth/user/logout')
     private _we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile')
+    private _we_auth_user_reset_pass_request_resource = new api.Tastypie.Resource('we-auth/user/reset-password-request')
+    private _we_auth_user_reset_pass_execute_resource = new api.Tastypie.Resource('we-auth/user/reset-password-execute')
+    private _we_auth_user_change_pass_resource = new api.Tastypie.Resource('we-auth/user/change-password')
 
     constructor(){
         this.name = ''
@@ -325,6 +328,49 @@ export class User {
               _self._apps = [];
               if(utils.Tools.localStorageSuported) localStorage.removeItem('weUser');
               return data;
+            }
+        )
+    }
+
+    public reset_password_request(email: string, kwargs?:any): Promise<any> {
+        return this._we_auth_user_reset_pass_request_resource.objects.create({
+            email: email
+        });
+    }
+
+    public reset_password_execute(token: string, password: string, kwargs?:any): Promise<User> {
+        let _self = this;
+        return _self._we_auth_user_reset_pass_execute_resource.objects.create({
+            token: token,
+            pass: password,
+            kwargs: kwargs
+        }).then(
+            function(data: any){
+                _self.setProfile(data, kwargs);
+                if(_self._is_authenticated){
+                    return _self;
+                }else{
+                    return api.Tastypie.Tools.generate_exception("[WeAuth][reset_password_execute] Usuario não identificado");
+                }
+            }
+        )
+    }
+
+    public change_password(username: string, pass_old: string, pass_new: string, kwargs?:any): Promise<User> {
+        let _self = this;
+        return _self._we_auth_user_change_pass_resource.objects.create({
+            username: username,
+            pass_old: pass_old,
+            pass_new: pass_new,
+            kwargs: kwargs
+        }).then(
+            function(data: any){
+                _self.setProfile(data, kwargs);
+                if(_self._is_authenticated){
+                    return _self;
+                }else{
+                    return api.Tastypie.Tools.generate_exception("[WeAuth][change_password] Usuario não identificado");
+                }
             }
         )
     }

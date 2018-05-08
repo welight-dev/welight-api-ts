@@ -210,6 +210,38 @@ export class Doador extends api.Tastypie.Model<Doador> {
             }
         );
     }
+
+    public reset_password_request(email: string, kwargs?:any): Promise<any> {
+        return this._user.reset_password_request(email, kwargs);
+    }
+
+    public reset_password_execute(token: string, password: string, kwargs?:any): Promise<Doador> {
+        let _self = this;
+        return this._user.reset_password_execute(token, password, kwargs).then(
+            function(user: weauth_models.User){
+                return _self._doador_logado.objects.findOne().then(
+                    function(data: Doador){
+                        _self.initProfile(data);
+                        return _self;
+                    }
+                );
+            }
+        );
+    }
+
+    public change_password(username: string, pass_old: string, pass_new: string, kwargs?:any): Promise<Doador> {
+        let _self = this;
+        return this._user.change_password(username, pass_old, pass_new, kwargs).then(
+            function(user: weauth_models.User){
+                return _self._doador_logado.objects.findOne().then(
+                    function(data: Doador){
+                        _self.initProfile(data);
+                        return _self;
+                    }
+                );
+            }
+        );
+    }
 }
 
 export class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {

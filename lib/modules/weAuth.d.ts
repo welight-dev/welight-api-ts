@@ -36,6 +36,9 @@ export declare class User {
     private _we_auth_user_login_resource;
     private _we_auth_user_logout_resource;
     private _we_auth_user_profile_resource;
+    private _we_auth_user_reset_pass_request_resource;
+    private _we_auth_user_reset_pass_execute_resource;
+    private _we_auth_user_change_pass_resource;
     constructor();
     save(): Promise<User>;
     readonly id: number;
@@ -58,6 +61,9 @@ export declare class User {
         apikey: string;
     }, kwargs?: any): Promise<User>;
     logout(): Promise<any>;
+    reset_password_request(email: string, kwargs?: any): Promise<any>;
+    reset_password_execute(token: string, password: string, kwargs?: any): Promise<User>;
+    change_password(username: string, pass_old: string, pass_new: string, kwargs?: any): Promise<User>;
 }
 export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
     static resource: api.Tastypie.Resource<UserAccount>;

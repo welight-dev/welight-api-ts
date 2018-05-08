@@ -364,14 +364,15 @@ export class OngTimeLine extends OngPost {
     public projeto: OngProjeto;
     public doacao_credito: OngCarteira;
     public recurso: OngRecurso;
+    public entrega: OngProjetoEntrega;
     constructor(obj?:any){
         super(obj, OngTimeLine.resource);
-        let _self = this;
         if(obj){
-            if(obj.ong) _self.ong = new Ong(obj.ong);
-            if(obj.projeto) _self.projeto = new OngProjeto(obj.projeto);
-            if(obj.doacao_credito) _self.doacao_credito = new OngCarteira(obj.doacao_credito);
-            if(obj.recurso) _self.recurso = new OngRecurso(obj.recurso);
+            if(obj.ong) this.ong = new Ong(obj.ong);
+            if(obj.projeto) this.projeto = new OngProjeto(obj.projeto);
+            if(obj.doacao_credito) this.doacao_credito = new OngCarteira(obj.doacao_credito);
+            if(obj.recurso) this.recurso = new OngRecurso(obj.recurso);
+            if(obj.entrega) this.entrega = new OngProjetoEntrega(obj.entrega);
         }
     }
 }

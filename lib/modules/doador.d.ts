@@ -45,6 +45,9 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
         username: string;
         apikey: string;
     }, kwargs?: any): Promise<Doador>;
+    reset_password_request(email: string, kwargs?: any): Promise<any>;
+    reset_password_execute(token: string, password: string, kwargs?: any): Promise<Doador>;
+    change_password(username: string, pass_old: string, pass_new: string, kwargs?: any): Promise<Doador>;
 }
 export declare class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {
     static resource: api.Tastypie.Resource<DoadorAvaliador>;
