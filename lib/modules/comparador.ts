@@ -146,6 +146,7 @@ export class Comparador {
     public order_by: string;
     public query_string: string;
     private products_categories: api.Tastypie.Resource<any>;
+    private _prefiltred: boolean;
 
     constructor(defaults?:any){
         this.categories = [];
@@ -153,6 +154,7 @@ export class Comparador {
         this._filters_selected = {};
         this.order_by = '';
         this.query_string = "";
+        this._prefiltred = false;
         this.products = new api.Tastypie.Resource<Produto>('comparador/products/search', {model: Produto, defaults: defaults});
         this.products_categories = new api.Tastypie.Resource<any>('comparador/products-categories/search');
     }
@@ -193,14 +195,14 @@ export class Comparador {
                         _self.categories.push(cat_filter);
                     }
 
-                    if(_self.categories.length === 1){                        
+                    if(_self.categories.length === 1){
                         let cat_sel = _self.categories[0];
                         _self.category_selected = cat_sel.id;
 
                         for(let filtered of page.meta.kwargs.prefilter.filtered || []){
                             _self.addFilter(filtered.filter_name, filtered.option_id);
                         }
-                        _self.query_string = "";
+                        _self._prefiltred = true;
                     }
                 }
 
@@ -325,6 +327,10 @@ export class Comparador {
     public filter(): Promise<Comparador> {
         let _self = this;
         let params = _self.getParams();
+
+        if(_self._prefiltred){
+            params.q = "";
+        }
         return _self.products.objects.find(params).then(
             function(page){
                 return _self;
