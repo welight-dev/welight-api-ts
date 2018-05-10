@@ -193,13 +193,14 @@ export class Comparador {
                         _self.categories.push(cat_filter);
                     }
 
-                    if(_self.categories.length === 1){
+                    if(_self.categories.length === 1){                        
                         let cat_sel = _self.categories[0];
                         _self.category_selected = cat_sel.id;
 
                         for(let filtered of page.meta.kwargs.prefilter.filtered || []){
                             _self.addFilter(filtered.filter_name, filtered.option_id);
                         }
+                        _self.query_string = "";
                     }
                 }
 
