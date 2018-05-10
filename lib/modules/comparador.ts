@@ -185,12 +185,32 @@ export class Comparador {
 
         return _self.products.objects.find(data_params).then(
             function(page){
-                if(page.meta.kwargs.hasOwnProperty('categories')){
-                    for(let cat of page.meta.kwargs.categories || []){
+                if(page.meta.kwargs.hasOwnProperty('prefilter')){
+                    for(let cat of page.meta.kwargs.prefilter.categories || []){
                         let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
                         cat_filter.setCatTree(cat.cat_tree);
                         cat_filter.setFilters(cat.filters);
                         _self.categories.push(cat_filter);
+                    }
+
+                    if(_self.categories.length === 1){
+                        let cat_sel = _self.categories[0];
+                        _self.category_selected = cat_sel.id;
+
+                        for(let filtered of page.meta.kwargs.prefilter.filtered || []){
+                            _self.addFilter(filtered.filter_name, filtered.option_id);
+                        }
+                    }
+                }
+
+                if(_self.categories.length === 0){
+                    if(page.meta.kwargs.hasOwnProperty('categories')){
+                        for(let cat of page.meta.kwargs.categories || []){
+                            let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
+                            cat_filter.setCatTree(cat.cat_tree);
+                            cat_filter.setFilters(cat.filters);
+                            _self.categories.push(cat_filter);
+                        }
                     }
                 }
 
