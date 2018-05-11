@@ -67,15 +67,22 @@ export class PluginNavegador {
         let _self = this;
         return new Promise<any>(function(resolve, reject) {
             let limitTimeInstall = setTimeout(function() {
-                reject('timeout');
+                resolve(true);
             }, 10000);
             let xpi = {'XPInstall Dialog Display Name': 'https://addons.mozilla.org/firefox/downloads/latest/welight/'};
-            InstallTrigger.install(xpi, function(url:string, status:any){
-                clearTimeout(limitTimeInstall);
-                _self.instalado = true;
+            try{
+              InstallTrigger.install(xpi, function(url:string, status:any){
+                  clearTimeout(limitTimeInstall);
+                  _self.instalado = true;
+                  resolve(true);
+              });
+            }
+            catch(erro){
                 resolve(true);
-            });
-
+            }
+            finally{
+                resolve(true);
+            }
         });
     }
 
