@@ -70,19 +70,11 @@ export class PluginNavegador {
                 resolve(true);
             }, 10000);
             let xpi = {'XPInstall Dialog Display Name': 'https://addons.mozilla.org/firefox/downloads/latest/welight/'};
-            try{
-              InstallTrigger.install(xpi, function(url:string, status:any){
-                  clearTimeout(limitTimeInstall);
-                  _self.instalado = true;
-                  resolve(true);
-              });
-            }
-            catch(erro){
+            InstallTrigger.install(xpi, function(url:string, status:any){
+                clearTimeout(limitTimeInstall);
+                _self.instalado = true;
                 resolve(true);
-            }
-            finally{
-                resolve(true);
-            }
+            });
         });
     }
 
