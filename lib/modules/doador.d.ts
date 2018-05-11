@@ -3,6 +3,7 @@ import * as weauth_models from "./weAuth";
 import * as ong_models from "./ong";
 import * as onu_models from "./onu";
 import * as we_notify_models from "./weNotify";
+import * as utils from "./utils";
 export declare class Doador extends api.Tastypie.Model<Doador> {
     static resource: api.Tastypie.Resource<Doador>;
     nome: string;
@@ -19,12 +20,15 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     private _user;
     private _check_slug_resource;
     private _doador_logado;
+    plugin_navegador: utils.PluginNavegador;
     constructor(obj?: any);
+    save(): Promise<Doador>;
+    private initProfile(obj?);
     check_slug(slug: string): Promise<{
         available: boolean;
     }>;
-    save(): Promise<Doador>;
-    private initProfile(obj?);
+    instalarPluginNavegador(navegador: string): Promise<any>;
+    notificarPlugin(): Promise<any>;
     readonly email: string;
     readonly dt_created: string;
     readonly dt_updated: string;
@@ -37,6 +41,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     getDoacao(): Promise<DoadorDoacao>;
     getCompraAfiliadora(): Promise<DoadorCompraAfiliadoraStatus>;
     getAvaliador(): Promise<DoadorAvaliador>;
+    getPluginNavegadorLog(): Promise<DoadorPluginNavegador>;
     getPreferencia(): Promise<DoadorPreferencia>;
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<Doador>;
     login(username: string, password: string, kwargs?: any): Promise<Doador>;
@@ -58,6 +63,15 @@ export declare class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador>
     facebook: string;
     linkedin: string;
     cep: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class DoadorPluginNavegador extends api.Tastypie.Model<DoadorPluginNavegador> {
+    static resource: api.Tastypie.Resource<DoadorPluginNavegador>;
+    doador_id: number;
+    navegador: string;
+    dt_ultima_ativacao: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

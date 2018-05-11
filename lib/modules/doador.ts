@@ -5,7 +5,8 @@ import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
 import * as ong_models from "./ong";
 import * as onu_models from "./onu";
-import * as we_notify_models from "./weNotify"
+import * as we_notify_models from "./weNotify";
+import * as utils from "./utils";
 
 export class Doador extends api.Tastypie.Model<Doador> {
     public static resource = new api.Tastypie.Resource<Doador>('doador/profile', {model: Doador});
@@ -25,19 +26,16 @@ export class Doador extends api.Tastypie.Model<Doador> {
     private _user: weauth_models.User;
     private _check_slug_resource: api.Tastypie.Resource<{available: boolean}>;
 
-
     private _doador_logado: api.Tastypie.Resource<Doador>;
+    public plugin_navegador: utils.PluginNavegador;
 
     constructor(obj?: any){
         super(Doador.resource);
-        this._doador_logado = new api.Tastypie.Resource<Doador>('doador/profile/me', {model: Doador});
         this._user = new weauth_models.User();
+        this.plugin_navegador = new utils.PluginNavegador();
+        this._doador_logado = new api.Tastypie.Resource<Doador>('doador/profile/me', {model: Doador});
         this._check_slug_resource = new api.Tastypie.Resource<{available: boolean}>('doador/profile/check-slug');
         this.initProfile(obj);
-    }
-
-    public check_slug(slug: string): Promise<{available: boolean}> {
-        return this._check_slug_resource.objects.findOne({slug: slug});
     }
 
     public save(): Promise<Doador> {
@@ -66,7 +64,56 @@ export class Doador extends api.Tastypie.Model<Doador> {
             _self._ong_timeline = new api.Tastypie.Resource<ong_models.OngTimeLine>('ong/timeline', {model: ong_models.OngTimeLine, defaults: {doador_id: obj.id}});
             _self._doacao_mes = new api.Tastypie.Resource<DoadorDoacaoMes>('doador/doacao-mes', {model: DoadorDoacaoMes, defaults: {doador_id: obj.id}});
             _self._we_notify = new api.Tastypie.Resource<we_notify_models.WeNotifyDoador>('we-notify/doador', {model: we_notify_models.WeNotifyDoador, defaults: {doador_id: obj.id}});
+            _self.notificarPlugin();
         }
+    }
+
+    public check_slug(slug: string): Promise<{available: boolean}> {
+        return this._check_slug_resource.objects.findOne({slug: slug});
+    }
+
+    public instalarPluginNavegador(navegador:string): Promise<any> {
+        let _self = this;
+        return new Promise<any>(function(resolve, reject) {
+            if(navegador == "chrome"){
+                _self.plugin_navegador.instalarExtensaoChrome().then(
+                    function(success: any){
+                        _self.notificarPlugin().then(
+                            function(success: any){
+                                resolve(true);
+                            }
+                        );
+                    }
+                );
+            }else if(navegador == "firefox"){
+                _self.plugin_navegador.instalarExtensaoFirefox().then(
+                    function(success: any){
+                        _self.notificarPlugin().then(
+                            function(success: any){
+                                resolve(true);
+                            }
+                        );
+                    }
+                );
+            }else if(navegador == "safari"){
+                window.open('https://safari-extensions.apple.com/details/?id=co.welight.safari.welight-AR7RY2A3BF', '_blank');
+                resolve(true);
+            }else{
+                reject('Browser not supported.');
+            }
+        });
+    }
+
+    public notificarPlugin(): Promise<any> {
+        let _self = this;
+        return _self.getDoacao().then(
+            function(obj: DoadorDoacao){
+                let $wl_msg_profile = {user: _self._user.auth, doador:{nome:_self.nome, email:_self.email, impacto_total:obj.doador_doacao_impacto}};
+                let $wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': $wl_msg_profile });
+                document.dispatchEvent($wl_msg_event);
+                return true;
+            }
+        )
     }
 
     public get email(): string {
@@ -130,6 +177,14 @@ export class Doador extends api.Tastypie.Model<Doador> {
             return DoadorAvaliador.resource.objects.findOne({doador_id:this.id})
         }else{
             return api.Tastypie.Tools.generate_exception("[Doador][getAvaliador] Avaliador não identificado");
+        }
+    }
+
+    public getPluginNavegadorLog(): Promise<DoadorPluginNavegador> {
+        if(this.id){
+            return DoadorPluginNavegador.resource.objects.findOne({doador_id:this.id})
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Doador][getPluginNavegadorStatus] Avaliador não identificado");
         }
     }
 
@@ -259,6 +314,20 @@ export class DoadorAvaliador extends api.Tastypie.Model<DoadorAvaliador> {
 
     constructor(obj?:any){
       super(DoadorAvaliador.resource, obj);
+    }
+}
+
+export class DoadorPluginNavegador extends api.Tastypie.Model<DoadorPluginNavegador> {
+    public static resource = new api.Tastypie.Resource<DoadorPluginNavegador>('doador/plugin-navegador', {model: DoadorPluginNavegador});
+
+    public doador_id: number;
+    public navegador: string;
+    public dt_ultima_ativacao: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+      super(DoadorPluginNavegador.resource, obj);
     }
 }
 

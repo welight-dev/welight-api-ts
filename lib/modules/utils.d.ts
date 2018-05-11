@@ -13,3 +13,17 @@ export declare class Banco extends api.Tastypie.Model<Banco> {
     dt_created: boolean;
     constructor(obj?: any);
 }
+export declare class PluginNavegador {
+    instalado: boolean;
+    constructor(obj?: any);
+    instalarExtensaoChrome(): Promise<any>;
+    instalarExtensaoFirefox(): Promise<any>;
+    notificarPlugin(user: {
+        username: string;
+        api_key: string;
+    }, doador: {
+        nome: string;
+        email: string;
+        impacto_total: number;
+    }): void;
+}
