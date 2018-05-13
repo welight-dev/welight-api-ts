@@ -69,6 +69,7 @@ export declare class Comparador {
     query_string: string;
     private products_categories;
     private _prefiltred;
+    raiz: boolean;
     constructor(defaults?: any);
     search(q: string, params?: {
         category_id?: number;

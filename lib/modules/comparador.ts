@@ -147,6 +147,7 @@ export class Comparador {
     public query_string: string;
     private products_categories: api.Tastypie.Resource<any>;
     private _prefiltred: boolean;
+    public raiz: boolean;
 
     constructor(defaults?:any){
         this.categories = [];
@@ -155,6 +156,7 @@ export class Comparador {
         this.order_by = '';
         this.query_string = "";
         this._prefiltred = false;
+        this.raiz = true;
         this.products = new api.Tastypie.Resource<Produto>('comparador/products/search', {model: Produto, defaults: defaults});
         this.products_categories = new api.Tastypie.Resource<any>('comparador/products-categories/search');
     }
@@ -219,6 +221,7 @@ export class Comparador {
 
                 if(_self.categories.length === 0){
                     if((!data_params.q || data_params.q === '') && (!params || Object.keys(params).length === 0)){
+                        _self.raiz = true;
                         _self.products_categories.objects.find({level:0}).then(
                             function(page_categories){
                                 for(let cat of page_categories.objects || []){
@@ -231,9 +234,11 @@ export class Comparador {
                             }
                         )
                     }else{
+                        _self.raiz = false;
                         return _self;
                     }
                 }else{
+                    _self.raiz = false;
                     return _self;
                 }
             }
@@ -255,6 +260,7 @@ export class Comparador {
                         cat_filter.setFilters(cat.filters);
                         _self.categories.push(cat_filter);
                     }
+                    _self.raiz = false;
                 }
                 return _self;
             }
@@ -333,6 +339,7 @@ export class Comparador {
         }
         return _self.products.objects.find(params).then(
             function(page){
+                _self.raiz = false;
                 return _self;
             }
         )
