@@ -327,8 +327,7 @@ export class User {
               _self._auth = new Auth('','');
               _self._apps = [];
               if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
-              let wl_msg_profile = {user: {}, doador:{}};
-              let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': wl_msg_profile });
+              let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
               document.dispatchEvent(wl_msg_event);
               return data;
             }
