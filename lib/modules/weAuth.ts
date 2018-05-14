@@ -194,7 +194,7 @@ export class User {
                   apikey: data.auth.api_key,
                   kwargs: kwargs
               }), _self._encrypt_key).toString();
-              localStorage.setItem('weUser', encrypted_user);
+              localStorage.setItem('weUserX', encrypted_user);
             }
        }else{
            _self.name = ''
@@ -202,7 +202,7 @@ export class User {
            _self._is_authenticated = false;
            _self._auth = new Auth('','');
            _self._apps = [];
-          if(utils.Tools.localStorageSuported) localStorage.removeItem('weUser');
+          if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
        }
     }
 
@@ -303,7 +303,7 @@ export class User {
             return _self._quickLogin(auth.username, auth.apikey, kwargs);
         }else{
             if(utils.Tools.localStorageSuported){
-                let weUser: string = localStorage.getItem('weUser')
+                let weUser: string = localStorage.getItem('weUserX')
                 if(weUser){
                     let auth_user = JSON.parse(crypto.AES.decrypt(weUser, _self._encrypt_key).toString(crypto.enc.Utf8));
                     return _self._quickLogin(auth_user.username, auth_user.apikey, auth_user.kwargs);
@@ -318,7 +318,7 @@ export class User {
 
     public logout(): Promise<any> {
         let _self = this;
-        if(utils.Tools.localStorageSuported) localStorage.removeItem('weUser');
+        if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
         return _self._we_auth_user_logout_resource.objects.findOne().then(
             function(data: any){
               _self.name = ''
@@ -326,7 +326,10 @@ export class User {
               _self._is_authenticated = false;
               _self._auth = new Auth('','');
               _self._apps = [];
-              if(utils.Tools.localStorageSuported) localStorage.removeItem('weUser');
+              if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
+              let wl_msg_profile = {user: {}, doador:{}};
+              let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': wl_msg_profile });
+              document.dispatchEvent(wl_msg_event);
               return data;
             }
         )

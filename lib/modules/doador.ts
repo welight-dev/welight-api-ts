@@ -108,9 +108,9 @@ export class Doador extends api.Tastypie.Model<Doador> {
         let _self = this;
         return _self.getDoacao().then(
             function(obj: DoadorDoacao){
-                let $wl_msg_profile = {user: _self._user.auth, doador:{nome:_self.nome, email:_self.email, impacto_total:obj.doador_doacao_impacto}};
-                let $wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': $wl_msg_profile });
-                document.dispatchEvent($wl_msg_event);
+                let wl_msg_profile = {user: _self._user.auth, doador:{nome:_self.nome, email:_self.email, impacto_total:obj.doador_doacao_impacto}};
+                let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': wl_msg_profile });
+                document.dispatchEvent(wl_msg_event);
                 return true;
             }
         )
