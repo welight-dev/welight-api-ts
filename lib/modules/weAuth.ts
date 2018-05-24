@@ -4,6 +4,7 @@
 import * as api from "ts-resource-tastypie";
 import * as utils from "./utils";
 import * as crypto from 'crypto-js';
+import * as config from './config';
 
 export class Auth {
     private _username: string;
@@ -75,6 +76,7 @@ export class User {
     private _is_authenticated: boolean;
     private _encrypt_key: string = 's7hsj2d12easd63ksye598sdhw312ed8';
     private _current_user_app: UserApp;
+    private _plugin_navegador: utils.PluginNavegador;
 
     private _we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account')
     private _we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong')
@@ -92,12 +94,20 @@ export class User {
         this._auth = new Auth('','');
         this._account = new UserAccount();
         this._apps = [];
+        this._plugin_navegador = new utils.PluginNavegador();
+
+        let _self = this;
+        document.addEventListener("$wl_msg_checkSite", function(data){
+            _self._plugin_navegador.instalado = true;
+            _self.notificarPlugin()
+        });
     }
 
     public save(): Promise<User> {
         let _self = this;
         return _self._we_auth_user_profile_resource.objects.update(_self._id, {name: _self.name}).then(
             function(){
+                _self.notificarPlugin();
                 return _self;
             }
         )
@@ -133,6 +143,10 @@ export class User {
 
     public set current_user_app(userapp:UserApp) {
         this._current_user_app = userapp;
+    }
+
+    public get plugin_navegador(): utils.PluginNavegador {
+        return this._plugin_navegador;
     }
 
     public getUserAppAdmin(app_token: string): UserApp {
@@ -188,6 +202,7 @@ export class User {
            }
 
            _self._is_authenticated = true;
+           _self.notificarPlugin();
            if(utils.Tools.localStorageSuported){
                let encrypted_user = crypto.AES.encrypt(JSON.stringify({
                   username: data.auth.username,
@@ -375,6 +390,43 @@ export class User {
                 }
             }
         )
+    }
+
+    public notificarPlugin(): void{
+        if(config.Environment.env == 'prod' && this._is_authenticated){
+            let _self = this;
+            let wl_msg_profile = {
+                user: {username: _self._auth.username, api_key: _self._auth.api_key}
+            };
+            let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': wl_msg_profile });
+            document.dispatchEvent(wl_msg_event);
+        }
+    }
+
+    public instalarPluginNavegador(navegador:string): Promise<any> {
+        let _self = this;
+        return new Promise<any>(function(resolve, reject) {
+            if(navegador == "chrome"){
+                _self._plugin_navegador.instalarExtensaoChrome().then(
+                    function(success: any){
+                        _self.notificarPlugin();
+                        resolve(true);
+                    }
+                );
+            }else if(navegador == "firefox"){
+                _self._plugin_navegador.instalarExtensaoFirefox().then(
+                    function(success: any){
+                        _self.notificarPlugin();
+                        resolve(true);
+                    }
+                );
+            }else if(navegador == "safari"){
+                window.open('https://safari-extensions.apple.com/details/?id=co.welight.safari.welight-AR7RY2A3BF', '_blank');
+                resolve(true);
+            }else{
+                reject('Browser not supported.');
+            }
+        });
     }
 }
 

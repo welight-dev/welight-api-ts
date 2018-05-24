@@ -1,4 +1,5 @@
 import * as api from "ts-resource-tastypie";
+import * as utils from "./utils";
 export declare class Auth {
     private _username;
     private _api_key;
@@ -31,6 +32,7 @@ export declare class User {
     private _is_authenticated;
     private _encrypt_key;
     private _current_user_app;
+    private _plugin_navegador;
     private _we_auth_user_create_account_resource;
     private _we_auth_user_create_account_ong_resource;
     private _we_auth_user_login_resource;
@@ -48,6 +50,7 @@ export declare class User {
     readonly account: UserAccount;
     readonly is_authenticated: any;
     current_user_app: UserApp;
+    readonly plugin_navegador: utils.PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
     private setProfile(data, kwargs?);
@@ -64,6 +67,8 @@ export declare class User {
     reset_password_request(email: string, kwargs?: any): Promise<any>;
     reset_password_execute(token: string, password: string, kwargs?: any): Promise<User>;
     change_password(username: string, pass_old: string, pass_new: string, kwargs?: any): Promise<User>;
+    notificarPlugin(): void;
+    instalarPluginNavegador(navegador: string): Promise<any>;
 }
 export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
     static resource: api.Tastypie.Resource<UserAccount>;
