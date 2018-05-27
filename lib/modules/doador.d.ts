@@ -8,8 +8,8 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     static resource: api.Tastypie.Resource<Doador>;
     nome: string;
     slug: string;
-    avaliador: boolean;
-    empresa: boolean;
+    is_avaliador: boolean;
+    is_empresa: boolean;
     private _email;
     private _dt_updated;
     private _dt_created;

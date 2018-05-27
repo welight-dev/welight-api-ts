@@ -1,4 +1,4 @@
-// Type definitions for [~Welight Platform~] [~1.0.89~]
+// Type definitions for [~Welight Platform~] [~1.0.90~]
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
@@ -7,21 +7,21 @@ import * as Config from './modules/config';
 import * as WeAuth from './modules/weAuth';
 import * as WeNotify from './modules/weNotify';
 import * as Doador  from './modules/doador';
+import * as DoadorEmpresa from './modules/doadorEmpresa';
 import * as Ong from './modules/ong';
 import * as Onu from './modules/onu';
 import * as Afiliadora from './modules/afiliadora';
 import * as Comparador  from './modules/comparador';
 import * as Suporte from './modules/suporte';
-import * as EasyImpact from './modules/easyImpact';
 
 export { Utils };
 export { Config };
 export { WeAuth };
 export { WeNotify };
 export { Doador };
+export { DoadorEmpresa };
 export { Ong };
 export { Onu };
 export { Afiliadora };
 export { Comparador };
 export { Suporte };
-export { EasyImpact };

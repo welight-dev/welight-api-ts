@@ -13,8 +13,8 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
     public nome: string;
     public slug: string;
-    public avaliador: boolean;
-    public empresa: boolean;
+    public is_avaliador: boolean;
+    public is_empresa: boolean;
     private _email: string;
     private _dt_updated: string;
     private _dt_created: string;
@@ -47,20 +47,19 @@ export class Doador extends api.Tastypie.Model<Doador> {
     }
 
     private initProfile(obj?: any): void {
-        let _self = this;
         if(obj){
-            _self.id = obj.id;
-            _self.nome = obj.nome;
-            _self.slug = obj.slug;
-            _self.avaliador = obj.avaliador;
-            _self.empresa = obj.empresa;
-            _self._email = obj.email;
-            _self._dt_updated = obj.dt_updated;
-            _self._dt_created = obj.dt_created;
-            _self._rede = new DoadorRede(obj.id);
-            _self._ong_timeline = new api.Tastypie.Resource<ong_models.OngTimeLine>('ong/timeline', {model: ong_models.OngTimeLine, defaults: {doador_id: obj.id}});
-            _self._doacao_mes = new api.Tastypie.Resource<DoadorDoacaoMes>('doador/doacao-mes', {model: DoadorDoacaoMes, defaults: {doador_id: obj.id}});
-            _self._we_notify = new api.Tastypie.Resource<we_notify_models.WeNotifyDoador>('we-notify/doador', {model: we_notify_models.WeNotifyDoador, defaults: {doador_id: obj.id}});
+            this.id = obj.id;
+            this.nome = obj.nome;
+            this.slug = obj.slug;
+            this.is_avaliador = obj.is_avaliador;
+            this.is_empresa = obj.is_empresa;
+            this._email = obj.email;
+            this._dt_updated = obj.dt_updated;
+            this._dt_created = obj.dt_created;
+            this._rede = new DoadorRede(obj.id);
+            this._ong_timeline = new api.Tastypie.Resource<ong_models.OngTimeLine>('ong/timeline', {model: ong_models.OngTimeLine, defaults: {doador_id: obj.id}});
+            this._doacao_mes = new api.Tastypie.Resource<DoadorDoacaoMes>('doador/doacao-mes', {model: DoadorDoacaoMes, defaults: {doador_id: obj.id}});
+            this._we_notify = new api.Tastypie.Resource<we_notify_models.WeNotifyDoador>('we-notify/doador', {model: we_notify_models.WeNotifyDoador, defaults: {doador_id: obj.id}});
         }
     }
 
