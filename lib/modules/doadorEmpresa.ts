@@ -47,6 +47,10 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
           }
       }
 
+      public get doador(): doador_models.Doador {
+          return this._doador;
+      }
+
       public get vendas(): api.Tastypie.Resource<Venda> {
           return this._vendas;
       }

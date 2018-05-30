@@ -1,4 +1,5 @@
 import * as api from "ts-resource-tastypie";
+import * as doador_models from "./doador";
 import * as ong_models from "./ong";
 export declare class Empresa extends api.Tastypie.Model<Empresa> {
     static resource: api.Tastypie.Resource<Empresa>;
@@ -18,6 +19,7 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     constructor(obj?: any);
     save(): Promise<Empresa>;
     private initProfile(obj?);
+    readonly doador: doador_models.Doador;
     readonly vendas: api.Tastypie.Resource<Venda>;
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
     readonly clientes: api.Tastypie.Resource<Cliente>;
