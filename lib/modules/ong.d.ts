@@ -8,6 +8,8 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     razao_social: string;
     cnpj: string;
     slug: string;
+    checked: Boolean;
+    children_id: number;
     private _status;
     private _ativo;
     private _parceira;
