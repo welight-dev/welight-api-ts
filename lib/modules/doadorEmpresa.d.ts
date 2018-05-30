@@ -23,8 +23,11 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     readonly vendas: api.Tastypie.Resource<Venda>;
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
     readonly clientes: api.Tastypie.Resource<Cliente>;
-    login(username: string, password: string): Promise<Empresa>;
-    quickLogin(username: string, apikey: string): Promise<Empresa>;
+    login(username: string, password: string, kwargs?: any): Promise<Empresa>;
+    quickLogin(auth?: {
+        username: string;
+        apikey: string;
+    }, kwargs?: any): Promise<Empresa>;
 }
 export declare class EmpresaOng extends api.Tastypie.Model<EmpresaOng> {
     static resource: api.Tastypie.Resource<EmpresaOng>;

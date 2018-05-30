@@ -31,7 +31,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
       public save(): Promise<Empresa> {
           let _self = this;
           return super.save().then(
-              function(response){
+              function(response: Empresa){
                   _self.initProfile(response);
                   return _self;
               }
@@ -63,7 +63,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
           return this._cliente;
       }
 
-      public login(username: string, password: string): Promise<Empresa> {
+      public login(username: string, password: string, kwargs?:any): Promise<Empresa> {
           let _self = this;
           return this._doador.login(username, password).then(
               function(doador_response: doador_models.Doador){
@@ -80,9 +80,9 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
           );
       }
 
-      public quickLogin(username: string, apikey: string): Promise<Empresa> {
+      public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<Empresa> {
           let _self = this;
-          return this._doador.quickLogin({username: username, apikey: apikey}).then(
+          return this._doador.quickLogin(auth, kwargs).then(
               function(doador_response: doador_models.Doador){
                   return Empresa.resource.objects.findOne({doador_id:doador_response.id}).then(
                       function(empresa_resp: Empresa){
