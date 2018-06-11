@@ -15,6 +15,8 @@ export class Doador extends api.Tastypie.Model<Doador> {
     public slug: string;
     public is_avaliador: boolean;
     public is_empresa: boolean;
+    public has_plugin: boolean;
+    public has_app: boolean;
     private _email: string;
     private _dt_updated: string;
     private _dt_created: string;
@@ -322,6 +324,9 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     private _recebidos_cadastro: number;
     private _recebidos_convite: number;
     private _recebidos_compra: number;
+    private _recebidos_plugin_installed: number;
+    private _recebidos_app_installed: number;
+    private _recebidos_perfil_completo: number;
 
     private _ong: api.Tastypie.Resource<DoadorDoacaoOng>;
     private _distribuicao_resource: api.Tastypie.Resource<any>;
@@ -337,6 +342,9 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
             this._recebidos_cadastro = obj.recebidos_cadastro;
             this._recebidos_convite = obj.recebidos_convite;
             this._recebidos_compra = obj.recebidos_compra;
+            this._recebidos_plugin_installed = obj.recebidos_plugin_installed;
+            this._recebidos_app_installed = obj.recebidos_app_installed;
+            this._recebidos_perfil_completo = obj.recebidos_perfil_completo;
 
             this._ong = new api.Tastypie.Resource<DoadorDoacaoOng>('doador/doacao-ong', {model: DoadorDoacaoOng, defaults: {doador_id: obj.doador_id}});
             this._distribuicao_resource = new api.Tastypie.Resource<any>('doador/profile/'+obj.doador_id+'/distribuir-pontos');
@@ -347,6 +355,9 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
             this._recebidos_cadastro = 0;
             this._recebidos_convite = 0;
             this._recebidos_compra = 0;
+            this._recebidos_plugin_installed = 0;
+            this._recebidos_app_installed = 0;
+            this._recebidos_perfil_completo = 0;
         }
     }
 
@@ -397,6 +408,18 @@ export class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
 
     public get recebidos_compra(): number {
         return this._recebidos_compra;
+    }
+
+    public get recebidos_plugin_installed(): number {
+        return this._recebidos_plugin_installed;
+    }
+
+    public get recebidos_app_installed(): number {
+        return this._recebidos_app_installed;
+    }
+
+    public get recebidos_perfil_completo(): number {
+        return this._recebidos_perfil_completo;
     }
 
     public get ong(): api.Tastypie.Resource<DoadorDoacaoOng> {

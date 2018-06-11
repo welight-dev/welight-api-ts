@@ -10,6 +10,8 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     slug: string;
     is_avaliador: boolean;
     is_empresa: boolean;
+    has_plugin: boolean;
+    has_app: boolean;
     private _email;
     private _dt_updated;
     private _dt_created;
@@ -94,6 +96,9 @@ export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     private _recebidos_cadastro;
     private _recebidos_convite;
     private _recebidos_compra;
+    private _recebidos_plugin_installed;
+    private _recebidos_app_installed;
+    private _recebidos_perfil_completo;
     private _ong;
     private _distribuicao_resource;
     constructor(obj?: any);
@@ -105,6 +110,9 @@ export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     readonly recebidos_cadastro: number;
     readonly recebidos_convite: number;
     readonly recebidos_compra: number;
+    readonly recebidos_plugin_installed: number;
+    readonly recebidos_app_installed: number;
+    readonly recebidos_perfil_completo: number;
     readonly ong: api.Tastypie.Resource<DoadorDoacaoOng>;
 }
 export declare class DoadorDoacaoMes extends api.Tastypie.Model<DoadorDoacaoMes> {
