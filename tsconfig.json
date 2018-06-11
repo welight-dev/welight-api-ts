@@ -15,7 +15,7 @@
     "lib/welight.ts"
   ],
   "include": [
-    "lib/modules/*",
+    "lib/modules/*"
   ],
   "exclude": [
     "node_modules"
