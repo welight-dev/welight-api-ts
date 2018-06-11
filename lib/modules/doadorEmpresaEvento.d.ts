@@ -54,7 +54,7 @@ export declare class Evento extends api.Tastypie.Model<Evento> {
     local: boolean;
     descricao: string;
     logo: string;
-    site: string;
+    website: string;
     dt_evento: string;
     dt_updated: string;
     dt_created: string;
