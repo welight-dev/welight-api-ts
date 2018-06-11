@@ -84,18 +84,25 @@ export declare class Venda extends api.Tastypie.Model<Venda> {
     cliente_id: number;
     empresa: Empresa;
     cliente: Cliente;
-    moeda: string;
-    valor_venda: number;
+    uid: string;
+    venda_moeda: string;
+    venda_valor: number;
     porcentagem: boolean;
     doacao_porcent: number;
-    doacao_total: number;
-    status: string;
+    doacao_valor: number;
+    cotacao_brl: number;
+    doacao_valor_brl: number;
+    total_taxa_adm: number;
+    doacao_ong: number;
     origem: string;
+    status: string;
     fatura_id: number;
+    descricao: number;
     dt_updated: string;
     dt_created: string;
-    ongs: api.Tastypie.Resource<ClienteVendaOng>;
+    private _ongs;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<Venda>);
+    readonly ongs: api.Tastypie.Resource<ClienteVendaOng>;
 }
 export declare class ClienteVendaOng extends api.Tastypie.Model<ClienteVendaOng> {
     static resource: api.Tastypie.Resource<ClienteVendaOng>;

@@ -218,19 +218,35 @@ export class Venda extends api.Tastypie.Model<Venda> {
 
     public empresa_id: number;
     public cliente_id: number;
+
     public empresa: Empresa;
     public cliente: Cliente;
-    public moeda: string;
-    public valor_venda: number;
+    public uid: string;
+
+    public venda_moeda: string;
+    public venda_valor: number;
+
     public porcentagem: boolean;
+
     public doacao_porcent: number;
-    public doacao_total: number;
-    public status: string;
+    public doacao_valor: number;
+
+    public cotacao_brl: number;
+    public doacao_valor_brl: number;
+
+    public total_taxa_adm: number;
+    public doacao_ong: number;
+
     public origem: string;
+    public status: string;
+
     public fatura_id: number;
+    public descricao: number;
+
     public dt_updated: string;
     public dt_created: string;
-    public ongs: api.Tastypie.Resource<ClienteVendaOng>;
+
+    private _ongs: api.Tastypie.Resource<ClienteVendaOng>;
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<Venda>){
         super(_resource || Venda.resource, obj);
@@ -238,9 +254,13 @@ export class Venda extends api.Tastypie.Model<Venda> {
             if(obj.empresa) this.empresa = new Empresa(obj.empresa);
             if(obj.cliente){
                 this.cliente = new Cliente(obj.cliente);
-                this.ongs = new api.Tastypie.Resource<ClienteVendaOng>('doador-empresa/cliente-venda-ong', {model: ClienteVendaOng, defaults: {cliente_id: this.cliente.id, cliente_key: this.cliente.cliente_key, venda_id: this.id}});
+                this._ongs = new api.Tastypie.Resource<ClienteVendaOng>('doador-empresa/cliente-venda-ong', {model: ClienteVendaOng, defaults: {cliente_id: this.cliente.id, cliente_key: this.cliente.cliente_key, venda_id: this.id}});
             }
         }
+    }
+
+    public get ongs(): api.Tastypie.Resource<ClienteVendaOng> {
+        return this._ongs;
     }
 }
 
