@@ -4,7 +4,7 @@
 import * as api from "ts-resource-tastypie";
 import { Doador } from "./doador";
 import { Ong } from "./ong";
-import { Fatura } from "./doadorEmpresaFatura";
+import { Fatura, FaturaDistribuicao } from "./doadorEmpresaFatura";
 
 export class Empresa extends api.Tastypie.Model<Empresa> {
     public static resource = new api.Tastypie.Resource<Empresa>('doador-empresa/profile', {model: Empresa});
@@ -164,6 +164,7 @@ export class Cliente extends api.Tastypie.Model<Cliente> {
     private _status_compras: {qtde: number, total_compra: number, total_doacao: number};
     private _compras: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<ClienteOng>;
+    private _doacoes: api.Tastypie.Resource<FaturaDistribuicao>;
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<Cliente>){
         super(_resource || Cliente.resource, obj);
@@ -176,6 +177,7 @@ export class Cliente extends api.Tastypie.Model<Cliente> {
             this._status_compras = obj.status_compras;
             this._ongs = new api.Tastypie.Resource<ClienteOng>('doador-empresa/cliente-ong', {model: ClienteOng, defaults: {cliente_id: obj.id, cliente_key: obj.cliente_key}});
             this._compras = new api.Tastypie.Resource<Venda>('doador-empresa/venda', {model: Venda, defaults: {cliente_id: obj.id, empresa_id: obj.empresa_id}});
+            this._doacoes = new api.Tastypie.Resource<FaturaDistribuicao>('doador-empresa-fatura/fatura-distribuicao', {model: FaturaDistribuicao, defaults: {cliente_id: obj.id}});
         }
     }
 
@@ -204,6 +206,10 @@ export class Cliente extends api.Tastypie.Model<Cliente> {
 
     public get compras(): api.Tastypie.Resource<Venda> {
         return this._compras;
+    }
+
+    public get doacoes(): api.Tastypie.Resource<FaturaDistribuicao> {
+        return this._doacoes;
     }
 }
 

@@ -1,7 +1,7 @@
 import * as api from "ts-resource-tastypie";
 import { Doador } from "./doador";
 import { Ong } from "./ong";
-import { Fatura } from "./doadorEmpresaFatura";
+import { Fatura, FaturaDistribuicao } from "./doadorEmpresaFatura";
 export declare class Empresa extends api.Tastypie.Model<Empresa> {
     static resource: api.Tastypie.Resource<Empresa>;
     nome: string;
@@ -64,6 +64,7 @@ export declare class Cliente extends api.Tastypie.Model<Cliente> {
     private _status_compras;
     private _compras;
     private _ongs;
+    private _doacoes;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<Cliente>);
     private initProfile(obj?);
     save(): Promise<Cliente>;
@@ -75,6 +76,7 @@ export declare class Cliente extends api.Tastypie.Model<Cliente> {
     };
     readonly ongs: api.Tastypie.Resource<ClienteOng>;
     readonly compras: api.Tastypie.Resource<Venda>;
+    readonly doacoes: api.Tastypie.Resource<FaturaDistribuicao>;
 }
 export declare class Venda extends api.Tastypie.Model<Venda> {
     static resource: api.Tastypie.Resource<Venda>;
