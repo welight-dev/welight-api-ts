@@ -2,8 +2,9 @@
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
 import * as api from "ts-resource-tastypie";
-import * as doador_models from "./doador";
-import * as ong_models from "./ong";
+import { Doador } from "./doador";
+import { Ong } from "./ong";
+import { Fatura } from "./doadorEmpresaFatura";
 
 export class Empresa extends api.Tastypie.Model<Empresa> {
     public static resource = new api.Tastypie.Resource<Empresa>('doador-empresa/profile', {model: Empresa});
@@ -17,14 +18,15 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public token: string;
     public acesso_ativo: boolean;
     public tela_resposta: EmpresaTelaResposta;
-    private _doador: doador_models.Doador;
+    private _doador: Doador;
     private _vendas: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<EmpresaOng>;
     private _cliente: api.Tastypie.Resource<Cliente>;
+    private _faturas: api.Tastypie.Resource<Fatura>;
 
     constructor(obj?:any){
         super(Empresa.resource, obj);
-        this._doador = new doador_models.Doador();
+        this._doador = new Doador();
         this.initProfile(obj);
     }
 
@@ -40,14 +42,17 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
 
     private initProfile(obj?: any): void {
         if(obj){
-            this._vendas = new api.Tastypie.Resource<Venda>('doador-empresa/venda', {model: Venda, defaults: {empresa_id: obj.id}});
-            this._ongs = new api.Tastypie.Resource<EmpresaOng>('doador-empresa/empresa-ong', {model: EmpresaOng, defaults: {empresa_id: obj.id}});
-            this._cliente = new api.Tastypie.Resource<Cliente>('doador-empresa/cliente', {model: Cliente, defaults: {empresa_id: obj.id}});
+            if(obj.id){
+                this._vendas = new api.Tastypie.Resource<Venda>('doador-empresa/venda', {model: Venda, defaults: {empresa_id: obj.id}});
+                this._ongs = new api.Tastypie.Resource<EmpresaOng>('doador-empresa/empresa-ong', {model: EmpresaOng, defaults: {empresa_id: obj.id}});
+                this._cliente = new api.Tastypie.Resource<Cliente>('doador-empresa/cliente', {model: Cliente, defaults: {empresa_id: obj.id}});
+                this._faturas = new api.Tastypie.Resource<Fatura>('doador-empresa-fatura/fatura', {model: Fatura, defaults: {empresa_id: obj.id}});
+            }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
         }
     }
 
-    public get doador(): doador_models.Doador {
+    public get doador(): Doador {
         return this._doador;
     }
 
@@ -63,10 +68,14 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
         return this._cliente;
     }
 
+    public get faturas(): api.Tastypie.Resource<Fatura> {
+        return this._faturas;
+    }
+
     public login(username: string, password: string, kwargs?:any): Promise<Empresa> {
         let _self = this;
-        return this._doador.login(username, password).then(
-            function(doador_response: doador_models.Doador){
+        return this._doador.login(username, password, kwargs).then(
+            function(doador_response: Doador){
                 return Empresa.resource.objects.findOne({doador_id:doador_response.id}).then(
                     function(empresa_resp: Empresa){
                         if(empresa_resp.id){
@@ -83,7 +92,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<Empresa> {
         let _self = this;
         return this._doador.quickLogin(auth, kwargs).then(
-            function(doador_response: doador_models.Doador){
+            function(doador_response: Doador){
                 return Empresa.resource.objects.findOne({doador_id:doador_response.id}).then(
                     function(empresa_resp: Empresa){
                         if(empresa_resp.id){
@@ -103,13 +112,13 @@ export class EmpresaOng extends api.Tastypie.Model<EmpresaOng> {
 
     public empresa_id: number;
     public ong_id: number;
-    public ong: ong_models.Ong;
+    public ong: Ong;
     public dt_created: string;
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<EmpresaOng>){
         super(_resource || EmpresaOng.resource, obj);
         if(obj){
-          if(obj.ong) this.ong = new ong_models.Ong(obj.ong);
+          if(obj.ong) this.ong = new Ong(obj.ong);
         }
     }
 }
@@ -119,13 +128,13 @@ export class EmpresaOngPublic extends api.Tastypie.Model<EmpresaOng> {
 
     public empresa_id: number;
     public ong_id: number;
-    public ong: ong_models.Ong;
+    public ong: Ong;
     public dt_created: string;
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<EmpresaOng>){
         super(_resource || EmpresaOng.resource, obj);
         if(obj){
-          if(obj.ong) this.ong = new ong_models.Ong(obj.ong);
+          if(obj.ong) this.ong = new Ong(obj.ong);
         }
     }
 }
@@ -134,12 +143,12 @@ export class ClienteOng extends api.Tastypie.Model<ClienteOng> {
     public static resource = new api.Tastypie.Resource<ClienteOng>('doador-empresa/cliente-ong', {model: ClienteOng});
 
     public cliente_id: number;
-    public ong: ong_models.Ong;
+    public ong: Ong;
 
     constructor(obj?:any){
         super(ClienteOng.resource, obj);
         if(obj){
-          if(obj.ong) this.ong = new ong_models.Ong(obj.ong);
+          if(obj.ong) this.ong = new Ong(obj.ong);
         }
     }
 }
@@ -234,13 +243,13 @@ export class ClienteVendaOng extends api.Tastypie.Model<ClienteVendaOng> {
 
     public venda_id: number;
     public ong_id: number;
-    public ong: ong_models.Ong;
+    public ong: Ong;
     public dt_created: string;
 
     constructor(obj?:any){
         super(ClienteVendaOng.resource, obj);
         if(obj){
-            if(obj.ong) this.ong = new ong_models.Ong(obj.ong);
+            if(obj.ong) this.ong = new Ong(obj.ong);
         }
     }
 }

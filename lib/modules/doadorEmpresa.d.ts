@@ -1,6 +1,7 @@
 import * as api from "ts-resource-tastypie";
-import * as doador_models from "./doador";
-import * as ong_models from "./ong";
+import { Doador } from "./doador";
+import { Ong } from "./ong";
+import { Fatura } from "./doadorEmpresaFatura";
 export declare class Empresa extends api.Tastypie.Model<Empresa> {
     static resource: api.Tastypie.Resource<Empresa>;
     nome: string;
@@ -16,13 +17,15 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     private _vendas;
     private _ongs;
     private _cliente;
+    private _faturas;
     constructor(obj?: any);
     save(): Promise<Empresa>;
     private initProfile(obj?);
-    readonly doador: doador_models.Doador;
+    readonly doador: Doador;
     readonly vendas: api.Tastypie.Resource<Venda>;
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
     readonly clientes: api.Tastypie.Resource<Cliente>;
+    readonly faturas: api.Tastypie.Resource<Fatura>;
     login(username: string, password: string, kwargs?: any): Promise<Empresa>;
     quickLogin(auth?: {
         username: string;
@@ -33,7 +36,7 @@ export declare class EmpresaOng extends api.Tastypie.Model<EmpresaOng> {
     static resource: api.Tastypie.Resource<EmpresaOng>;
     empresa_id: number;
     ong_id: number;
-    ong: ong_models.Ong;
+    ong: Ong;
     dt_created: string;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<EmpresaOng>);
 }
@@ -41,14 +44,14 @@ export declare class EmpresaOngPublic extends api.Tastypie.Model<EmpresaOng> {
     static resource: api.Tastypie.Resource<EmpresaOng>;
     empresa_id: number;
     ong_id: number;
-    ong: ong_models.Ong;
+    ong: Ong;
     dt_created: string;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<EmpresaOng>);
 }
 export declare class ClienteOng extends api.Tastypie.Model<ClienteOng> {
     static resource: api.Tastypie.Resource<ClienteOng>;
     cliente_id: number;
-    ong: ong_models.Ong;
+    ong: Ong;
     constructor(obj?: any);
 }
 export declare class Cliente extends api.Tastypie.Model<Cliente> {
@@ -96,7 +99,7 @@ export declare class ClienteVendaOng extends api.Tastypie.Model<ClienteVendaOng>
     static resource: api.Tastypie.Resource<ClienteVendaOng>;
     venda_id: number;
     ong_id: number;
-    ong: ong_models.Ong;
+    ong: Ong;
     dt_created: string;
     constructor(obj?: any);
 }
