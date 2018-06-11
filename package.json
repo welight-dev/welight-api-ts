@@ -1,6 +1,6 @@
 {
   "name": "welight-api-ts",
-  "version": "1.0.98",
+  "version": "1.0.99",
   "description": "TypeScript client for Welight platform",
   "main": "./lib/welight.js",
   "types": "./lib/welight.d.ts",
@@ -13,7 +13,7 @@
     "ts-resource-tastypie": "^1.0.38"
   },
   "devDependencies": {
-    "typescript": "^2.9.1"
+    "typescript": "~2.7.2"
   },
   "scripts": {
     "build": "tsc"
