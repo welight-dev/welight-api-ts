@@ -61,20 +61,18 @@ export declare class Cliente extends api.Tastypie.Model<Cliente> {
     nome: string;
     email: string;
     cliente_empresa: string;
-    private _cliente_key;
-    private _status_compras;
+    cliente_key: string;
+    status_compras: {
+        qtde: number;
+        total_compra: number;
+        total_doacao: number;
+    };
     private _compras;
     private _ongs;
     private _doacoes;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<Cliente>);
     private initProfile(obj?);
     save(): Promise<Cliente>;
-    readonly cliente_key: string;
-    readonly status_compras: {
-        qtde: number;
-        total_compra: number;
-        total_doacao: number;
-    };
     readonly ongs: api.Tastypie.Resource<ClienteOng>;
     readonly compras: api.Tastypie.Resource<Venda>;
     readonly doacoes: api.Tastypie.Resource<FaturaDistribuicao>;

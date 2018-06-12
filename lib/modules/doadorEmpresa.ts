@@ -177,8 +177,8 @@ export class Cliente extends api.Tastypie.Model<Cliente> {
     public nome: string;
     public email: string;
     public cliente_empresa: string;
-    private _cliente_key: string;
-    private _status_compras: {qtde: number, total_compra: number, total_doacao: number};
+    public cliente_key: string;
+    public status_compras: {qtde: number, total_compra: number, total_doacao: number};
     private _compras: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<ClienteOng>;
     private _doacoes: api.Tastypie.Resource<FaturaDistribuicao>;
@@ -190,8 +190,6 @@ export class Cliente extends api.Tastypie.Model<Cliente> {
 
     private initProfile(obj?: any): void {
         if(obj){
-            this._cliente_key = obj.cliente_key;
-            this._status_compras = obj.status_compras;
             this._ongs = new api.Tastypie.Resource<ClienteOng>('doador-empresa/cliente-ong', {model: ClienteOng, defaults: {cliente_id: obj.id, cliente_key: obj.cliente_key}});
             this._compras = new api.Tastypie.Resource<Venda>('doador-empresa/venda', {model: Venda, defaults: {cliente_id: obj.id, empresa_id: obj.empresa_id}});
             this._doacoes = new api.Tastypie.Resource<FaturaDistribuicao>('doador-empresa-fatura/fatura-distribuicao', {model: FaturaDistribuicao, defaults: {cliente_id: obj.id}});
@@ -202,19 +200,10 @@ export class Cliente extends api.Tastypie.Model<Cliente> {
         let _self = this;
         return super.save().then(
             function(data: Cliente){
-                _self.setData(data);
                 _self.initProfile(data);
                 return _self;
             }
         );
-    }
-
-    public get cliente_key(): string {
-        return this._cliente_key;
-    }
-
-    public get status_compras(): {qtde: number, total_compra: number, total_doacao: number} {
-        return this._status_compras;
     }
 
     public get ongs(): api.Tastypie.Resource<ClienteOng> {
