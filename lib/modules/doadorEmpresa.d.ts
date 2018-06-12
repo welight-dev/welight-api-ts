@@ -26,6 +26,7 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
     readonly clientes: api.Tastypie.Resource<Cliente>;
     readonly faturas: api.Tastypie.Resource<Fatura>;
+    createAccount(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<Empresa>;
     login(username: string, password: string, kwargs?: any): Promise<Empresa>;
     quickLogin(auth?: {
         username: string;

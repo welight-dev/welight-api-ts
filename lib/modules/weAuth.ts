@@ -80,6 +80,7 @@ export class User {
 
     private _we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account')
     private _we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong')
+    private _we_auth_user_create_account_doador_empresa_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-empresa')
     private _we_auth_user_login_resource = new api.Tastypie.Resource('we-auth/user/login')
     private _we_auth_user_logout_resource = new api.Tastypie.Resource('we-auth/user/logout')
     private _we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile')
@@ -255,6 +256,25 @@ export class User {
                   return _self;
               }else{
                   return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
+              }
+          }
+      )
+    }
+
+    public createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj:string, kwargs?:any): Promise<User> {
+      let _self = this;
+      return _self._we_auth_user_create_account_doador_empresa_resource.objects.create({
+          nome: nome,
+          email: email,
+          cpf_cnpj: cpf_cnpj,
+          kwargs: kwargs
+      }).then(
+          function(data: any){
+              _self.setProfile(data, kwargs);
+              if(_self._is_authenticated){
+                  return _self;
+              }else{
+                  return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_empresa] Usuario não identificado");
               }
           }
       )

@@ -46,6 +46,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     getPluginNavegadorLog(): Promise<DoadorPluginNavegador>;
     getPreferencia(): Promise<DoadorPreferencia>;
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<Doador>;
+    createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<Doador>;
     login(username: string, password: string, kwargs?: any): Promise<Doador>;
     loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<Doador>;
     quickLogin(auth?: {

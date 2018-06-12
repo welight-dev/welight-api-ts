@@ -72,6 +72,23 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
         return this._faturas;
     }
 
+    public createAccount(nome: string, email: string, cpf_cnpj:string, kwargs?:any): Promise<Empresa> {
+        let _self = this;
+        return this._doador.createAccountDoadorEmpresa(nome, email, cpf_cnpj, kwargs).then(
+            function(doador_response: Doador){
+                return Empresa.resource.objects.findOne({doador_id:doador_response.id}).then(
+                    function(empresa_resp: Empresa){
+                        if(empresa_resp.id){
+                            _self.setData(empresa_resp);
+                            _self.initProfile(empresa_resp);
+                        }
+                        return _self;
+                    }
+                );
+            }
+        );
+    }
+
     public login(username: string, password: string, kwargs?:any): Promise<Empresa> {
         let _self = this;
         return this._doador.login(username, password, kwargs).then(

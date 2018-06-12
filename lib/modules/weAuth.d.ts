@@ -35,6 +35,7 @@ export declare class User {
     private _plugin_navegador;
     private _we_auth_user_create_account_resource;
     private _we_auth_user_create_account_ong_resource;
+    private _we_auth_user_create_account_doador_empresa_resource;
     private _we_auth_user_login_resource;
     private _we_auth_user_logout_resource;
     private _we_auth_user_profile_resource;
@@ -56,6 +57,7 @@ export declare class User {
     private setProfile(data, kwargs?);
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<User>;
     createAccountOng(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<User>;
+    createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<User>;
     login(username: string, password: string, kwargs?: any): Promise<User>;
     loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<User>;
     private _quickLogin(username, apikey, kwargs?);

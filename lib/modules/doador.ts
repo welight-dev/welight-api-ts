@@ -179,6 +179,20 @@ export class Doador extends api.Tastypie.Model<Doador> {
         );
     }
 
+    public createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj:string, kwargs?:any): Promise<Doador> {
+        let _self = this;
+        return this._user.createAccountDoadorEmpresa(nome, email, cpf_cnpj, kwargs).then(
+            function(user: weauth_models.User){
+                return _self._doador_logado.objects.findOne().then(
+                    function(data: Doador){
+                        _self.initProfile(data);
+                        return _self;
+                    }
+                );
+            }
+        );
+    }
+
     public login(username: string, password: string, kwargs?:any): Promise<Doador> {
         let _self = this;
         return this._user.login(username, password, kwargs).then(
