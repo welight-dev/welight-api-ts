@@ -9,7 +9,7 @@ export class Environment {
 
     public static types: any = {
         local: 'http://127.0.0.1:8001/api/v2/',
-        dev: 'https://apidev2.welight.co/api/v2/',
+        dev: 'https://apidev.welight.co/api/v2/',
         prod: 'https://api.welight.co/api/v2/'
     }
 
@@ -30,11 +30,11 @@ export class Environment {
             url = 'http://localhost:4200'+(uri||'');
         }else if(Environment.env == 'dev'){
             if(name == 'home'){
-                url = 'https://homedev.welight.co'+(uri||'');
+                url = 'https://dev.welight.co'+(uri||'');
             }else if(name == 'doador'){
-                url = 'https://donatordev.welight.co'+(uri||'');
+                url = 'https://donator-dev.welight.co'+(uri||'');
             }else if(name == 'ong'){
-                url = 'https://ongdev.welight.co'+(uri||'');
+                url = 'https://ong-dev.welight.co'+(uri||'');
             }else if(name == 'doador_empresa'){
                 url = 'https://easyimpact-dev.welight.co'+(uri||'');
             }
