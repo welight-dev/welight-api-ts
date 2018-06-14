@@ -23,6 +23,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _qtde_pontos: number;
     private _qtde_doadores: number;
     private _profile_detail: OngDetail;
+    private _site_custom: OngSiteCustom;
     private _dt_updated: string;
     private _dt_created: string;
 
@@ -76,6 +77,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
             _self._dt_created = obj.dt_created;
 
             if(obj.profile_detail) _self._profile_detail = new OngDetail(obj.profile_detail);
+            if(obj.site_custom) _self._site_custom = new OngSiteCustom(obj.site_custom);
             if(obj.status) _self._status = new OngStatus(obj.status);
 
             if(_self.id){
@@ -115,6 +117,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get profile_detail(): OngDetail {
         return this._profile_detail;
+    }
+
+    public get site_custom(): OngSiteCustom {
+        return this._site_custom;
     }
 
     public get dt_updated(): string {
@@ -242,6 +248,22 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
     constructor(obj?:any){
       super(OngDetail.resource, obj);
+    }
+}
+
+export class OngSiteCustom {
+    public descricao: string;
+    public img_avatar: string;
+    public img_fundo: string;
+    public cor_filtro: string;
+
+    constructor(obj?:any){
+      if(obj){
+          this.descricao = obj.descricao;
+          this.img_avatar = obj.img_avatar;
+          this.img_fundo = obj.img_fundo;
+          this.cor_filtro = obj.cor_filtro;
+      }
     }
 }
 

@@ -16,6 +16,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _qtde_pontos;
     private _qtde_doadores;
     private _profile_detail;
+    private _site_custom;
     private _dt_updated;
     private _dt_created;
     private _user;
@@ -36,6 +37,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     readonly qtde_pontos: number;
     readonly qtde_doadores: number;
     readonly profile_detail: OngDetail;
+    readonly site_custom: OngSiteCustom;
     readonly dt_updated: string;
     readonly dt_created: string;
     readonly timeline: api.Tastypie.Resource<OngTimeLine>;
@@ -74,6 +76,13 @@ export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     dt_fundacao: string;
     dt_updated: string;
     dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngSiteCustom {
+    descricao: string;
+    img_avatar: string;
+    img_fundo: string;
+    cor_filtro: string;
     constructor(obj?: any);
 }
 export declare class OngEndereco extends api.Tastypie.Model<OngEndereco> {
