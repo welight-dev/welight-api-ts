@@ -84,7 +84,9 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                         }
                         return _self;
                     }
-                );
+                ).catch(function(){
+                    return _self;
+                });
             }
         );
     }
@@ -101,7 +103,9 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                         }
                         return _self;
                     }
-                );
+                ).catch(function(){
+                    return _self;
+                });
             }
         );
     }
@@ -118,7 +122,9 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                         }
                         return _self;
                     }
-                );
+                ).catch(function(){
+                    return _self;
+                });
             }
         );
     }
