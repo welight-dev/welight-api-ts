@@ -359,8 +359,10 @@ export class User {
         this._auth = new Auth('','');
         this._apps = [];
         if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
-        let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
-        document.dispatchEvent(wl_msg_event);
+        if(config.Environment.env == 'prod'){
+          let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
+          document.dispatchEvent(wl_msg_event);
+        }
     }
 
     public logout(): Promise<any> {
