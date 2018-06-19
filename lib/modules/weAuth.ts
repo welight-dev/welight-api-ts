@@ -351,27 +351,36 @@ export class User {
         }
     }
 
+    private _logout(): void {
+        api.Tastypie.Provider.removeAuth('welight');
+        this.name = ''
+        this._email = ''
+        this._is_authenticated = false;
+        this._auth = new Auth('','');
+        this._apps = [];
+        if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
+        let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
+        document.dispatchEvent(wl_msg_event);
+    }
+
     public logout(): Promise<any> {
         let _self = this;
         if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
         return _self._we_auth_user_logout_resource.objects.findOne().then(
-            function(data: any){
-              _self.name = ''
-              _self._email = ''
-              _self._is_authenticated = false;
-              _self._auth = new Auth('','');
-              _self._apps = [];
-              if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
-              let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
-              document.dispatchEvent(wl_msg_event);
-              return data;
+            function(){
+              _self._logout();
+              return _self;
             }
-        )
+        ).catch(function(){
+            _self._logout();
+            return _self;
+        });
     }
 
     public reset_password_request(email: string, kwargs?:any): Promise<any> {
         return this._we_auth_user_reset_pass_request_resource.objects.create({
-            email: email
+            email: email,
+            kwargs: kwargs
         });
     }
 

@@ -65,6 +65,7 @@ export declare class User {
         username: string;
         apikey: string;
     }, kwargs?: any): Promise<User>;
+    private _logout();
     logout(): Promise<any>;
     reset_password_request(email: string, kwargs?: any): Promise<any>;
     reset_password_execute(token: string, password: string, kwargs?: any): Promise<User>;
