@@ -338,11 +338,11 @@ export declare class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntr
     titulo: string;
     descricao: string;
     ativo: boolean;
-    mt_pessoas: string;
-    mt_animais: string;
-    mt_arvores: string;
-    mt_areas: string;
-    mt_criancas: string;
+    mt_pessoas: number;
+    mt_animais: number;
+    mt_arvores: number;
+    mt_areas: number;
+    mt_criancas: number;
     dt_entrega: string;
     dt_updated: string;
     dt_created: string;

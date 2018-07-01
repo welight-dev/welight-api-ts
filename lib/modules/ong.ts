@@ -741,11 +741,11 @@ export class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntrega> {
     public descricao: string;
     public ativo: boolean;
 
-    public mt_pessoas: string;
-    public mt_animais: string;
-    public mt_arvores: string;
-    public mt_areas: string;
-    public mt_criancas: string;
+    public mt_pessoas: number;
+    public mt_animais: number;
+    public mt_arvores: number;
+    public mt_areas: number;
+    public mt_criancas: number;
 
     public dt_entrega: string;
     public dt_updated: string;
@@ -762,6 +762,12 @@ export class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntrega> {
                 this._comprovante = new api.Tastypie.Resource<OngProjetoEntregaComprovante>('ong/projeto-entrega-comprovante', {model: OngProjetoEntregaComprovante, defaults: {projeto_entrega_id:obj.id}});
             }
             if(obj.projeto) this.projeto = new OngProjeto(obj.projeto);
+        }else{
+            this.mt_pessoas = 0;
+            this.mt_animais = 0;
+            this.mt_arvores = 0;
+            this.mt_areas = 0;
+            this.mt_criancas = 0;
         }
     }
 
