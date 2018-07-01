@@ -13,6 +13,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _status;
     private _ativo;
     private _parceira;
+    private _invite;
     private _qtde_pontos;
     private _qtde_doadores;
     private _profile_detail;
@@ -34,6 +35,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     readonly status: OngStatus;
     readonly ativo: boolean;
     readonly parceira: boolean;
+    readonly invite: string;
     readonly qtde_pontos: number;
     readonly qtde_doadores: number;
     readonly profile_detail: OngDetail;
@@ -336,6 +338,11 @@ export declare class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntr
     titulo: string;
     descricao: string;
     ativo: boolean;
+    mt_pessoas: string;
+    mt_animais: string;
+    mt_arvores: string;
+    mt_areas: string;
+    mt_criancas: string;
     dt_entrega: string;
     dt_updated: string;
     dt_created: string;

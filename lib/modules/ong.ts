@@ -20,6 +20,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _status: OngStatus;
     private _ativo: boolean;
     private _parceira: boolean;
+    private _invite: string;
     private _qtde_pontos: number;
     private _qtde_doadores: number;
     private _profile_detail: OngDetail;
@@ -71,6 +72,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
             _self._ativo = obj.ativo;
             _self._parceira = obj.parceira;
+            _self._invite = obj.invite;
             _self._qtde_pontos = obj.qtde_pontos;
             _self._qtde_doadores = obj.qtde_doadores;
             _self._dt_updated = obj.dt_updated;
@@ -105,6 +107,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get parceira(): boolean {
         return this._parceira;
+    }
+
+    public get invite(): string {
+        return this._invite;
     }
 
     public get qtde_pontos(): number {
@@ -734,6 +740,13 @@ export class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntrega> {
     public titulo: string;
     public descricao: string;
     public ativo: boolean;
+
+    public mt_pessoas: string;
+    public mt_animais: string;
+    public mt_arvores: string;
+    public mt_areas: string;
+    public mt_criancas: string;
+
     public dt_entrega: string;
     public dt_updated: string;
     public dt_created: string;

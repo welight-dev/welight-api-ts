@@ -16,6 +16,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public logo: string;
     public website: string;
     public token: string;
+    public invite: string;
     public acesso_ativo: boolean;
     public tela_resposta: EmpresaTelaResposta;
     private _doador: Doador;
@@ -250,7 +251,10 @@ export class Venda extends api.Tastypie.Model<Venda> {
     public doacao_ong: number;
 
     public origem: string;
-    public status: string;
+    public status_venda: string;
+    public status_doacao: string;
+
+    public teste_ab: string;
 
     public fatura_id: number;
     public descricao: number;

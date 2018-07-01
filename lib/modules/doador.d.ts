@@ -12,6 +12,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     is_empresa: boolean;
     has_plugin: boolean;
     has_app: boolean;
+    invite: string;
     private _email;
     private _dt_updated;
     private _dt_created;
