@@ -29,6 +29,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
     private _user: weauth_models.User;
     private _check_slug_resource: api.Tastypie.Resource<{available: boolean}>;
     private _doador_logado: api.Tastypie.Resource<Doador>;
+    private _set_all_notify_read = new api.Tastypie.Resource<any>('we-notify/doador/set-all-read');
 
     constructor(obj?: any){
         super(Doador.resource);
@@ -108,6 +109,10 @@ export class Doador extends api.Tastypie.Model<Doador> {
 
     public get plugin_navegador(): utils.PluginNavegador {
         return this._user.plugin_navegador;
+    }
+
+    public set_all_notify_read(): Promise<any> {
+        return this._set_all_notify_read.objects.create({set_all_read: true});
     }
 
     public notificarPlugin(): Promise<any> {
