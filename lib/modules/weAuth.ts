@@ -321,15 +321,18 @@ export class User {
       let _self = this;
       api.Tastypie.Provider.setAuth('welight', username, apikey);
       return _self._we_auth_user_profile_resource.objects.findOne({kwargs:kwargs}).then(
-        function(data: any){
-            _self.setProfile(data, kwargs);
-            if(_self._is_authenticated){
-                return _self;
-            }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
-            }
-        }
-      );
+          function(data: any){
+              _self.setProfile(data, kwargs);
+              if(_self._is_authenticated){
+                  return _self;
+              }else{
+                  return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+              }
+          }
+      ).catch(function(){
+          _self._logout();
+          return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+      });
     }
 
     public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<User> {
