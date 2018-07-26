@@ -133,3 +133,38 @@ export declare class EmpresaOngTelaResposta extends EmpresaOng {
     children_id: number;
     constructor(obj?: any);
 }
+export declare class VendaAnalytics extends api.Tastypie.Model<VendaAnalytics> {
+    static resource: api.Tastypie.Resource<VendaAnalytics>;
+    teste: {
+        "a": number;
+        "b": number;
+    };
+    audiencia: {
+        "sucesso": {
+            "a": number;
+            "b": number;
+        };
+        "abandono": {
+            "a": number;
+            "b": number;
+        };
+        "ticket_medio": {
+            "a": number;
+            "b": number;
+        };
+    };
+    timeline: Array<{
+        "title": string;
+        "content": {
+            "a": number;
+            "b": number;
+        };
+    }>;
+    ongs: Array<{
+        "ong_id": number;
+        "ong_nome": string;
+        "porcentagem": number;
+        "qtde": number;
+    }>;
+    constructor(obj?: any);
+}

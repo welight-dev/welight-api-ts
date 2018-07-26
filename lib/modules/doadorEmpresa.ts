@@ -327,3 +327,20 @@ export class EmpresaOngTelaResposta extends EmpresaOng {
         super(obj, EmpresaOngTelaResposta.resource);
     }
 }
+
+export class VendaAnalytics extends api.Tastypie.Model<VendaAnalytics> {
+    public static resource = new api.Tastypie.Resource<VendaAnalytics>('doador-empresa/venda/analytics', {model: VendaAnalytics});
+
+    public teste: {"a": number, "b": number};
+    public audiencia: {
+        "sucesso": {"a": number, "b": number},
+        "abandono": {"a": number, "b": number},
+        "ticket_medio": {"a": number, "b": number}
+    };
+    public timeline: Array<{"title":string, "content": {"a":number, "b": number}}>;
+    public ongs: Array<{"ong_id": number, "ong_nome": string, "porcentagem": number, "qtde": number}>;
+
+    constructor(obj?:any){
+        super(VendaAnalytics.resource, obj);
+    }
+}
