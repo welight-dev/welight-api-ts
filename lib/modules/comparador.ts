@@ -18,17 +18,19 @@ export class Produto extends api.Tastypie.Model<Produto> {
     public categoria_nome: string;
     public descricao_curta: string;
     public descricao_longa: string;
-    public cat_tree: any;
-    public lojas: any;
+    public cat_tree: Array<CategorySumary>;
+    public lojas: Array<any>;
+    public afiliadora_id: number;
+    public fabricante: string;
 
     constructor(obj?:any){
         super(Produto.resource, obj);
-        let _self = this;
-        if(_self.cat_tree){
-            let cat_tree = _self.cat_tree;
-            _self.cat_tree = [];
-            for(let obj of cat_tree){
-                _self.cat_tree.push(new CategorySumary(obj));
+        if(obj){
+            if(obj.cat_tree){
+                this.cat_tree = [];
+                for(let cat of obj.cat_tree){
+                    this.cat_tree.push(new CategorySumary(cat));
+                }
             }
         }
     }
@@ -42,59 +44,28 @@ export class Categoria extends api.Tastypie.Model<Categoria> {
     public cat_tree: Array<CategorySumary>;
     public filters: Array<Filter>;
     public level: number;
+    public leaf: boolean;
+    public parent_id: number;
 
     constructor(obj?:any){
         super(Categoria.resource, obj);
-        let _self = this;
 
-        if(_self.cat_tree){
-            let cat_tree = _self.cat_tree;
-            _self.cat_tree = [];
-            for(let obj of cat_tree){
-                _self.cat_tree.push(new CategorySumary(obj));
+        if(obj){
+            if(obj.cat_tree){
+                this.cat_tree = [];
+                for(let cat of obj.cat_tree){
+                    this.cat_tree.push(new CategorySumary(cat));
+                }
             }
-        }
 
-        if(_self.filters){
-            let filters = _self.filters;
-            _self.filters = [];
-            for(let obj of filters){
-                let filter = new Filter(obj.name);
-                filter.setOptions(obj.options);
-                _self.filters.push(filter);
+            if(obj.filters){
+                this.filters = [];
+                for(let fil of obj.filters){
+                    let filter = new Filter(fil.name);
+                    filter.setOptions(fil.options);
+                    this.filters.push(filter);
+                }
             }
-        }
-    }
-}
-
-export class CategoryFilters {
-    public id: number;
-    public name: string;
-    public doc_count: number;
-    public cat_tree: Array<CategorySumary>;
-    public filters: Array<Filter>;
-
-    constructor(id: number, name: string, doc_count: number){
-        this.id = id;
-        this.name = name;
-        this.doc_count = doc_count;
-        this.cat_tree = [];
-        this.filters = [];
-    }
-
-    public setCatTree(data: Array<any>): void {
-        let _self = this;
-        for(let obj of data){
-            _self.cat_tree.push(new CategorySumary(obj));
-        }
-    }
-
-    public setFilters(data: Array<any>): void {
-        let _self = this;
-        for(let obj of data){
-            let filter = new Filter(obj.name);
-            filter.setOptions(obj.options);
-            _self.filters.push(filter);
         }
     }
 }
@@ -119,9 +90,8 @@ export class Filter {
     }
 
     public setOptions(data: Array<any>): void {
-        let _self = this;
         for(let obj of data){
-            _self.options.push(new FilterOption(obj));
+            this.options.push(new FilterOption(obj));
         }
     }
 }
@@ -140,14 +110,15 @@ export class FilterOption {
 
 export class Comparador {
     public products: api.Tastypie.Resource<Produto>;
-    public categories: Array<CategoryFilters>;
-    public category_selected: number;
+    public categories: Array<Categoria>;
+    public category_selected: Categoria;
     private _filters_selected: any;
     public order_by: string;
     public query_string: string;
-    private products_categories: api.Tastypie.Resource<any>;
     private _prefiltred: boolean;
-    public raiz: boolean;
+    public home: boolean;
+    public search_loading: boolean;
+    public filter_loading: boolean;
 
     constructor(defaults?:any){
         this.categories = [];
@@ -156,13 +127,15 @@ export class Comparador {
         this.order_by = '';
         this.query_string = "";
         this._prefiltred = false;
-        this.raiz = true;
+        this.home = true;
+        this.search_loading = false;
+        this.filter_loading = false;
         this.products = new api.Tastypie.Resource<Produto>('comparador/products/search', {model: Produto, defaults: defaults});
-        this.products_categories = new api.Tastypie.Resource<any>('comparador/products-categories/search');
     }
 
-    public search(q:string, params?:{category_id?:number, order_by?:string, filters?:Array<{filter_name: string, option_id: number}>}): Promise<Comparador> {
+    public search(q:string, params?:{category?:Categoria, order_by?:string, filters?:Array<{filter_name: string, option_id: number}>}): Promise<Comparador> {
         let _self = this;
+        _self.search_loading = true;
         _self.categories = [];
         _self.category_selected = null;
         _self._filters_selected = {};
@@ -170,8 +143,8 @@ export class Comparador {
         _self.query_string = q;
 
         if(params){
-            if(params.category_id){
-                _self.category_selected = params.category_id;
+            if(params.category){
+                _self.category_selected = params.category;
             }
 
             if(params.order_by){
@@ -189,82 +162,71 @@ export class Comparador {
 
         return _self.products.objects.find(data_params).then(
             function(page){
-                if(page.meta.kwargs.hasOwnProperty('prefilter')){
+
+                if(page.meta.kwargs.hasOwnProperty('home')){
+                    _self.home = page.meta.kwargs.home;
+                }
+
+                if(page.meta.kwargs.hasOwnProperty('prefilter') && page.meta.kwargs.prefilter.categories.length > 0){
                     for(let cat of page.meta.kwargs.prefilter.categories || []){
-                        let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
-                        cat_filter.setCatTree(cat.cat_tree);
-                        cat_filter.setFilters(cat.filters);
-                        _self.categories.push(cat_filter);
+                        _self.categories.push(new Categoria(cat));
                     }
 
                     if(_self.categories.length === 1){
                         let cat_sel = _self.categories[0];
-                        _self.category_selected = cat_sel.id;
+                        _self.category_selected = cat_sel;
 
                         for(let filtered of page.meta.kwargs.prefilter.filtered || []){
                             _self.addFilter(filtered.filter_name, filtered.option_id);
                         }
                         _self._prefiltred = true;
                     }
-                }
-
-                if(_self.categories.length === 0){
-                    if(page.meta.kwargs.hasOwnProperty('categories')){
-                        for(let cat of page.meta.kwargs.categories || []){
-                            let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
-                            cat_filter.setCatTree(cat.cat_tree);
-                            cat_filter.setFilters(cat.filters);
-                            _self.categories.push(cat_filter);
-                        }
-                    }
-                }
-
-                if(_self.categories.length === 0){
-                    if((!data_params.q || data_params.q === '') && (!params || Object.keys(params).length === 0)){
-                        _self.raiz = true;
-                        _self.products_categories.objects.find({level:0}).then(
-                            function(page_categories){
-                                for(let cat of page_categories.objects || []){
-                                    let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
-                                    cat_filter.setCatTree(cat.cat_tree);
-                                    cat_filter.setFilters(cat.filters);
-                                    _self.categories.push(cat_filter);
-                                }
-                                return _self;
-                            }
-                        )
-                    }else{
-                        _self.raiz = false;
-                        return _self;
-                    }
-                }else{
-                    _self.raiz = false;
-                    return _self;
-                }
-            }
-        )
-    }
-
-    public selectCategory(category_id: number): Promise<Comparador> {
-        let _self = this;
-        _self.category_selected = category_id;
-        _self.categories = [];
-        _self._filters_selected = {};
-        _self.order_by = '';
-        return _self.products.objects.find({q:_self.query_string, category_id: category_id}).then(
-            function(page){
-                if(page.meta.kwargs.hasOwnProperty('categories')){
+                }else if(page.meta.kwargs.hasOwnProperty('categories') && page.meta.kwargs.categories.length > 0){
                     for(let cat of page.meta.kwargs.categories || []){
-                        let cat_filter = new CategoryFilters(cat.id, cat.name, cat.doc_count);
-                        cat_filter.setCatTree(cat.cat_tree);
-                        cat_filter.setFilters(cat.filters);
-                        _self.categories.push(cat_filter);
+                        _self.categories.push(new Categoria(cat));
                     }
-                    _self.raiz = false;
+
+                    if(_self.categories.length === 1){
+                        _self.category_selected = _self.categories[0];
+                    }
                 }
+                _self.search_loading = false;
                 return _self;
             }
-        )
+        ).catch(
+            function(error: any){
+                _self.search_loading = false;
+                throw error;
+            }
+        );
+    }
+
+    public selectCategory(category: Categoria): Promise<Comparador> {
+        let _self = this;
+        _self.search_loading = true;
+        return _self.products.objects.find({q:_self.query_string, category_id: category.id}).then(
+            function(page){
+                _self.category_selected = category;
+                _self.categories = [];
+                _self._filters_selected = {};
+                _self.order_by = '';
+                if(page.meta.kwargs.hasOwnProperty('categories') && page.meta.kwargs.categories.length > 0){
+                    for(let cat of page.meta.kwargs.categories || []){
+                        _self.categories.push(new Categoria(cat));
+                    }
+                }
+                if(page.meta.kwargs.hasOwnProperty('home')){
+                    _self.home = page.meta.kwargs.home;
+                }
+                _self.search_loading = false;
+                return _self;
+            }
+        ).catch(
+            function(error: any){
+                _self.search_loading = false;
+                throw error;
+            }
+        );
     }
 
     public getFiltersSelected(): Array<number> {
@@ -316,7 +278,7 @@ export class Comparador {
         data.q = _self.query_string;
 
         if(_self.category_selected){
-          data.category_id = _self.category_selected;
+            data.category_id = _self.category_selected.id;
         }
 
         if(filters){
@@ -332,6 +294,8 @@ export class Comparador {
 
     public filter(): Promise<Comparador> {
         let _self = this;
+        _self.filter_loading = true;
+
         let params = _self.getParams();
 
         if(_self._prefiltred){
@@ -339,10 +303,18 @@ export class Comparador {
         }
         return _self.products.objects.find(params).then(
             function(page){
-                _self.raiz = false;
+                if(page.meta.kwargs.hasOwnProperty('home')){
+                    _self.home = page.meta.kwargs.home;
+                }
+                _self.filter_loading = false;
                 return _self;
             }
-        )
+        ).catch(
+            function(error: any){
+                _self.filter_loading = false;
+                throw error;
+            }
+        );
     }
 
     public getQueryFilters(): string {

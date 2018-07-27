@@ -13,8 +13,10 @@ export declare class Produto extends api.Tastypie.Model<Produto> {
     categoria_nome: string;
     descricao_curta: string;
     descricao_longa: string;
-    cat_tree: any;
-    lojas: any;
+    cat_tree: Array<CategorySumary>;
+    lojas: Array<any>;
+    afiliadora_id: number;
+    fabricante: string;
     constructor(obj?: any);
 }
 export declare class Categoria extends api.Tastypie.Model<Categoria> {
@@ -24,17 +26,9 @@ export declare class Categoria extends api.Tastypie.Model<Categoria> {
     cat_tree: Array<CategorySumary>;
     filters: Array<Filter>;
     level: number;
+    leaf: boolean;
+    parent_id: number;
     constructor(obj?: any);
-}
-export declare class CategoryFilters {
-    id: number;
-    name: string;
-    doc_count: number;
-    cat_tree: Array<CategorySumary>;
-    filters: Array<Filter>;
-    constructor(id: number, name: string, doc_count: number);
-    setCatTree(data: Array<any>): void;
-    setFilters(data: Array<any>): void;
 }
 export declare class CategorySumary {
     id: number;
@@ -62,24 +56,25 @@ export declare class FilterOption {
 }
 export declare class Comparador {
     products: api.Tastypie.Resource<Produto>;
-    categories: Array<CategoryFilters>;
-    category_selected: number;
+    categories: Array<Categoria>;
+    category_selected: Categoria;
     private _filters_selected;
     order_by: string;
     query_string: string;
-    private products_categories;
     private _prefiltred;
-    raiz: boolean;
+    home: boolean;
+    search_loading: boolean;
+    filter_loading: boolean;
     constructor(defaults?: any);
     search(q: string, params?: {
-        category_id?: number;
+        category?: Categoria;
         order_by?: string;
         filters?: Array<{
             filter_name: string;
             option_id: number;
         }>;
     }): Promise<Comparador>;
-    selectCategory(category_id: number): Promise<Comparador>;
+    selectCategory(category: Categoria): Promise<Comparador>;
     getFiltersSelected(): Array<number>;
     getGroupName(filter_name: string): string;
     addFilter(filter_name: string, option_id: number): void;
