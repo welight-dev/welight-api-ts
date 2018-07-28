@@ -91,7 +91,9 @@ export class Filter {
 
     public setOptions(data: Array<any>): void {
         for(let obj of data){
-            this.options.push(new FilterOption(obj));
+            if(obj.doc_count > 0){
+              this.options.push(new FilterOption(obj));
+            }
         }
     }
 }
@@ -169,7 +171,9 @@ export class Comparador {
 
                 if(page.meta.kwargs.hasOwnProperty('prefilter') && page.meta.kwargs.prefilter.categories.length > 0){
                     for(let cat of page.meta.kwargs.prefilter.categories || []){
-                        _self.categories.push(new Categoria(cat));
+                        if(cat.doc_count > 0){
+                            _self.categories.push(new Categoria(cat));
+                        }
                     }
 
                     if(_self.categories.length === 1){
@@ -183,7 +187,9 @@ export class Comparador {
                     }
                 }else if(page.meta.kwargs.hasOwnProperty('categories') && page.meta.kwargs.categories.length > 0){
                     for(let cat of page.meta.kwargs.categories || []){
-                        _self.categories.push(new Categoria(cat));
+                        if(cat.doc_count > 0){
+                            _self.categories.push(new Categoria(cat));
+                        }
                     }
 
                     if(_self.categories.length === 1){
@@ -201,22 +207,41 @@ export class Comparador {
         );
     }
 
+    public selectCategoryById(category_id: number): Promise<Comparador> {
+        let _self = this;
+        _self.search_loading = true;
+        return Categoria.resource.objects.get(category_id).then(function(cat: Categoria){
+            return _self.selectCategory(cat);
+        }).catch(
+            function(error: any){
+                _self.search_loading = false;
+                throw error;
+            }
+        );
+    }
+
     public selectCategory(category: Categoria): Promise<Comparador> {
         let _self = this;
         _self.search_loading = true;
         return _self.products.objects.find({q:_self.query_string, category_id: category.id}).then(
             function(page){
-                _self.category_selected = category;
                 _self.categories = [];
                 _self._filters_selected = {};
                 _self.order_by = '';
                 if(page.meta.kwargs.hasOwnProperty('categories') && page.meta.kwargs.categories.length > 0){
                     for(let cat of page.meta.kwargs.categories || []){
-                        _self.categories.push(new Categoria(cat));
+                        if(cat.doc_count > 0){
+                            _self.categories.push(new Categoria(cat));
+                        }
                     }
                 }
                 if(page.meta.kwargs.hasOwnProperty('home')){
                     _self.home = page.meta.kwargs.home;
+                }
+                if(_self.categories.length === 1){
+                    _self.category_selected = _self.categories[0];
+                }else{
+                    _self.category_selected = category;
                 }
                 _self.search_loading = false;
                 return _self;
@@ -227,6 +252,10 @@ export class Comparador {
                 throw error;
             }
         );
+    }
+
+    public reset(): Promise<Comparador> {
+        return this.search('');
     }
 
     public getFiltersSelected(): Array<number> {

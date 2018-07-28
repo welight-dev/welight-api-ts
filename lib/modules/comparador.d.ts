@@ -74,7 +74,9 @@ export declare class Comparador {
             option_id: number;
         }>;
     }): Promise<Comparador>;
+    selectCategoryById(category_id: number): Promise<Comparador>;
     selectCategory(category: Categoria): Promise<Comparador>;
+    reset(): Promise<Comparador>;
     getFiltersSelected(): Array<number>;
     getGroupName(filter_name: string): string;
     addFilter(filter_name: string, option_id: number): void;
