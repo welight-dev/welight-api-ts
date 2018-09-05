@@ -297,15 +297,17 @@ export class OngBanco extends api.Tastypie.Model<OngBanco> {
     public static resource = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco});
 
     public ong_id: number;
-    public codigo: string;
-    public banco: string;
-    public conta_corrente: string;
-    public conta_corrente_digito: string;
+    public banco_codigo: string;
+    public banco_nome: string;
     public agencia: string;
     public agencia_digito: string;
+    public conta_corrente: string;
+    public conta_corrente_digito: string;
     public pessoa_fisica: boolean;
     public titular: string;
     public cpf_cnpj: string;
+    public dt_updated: string;
+    public dt_created: string;
 
     constructor(obj?:any){
       super(OngBanco.resource, obj);
@@ -423,11 +425,13 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public inicializado: boolean;
     public dt_updated: string;
     public dt_created: string;
+    public status: {total_entrega: number, total_investido: number};
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _ods: api.Tastypie.Resource<OngProjetoOds>;
     private _indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
     private _recursos: api.Tastypie.Resource<OngRecurso>;
+    private _entregas: api.Tastypie.Resource<OngProjetoEntrega>;
 
     public getSobre(): Promise<OngProjetoSobre> {
         return OngProjetoSobre.resource.objects.findOne({ong_projeto_id: this.id});
@@ -440,6 +444,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
             this._ods = new api.Tastypie.Resource<OngProjetoOds>('ong/projeto-ods', {model: OngProjetoOds, defaults: {ong_projeto_id: this.id}});
             this._indicadores = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador, defaults: {ong_projeto_id: this.id}});
             this._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_projeto_id: this.id}});
+            this._entregas = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega, defaults: {ong_projeto_id: this.id}});
         }
     }
 
@@ -457,6 +462,10 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     public get recursos(): api.Tastypie.Resource<OngRecurso> {
         return this._recursos;
+    }
+
+    public get entregas(): api.Tastypie.Resource<OngProjetoEntrega> {
+        return this._entregas;
     }
 }
 
@@ -682,10 +691,35 @@ export class OngStatusCarteira extends api.Tastypie.Model<OngStatusCarteira>{
     }
 }
 
+export class OngCarteiraTransferencia {
+    public banco_codigo: string;
+    public banco_nome: string;
+    public agencia: string;
+    public agencia_digito: string;
+    public conta_corrente: string;
+    public conta_corrente_digito: string;
+    public pessoa_fisica: boolean;
+    public titular: string;
+    public cpf_cnpj: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        if(obj){
+          let _self = this;
+          for(let property in obj) {
+              if (obj.hasOwnProperty(property) && property.charAt(0) != '_') {
+                  _self[property] = obj[property];
+              }
+          }
+        }
+    }
+}
+
 export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
 
     public static resource = new api.Tastypie.Resource<OngCarteira>('ong/carteira', {model: OngCarteira});
     private static _creditar = new api.Tastypie.Resource<OngCarteira>('ong/carteira/creditar', {model: OngCarteira});
+    private static _transferir = new api.Tastypie.Resource<OngCarteira>('ong/carteira/transferir', {model: OngCarteira});
 
     public ong_id: number;
     public origem_credito_id: number;
@@ -694,6 +728,7 @@ export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
     public moeda: string;
     public valor: number;
     public status: string;
+    public transferencia: OngCarteiraTransferencia;
     public dt_updated: string;
     public dt_created: string;
 
@@ -701,11 +736,16 @@ export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
         super(OngCarteira.resource, obj);
         if(obj){
           if(obj.origem_credito) this.origem_credito = new OngOrigemCredito(obj.origem_credito);
+          if(obj.transferencia) this.transferencia = new OngCarteiraTransferencia(obj.transferencia);
         }
     }
 
     public static creditar(obj:{ong_id:number, origem_credito_id: number, valor: number}): Promise<OngCarteira> {
         return this._creditar.objects.create(obj);
+    }
+
+    public static transferir(obj:{ong_id:number, origem_credito_id: number, ong_banco_id: number, valor: number}): Promise<OngCarteira> {
+        return this._transferir.objects.create(obj);
     }
 }
 

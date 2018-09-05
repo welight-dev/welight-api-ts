@@ -499,6 +499,7 @@ export class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     private _doador_doacao_direta: number;
     private _doador_doacao_pool: number;
     private _doador_doacao_total: number;
+    private _doador_doacao_soluz: number;
     private _doador_doacao_impacto: number;
 
     private _rede_acima_doacao_pendente: number;
@@ -538,6 +539,7 @@ export class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
             this._doador_doacao_direta = obj.doador_doacao_direta;
             this._doador_doacao_pool = obj.doador_doacao_pool;
             this._doador_doacao_total = obj.doador_doacao_total;
+            this._doador_doacao_soluz = obj.doador_doacao_soluz;
             this._doador_doacao_impacto = obj.doador_doacao_impacto;
 
             this._rede_acima_doacao_pendente = obj.rede_acima_doacao_pendente;
@@ -559,6 +561,8 @@ export class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
             this._rede_indireta_doacao_direta = obj.rede_indireta_doacao_direta;
             this._rede_indireta_doacao_pool = obj.rede_indireta_doacao_pool;
             this._rede_indireta_doacao_total = obj.rede_indireta_doacao_total;
+
+            this._dt_updated = obj.dt_updated;
 
             this._doacao_ong = new api.Tastypie.Resource<DoadorDoacaoOng>('doador/doacao-ong', {model: DoadorDoacaoOng, defaults: {doador_id: obj.doador_id}});
             this._doacao_ods = new api.Tastypie.Resource<DoadorDoacaoOds>('doador/doacao-ods', {model: DoadorDoacaoOds, defaults: {doador_id: obj.doador_id}});
@@ -608,6 +612,9 @@ export class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     }
     public get doador_doacao_total(): number {
       return this._doador_doacao_total;
+    }
+    public get doador_doacao_soluz(): number {
+      return this._doador_doacao_soluz;
     }
     public get doador_doacao_impacto(): number {
       return this._doador_doacao_impacto;
@@ -671,6 +678,10 @@ export class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     public get doacao_ods(): api.Tastypie.Resource<DoadorDoacaoOds> {
         return this._doacao_ods;
     }
+    public get dt_updated(): string {
+      return this._dt_updated;
+    }
+
 }
 
 export class DoadorRede {
@@ -686,6 +697,10 @@ export class DoadorRede {
         this._abaixo_resource = new api.Tastypie.Resource<DoadorRedeAmigos>('doador/rede', {model: DoadorRedeAmigos, defaults: {rede: 'abaixo'}});
         this._direta_resource = new api.Tastypie.Resource<DoadorRedeAmigos>('doador/rede', {model: DoadorRedeAmigos, defaults: {rede: 'direta'}});
         this._indireta_resource = new api.Tastypie.Resource<DoadorRedeAmigos>('doador/rede', {model: DoadorRedeAmigos, defaults: {rede: 'indireta'}});
+    }
+
+    public get doador_id(): number {
+        return this._doador_id;
     }
 
     public get acima(): api.Tastypie.Resource<DoadorRedeAmigos> {

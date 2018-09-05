@@ -103,15 +103,17 @@ export declare class OngEndereco extends api.Tastypie.Model<OngEndereco> {
 export declare class OngBanco extends api.Tastypie.Model<OngBanco> {
     static resource: api.Tastypie.Resource<OngBanco>;
     ong_id: number;
-    codigo: string;
-    banco: string;
-    conta_corrente: string;
-    conta_corrente_digito: string;
+    banco_codigo: string;
+    banco_nome: string;
     agencia: string;
     agencia_digito: string;
+    conta_corrente: string;
+    conta_corrente_digito: string;
     pessoa_fisica: boolean;
     titular: string;
     cpf_cnpj: string;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }
 export declare class OngPostScrap extends api.Tastypie.Model<OngPostScrap> {
@@ -160,16 +162,22 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     inicializado: boolean;
     dt_updated: string;
     dt_created: string;
+    status: {
+        total_entrega: number;
+        total_investido: number;
+    };
     private _endereco;
     private _ods;
     private _indicadores;
     private _recursos;
+    private _entregas;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     readonly ods: api.Tastypie.Resource<OngProjetoOds>;
     readonly indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
     readonly recursos: api.Tastypie.Resource<OngRecurso>;
+    readonly entregas: api.Tastypie.Resource<OngProjetoEntrega>;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     static resource: api.Tastypie.Resource<OngProjetoSobre>;
@@ -300,9 +308,23 @@ export declare class OngStatusCarteira extends api.Tastypie.Model<OngStatusCarte
     saldo_pendente: number;
     constructor(obj?: any);
 }
+export declare class OngCarteiraTransferencia {
+    banco_codigo: string;
+    banco_nome: string;
+    agencia: string;
+    agencia_digito: string;
+    conta_corrente: string;
+    conta_corrente_digito: string;
+    pessoa_fisica: boolean;
+    titular: string;
+    cpf_cnpj: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
 export declare class OngCarteira extends api.Tastypie.Model<OngCarteira> {
     static resource: api.Tastypie.Resource<OngCarteira>;
     private static _creditar;
+    private static _transferir;
     ong_id: number;
     origem_credito_id: number;
     origem_credito: OngOrigemCredito;
@@ -310,12 +332,19 @@ export declare class OngCarteira extends api.Tastypie.Model<OngCarteira> {
     moeda: string;
     valor: number;
     status: string;
+    transferencia: OngCarteiraTransferencia;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
     static creditar(obj: {
         ong_id: number;
         origem_credito_id: number;
+        valor: number;
+    }): Promise<OngCarteira>;
+    static transferir(obj: {
+        ong_id: number;
+        origem_credito_id: number;
+        ong_banco_id: number;
         valor: number;
     }): Promise<OngCarteira>;
 }

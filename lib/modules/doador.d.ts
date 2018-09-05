@@ -157,6 +157,7 @@ export declare class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     private _doador_doacao_direta;
     private _doador_doacao_pool;
     private _doador_doacao_total;
+    private _doador_doacao_soluz;
     private _doador_doacao_impacto;
     private _rede_acima_doacao_pendente;
     private _rede_acima_doacao_direta;
@@ -183,6 +184,7 @@ export declare class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     readonly doador_doacao_direta: number;
     readonly doador_doacao_pool: number;
     readonly doador_doacao_total: number;
+    readonly doador_doacao_soluz: number;
     readonly doador_doacao_impacto: number;
     readonly rede_acima_doacao_pendente: number;
     readonly rede_acima_doacao_direta: number;
@@ -202,6 +204,7 @@ export declare class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     readonly rede_indireta_doacao_total: number;
     readonly doacao_ong: api.Tastypie.Resource<DoadorDoacaoOng>;
     readonly doacao_ods: api.Tastypie.Resource<DoadorDoacaoOds>;
+    readonly dt_updated: string;
 }
 export declare class DoadorRede {
     private _doador_id;
@@ -210,6 +213,7 @@ export declare class DoadorRede {
     private _direta_resource;
     private _indireta_resource;
     constructor(doador_id: number);
+    readonly doador_id: number;
     readonly acima: api.Tastypie.Resource<DoadorRedeAmigos>;
     readonly abaixo: api.Tastypie.Resource<DoadorRedeAmigos>;
     readonly direta: api.Tastypie.Resource<DoadorRedeAmigos>;
