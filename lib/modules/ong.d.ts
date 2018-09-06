@@ -165,6 +165,13 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     status: {
         total_entrega: number;
         total_investido: number;
+        metricas: {
+            mt_pessoas: number;
+            mt_animais: number;
+            mt_arvores: number;
+            mt_areas: number;
+            mt_criancas: number;
+        };
     };
     private _endereco;
     private _ods;

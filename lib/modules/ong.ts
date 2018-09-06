@@ -425,7 +425,17 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public inicializado: boolean;
     public dt_updated: string;
     public dt_created: string;
-    public status: {total_entrega: number, total_investido: number};
+    public status: {
+      total_entrega: number,
+      total_investido: number,
+      metricas: {
+        mt_pessoas: number,
+        mt_animais: number,
+        mt_arvores: number,
+        mt_areas: number,
+        mt_criancas: number
+      }
+    };
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _ods: api.Tastypie.Resource<OngProjetoOds>;
