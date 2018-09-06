@@ -29,6 +29,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _recursos;
     private _status_carteira;
     private _projeto_entrega;
+    private _carteira;
     constructor(obj?: any);
     save(): Promise<Ong>;
     private initProfile(obj);
@@ -51,6 +52,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     readonly recursos: api.Tastypie.Resource<OngRecurso>;
     readonly status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
     readonly projeto_entrega: api.Tastypie.Resource<OngProjetoEntrega>;
+    readonly carteira: api.Tastypie.Resource<OngCarteira>;
     getEndereco(): Promise<OngEndereco>;
     createAccount(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<Ong>;
     quickLogin(auth?: {

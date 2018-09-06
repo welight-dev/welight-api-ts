@@ -37,6 +37,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _recursos: api.Tastypie.Resource<OngRecurso>;
     private _status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
     private _projeto_entrega: api.Tastypie.Resource<OngProjetoEntrega>;
+    private _carteira: api.Tastypie.Resource<OngCarteira>;
 
     constructor(obj?:any){
         super(Ong.resource);
@@ -91,6 +92,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
                 _self._status_carteira = new api.Tastypie.Resource<OngStatusCarteira>('ong/status-carteira', {model: OngStatusCarteira, defaults: {ong_id: _self.id}});
                 _self._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_id: _self.id}});
                 _self._projeto_entrega = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega, defaults: {ong_id: _self.id}});
+                _self._carteira = new api.Tastypie.Resource<OngCarteira>('ong/carteira', {model: OngCarteira, defaults: {ong_id: _self.id}});
             }
         }else{
             _self._profile_detail = new OngDetail();
@@ -171,6 +173,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get projeto_entrega(): api.Tastypie.Resource<OngProjetoEntrega> {
         return this._projeto_entrega;
+    }
+
+    public get carteira(): api.Tastypie.Resource<OngCarteira> {
+        return this._carteira;
     }
 
     public getEndereco(): Promise<OngEndereco> {
