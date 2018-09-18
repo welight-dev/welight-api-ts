@@ -27,12 +27,27 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
     readonly clientes: api.Tastypie.Resource<Cliente>;
     readonly faturas: api.Tastypie.Resource<Fatura>;
+    getEndereco(): Promise<EmpresaEndereco>;
+    getVtexConf(): Promise<EmpresaVtex>;
     createAccount(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<Empresa>;
     login(username: string, password: string, kwargs?: any): Promise<Empresa>;
     quickLogin(auth?: {
         username: string;
         apikey: string;
     }, kwargs?: any): Promise<Empresa>;
+}
+export declare class EmpresaEndereco extends api.Tastypie.Model<EmpresaEndereco> {
+    static resource: api.Tastypie.Resource<EmpresaEndereco>;
+    empresa_id: number;
+    cep: string;
+    rua: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    pais: string;
+    constructor(obj?: any);
 }
 export declare class EmpresaOng extends api.Tastypie.Model<EmpresaOng> {
     static resource: api.Tastypie.Resource<EmpresaOng>;
@@ -166,5 +181,29 @@ export declare class VendaAnalytics extends api.Tastypie.Model<VendaAnalytics> {
         "porcentagem": number;
         "qtde": number;
     }>;
+    constructor(obj?: any);
+}
+export declare class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices> {
+    static resource: api.Tastypie.Resource<VtexIconChoices>;
+    icon: string;
+    token: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
+    static resource: api.Tastypie.Resource<EmpresaVtex>;
+    empresa_id: number;
+    icon_choices_id: number;
+    icon_choices: VtexIconChoices;
+    titulo: string;
+    doacao_porcent: boolean;
+    doacao_valor: number;
+    alinhamento: string;
+    cor_icone: string;
+    cor_fundo: string;
+    ativo: boolean;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }

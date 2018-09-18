@@ -73,6 +73,22 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
         return this._faturas;
     }
 
+    public getEndereco(): Promise<EmpresaEndereco> {
+        if(this.id){
+            return EmpresaEndereco.resource.objects.findOne({empresa_id: this.id});
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Empresa][getEndereco] Empresa não identificada.");
+        }
+    }
+
+    public getVtexConf(): Promise<EmpresaVtex> {
+        if(this.id){
+            return EmpresaVtex.resource.objects.findOne({empresa_id: this.id});
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Empresa][getVtexConf] Empresa não identificada.");
+        }
+    }
+
     public createAccount(nome: string, email: string, cpf_cnpj:string, kwargs?:any): Promise<Empresa> {
         let _self = this;
         return this._doador.createAccountDoadorEmpresa(nome, email, cpf_cnpj, kwargs).then(
@@ -128,6 +144,25 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 });
             }
         );
+    }
+}
+
+export class EmpresaEndereco extends api.Tastypie.Model<EmpresaEndereco> {
+
+    public static resource = new api.Tastypie.Resource<EmpresaEndereco>('doador-empresa/endereco', {model: EmpresaEndereco});
+
+    public empresa_id: number;
+    public cep: string;
+    public rua: string;
+    public numero: string;
+    public complemento: string;
+    public bairro: string;
+    public cidade: string;
+    public estado: string;
+    public pais: string;
+
+    constructor(obj?:any){
+      super(EmpresaEndereco.resource, obj);
     }
 }
 
@@ -342,5 +377,40 @@ export class VendaAnalytics extends api.Tastypie.Model<VendaAnalytics> {
 
     constructor(obj?:any){
         super(VendaAnalytics.resource, obj);
+    }
+}
+
+export class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices> {
+    public static resource = new api.Tastypie.Resource<VtexIconChoices>('doador-empresa/vtex-icon-choices', {model: VtexIconChoices});
+    public icon: string;
+    public token: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(obj, VtexIconChoices.resource);
+    }
+}
+
+export class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
+    public static resource = new api.Tastypie.Resource<EmpresaVtex>('doador-empresa/vtex', {model: EmpresaVtex});
+    public empresa_id: number;
+    public icon_choices_id: number;
+    public icon_choices: VtexIconChoices;
+    public titulo: string;
+    public doacao_porcent: boolean;
+    public doacao_valor: number;
+    public alinhamento: string;
+    public cor_icone: string;
+    public cor_fundo: string;
+    public ativo: boolean;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(obj, EmpresaVtex.resource);
+        if(obj){
+            if(obj.icon_choices) this.icon_choices = new VtexIconChoices(obj.icon_choices);
+        }
     }
 }
