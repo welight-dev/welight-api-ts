@@ -488,6 +488,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     public static resource = new api.Tastypie.Resource<OngProjetoSobre>('ong/projeto-sobre', {model: OngProjetoSobre});
 
+    public ong_projeto_id: number;
     public problema: string;
     public impacto: string;
     public meta: string;
@@ -504,6 +505,7 @@ export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
 export class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
     public static resource = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco});
 
+    public ong_projeto_id: number;
     public cep: string;
     public rua: string;
     public numero: string;

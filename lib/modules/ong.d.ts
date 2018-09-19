@@ -190,6 +190,7 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     static resource: api.Tastypie.Resource<OngProjetoSobre>;
+    ong_projeto_id: number;
     problema: string;
     impacto: string;
     meta: string;
@@ -201,6 +202,7 @@ export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre>
 }
 export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
     static resource: api.Tastypie.Resource<OngProjetoEndereco>;
+    ong_projeto_id: number;
     cep: string;
     rua: string;
     numero: string;
