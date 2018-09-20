@@ -14,6 +14,7 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     invite: string;
     acesso_ativo: boolean;
     tela_resposta: EmpresaTelaResposta;
+    profile_detail: EmpresaDetail;
     private _doador;
     private _vendas;
     private _ongs;
@@ -35,6 +36,16 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
         username: string;
         apikey: string;
     }, kwargs?: any): Promise<Empresa>;
+}
+export declare class EmpresaDetail extends api.Tastypie.Model<EmpresaDetail> {
+    static resource: api.Tastypie.Resource<EmpresaDetail>;
+    empresa_id: number;
+    telefone: string;
+    qtde_venda_mes: number;
+    ticket_medio: number;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
 }
 export declare class EmpresaEndereco extends api.Tastypie.Model<EmpresaEndereco> {
     static resource: api.Tastypie.Resource<EmpresaEndereco>;

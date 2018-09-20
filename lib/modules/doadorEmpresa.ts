@@ -19,6 +19,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public invite: string;
     public acesso_ativo: boolean;
     public tela_resposta: EmpresaTelaResposta;
+    public profile_detail: EmpresaDetail;
     private _doador: Doador;
     private _vendas: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<EmpresaOng>;
@@ -50,6 +51,11 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this._faturas = new api.Tastypie.Resource<Fatura>('doador-empresa-fatura/fatura', {model: Fatura, defaults: {empresa_id: obj.id}});
             }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
+            if(obj.profile_detail) {
+                this.profile_detail = new EmpresaDetail(obj.profile_detail);
+            }else{
+                this.profile_detail = new EmpresaDetail();
+            }
         }
     }
 
@@ -144,6 +150,27 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 });
             }
         );
+    }
+}
+
+export class EmpresaDetail extends api.Tastypie.Model<EmpresaDetail> {
+    public static resource = new api.Tastypie.Resource<EmpresaDetail>('doador-empresa/detail', {model: EmpresaDetail});
+
+    public empresa_id: number;
+    public telefone: string;
+    public qtde_venda_mes: number;
+    public ticket_medio: number;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(EmpresaDetail.resource, obj);
+
+        if(!obj){
+            this.telefone = "";
+            this.qtde_venda_mes = 0;
+            this.ticket_medio = 0;
+        }
     }
 }
 
