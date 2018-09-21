@@ -20,6 +20,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public acesso_ativo: boolean;
     public tela_resposta: EmpresaTelaResposta;
     public profile_detail: EmpresaDetail;
+    public endereco: EmpresaEndereco;
     private _doador: Doador;
     private _vendas: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<EmpresaOng>;
@@ -56,6 +57,12 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
             }else{
                 this.profile_detail = new EmpresaDetail();
             }
+
+            if(obj.endereco) {
+                this.endereco = new EmpresaEndereco(obj.endereco);
+            }else{
+                this.endereco = new EmpresaEndereco();
+            }
         }
     }
 
@@ -80,8 +87,14 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     }
 
     public getEndereco(): Promise<EmpresaEndereco> {
-        if(this.id){
-            return EmpresaEndereco.resource.objects.findOne({empresa_id: this.id});
+        let _self = this;
+        if(_self.id){
+            return EmpresaEndereco.resource.objects.findOne({empresa_id: _self.id}).then(
+                function(data: EmpresaEndereco){
+                    _self.endereco = data;
+                    return data;
+                }
+            );
         }else{
             return api.Tastypie.Tools.generate_exception("[Empresa][getEndereco] Empresa não identificada.");
         }
