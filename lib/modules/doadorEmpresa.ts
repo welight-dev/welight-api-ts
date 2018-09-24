@@ -21,6 +21,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public tela_resposta: EmpresaTelaResposta;
     public profile_detail: EmpresaDetail;
     public endereco: EmpresaEndereco;
+    public vtex: EmpresaVtex;
     private _doador: Doador;
     private _vendas: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<EmpresaOng>;
@@ -63,6 +64,12 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
             }else{
                 this.endereco = new EmpresaEndereco();
             }
+
+            if(obj.vtex) {
+                this.vtex = new EmpresaVtex(obj.vtex);
+            }else{
+                this.vtex = new EmpresaVtex();
+            }
         }
     }
 
@@ -97,6 +104,20 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
             );
         }else{
             return api.Tastypie.Tools.generate_exception("[Empresa][getEndereco] Empresa não identificada.");
+        }
+    }
+
+    public getVtex(): Promise<EmpresaVtex> {
+        let _self = this;
+        if(_self.id){
+            return EmpresaVtex.resource.objects.findOne({empresa_id: _self.id}).then(
+                function(data: EmpresaVtex){
+                    _self.vtex = data;
+                    return data;
+                }
+            );
+        }else{
+            return api.Tastypie.Tools.generate_exception("[Empresa][getVtex] Empresa não identificada.");
         }
     }
 
@@ -435,9 +456,8 @@ export class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices> {
 export class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
     public static resource = new api.Tastypie.Resource<EmpresaVtex>('doador-empresa/vtex', {model: EmpresaVtex});
     public empresa_id: number;
-    public icon_choices_id: number;
-    public icon_choices: VtexIconChoices;
     public titulo: string;
+    public icon: string;
     public doacao_porcent: boolean;
     public doacao_valor: number;
     public alinhamento: string;
@@ -449,8 +469,5 @@ export class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
 
     constructor(obj?:any){
         super(obj, EmpresaVtex.resource);
-        if(obj){
-            if(obj.icon_choices) this.icon_choices = new VtexIconChoices(obj.icon_choices);
-        }
     }
 }

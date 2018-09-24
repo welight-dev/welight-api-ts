@@ -16,6 +16,7 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     tela_resposta: EmpresaTelaResposta;
     profile_detail: EmpresaDetail;
     endereco: EmpresaEndereco;
+    vtex: EmpresaVtex;
     private _doador;
     private _vendas;
     private _ongs;
@@ -30,6 +31,7 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     readonly clientes: api.Tastypie.Resource<Cliente>;
     readonly faturas: api.Tastypie.Resource<Fatura>;
     getEndereco(): Promise<EmpresaEndereco>;
+    getVtex(): Promise<EmpresaVtex>;
     getVtexConf(): Promise<EmpresaVtex>;
     createAccount(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<Empresa>;
     login(username: string, password: string, kwargs?: any): Promise<Empresa>;
@@ -206,9 +208,8 @@ export declare class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices>
 export declare class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
     static resource: api.Tastypie.Resource<EmpresaVtex>;
     empresa_id: number;
-    icon_choices_id: number;
-    icon_choices: VtexIconChoices;
     titulo: string;
+    icon: string;
     doacao_porcent: boolean;
     doacao_valor: number;
     alinhamento: string;
