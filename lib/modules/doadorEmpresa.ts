@@ -449,7 +449,7 @@ export class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices> {
     public dt_created: string;
 
     constructor(obj?:any){
-        super(obj, VtexIconChoices.resource);
+        super(VtexIconChoices.resource, obj);
     }
 }
 
@@ -468,6 +468,6 @@ export class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
     public dt_created: string;
 
     constructor(obj?:any){
-        super(obj, EmpresaVtex.resource);
+        super(EmpresaVtex.resource, obj);
     }
 }
