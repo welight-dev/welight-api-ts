@@ -26,7 +26,7 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
     private _set_all_notify_read;
     constructor(obj?: any);
     save(): Promise<Doador>;
-    private initProfile(obj?);
+    private initProfile;
     check_slug(slug: string): Promise<{
         available: boolean;
     }>;

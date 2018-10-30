@@ -32,7 +32,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _carteira;
     constructor(obj?: any);
     save(): Promise<Ong>;
-    private initProfile(obj);
+    private initProfile;
     readonly status: OngStatus;
     readonly ativo: boolean;
     readonly parceira: boolean;
@@ -302,6 +302,7 @@ export declare class OngRecursoComprovante extends api.Tastypie.Model<OngRecurso
     titulo: string;
     descricao: string;
     comprovante: string;
+    url_video: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
@@ -407,6 +408,7 @@ export declare class OngProjetoEntregaComprovante extends api.Tastypie.Model<Ong
     titulo: string;
     descricao: string;
     comprovante: string;
+    url_video: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

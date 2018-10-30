@@ -24,7 +24,7 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     private _faturas;
     constructor(obj?: any);
     save(): Promise<Empresa>;
-    private initProfile(obj?);
+    private initProfile;
     readonly doador: Doador;
     readonly vendas: api.Tastypie.Resource<Venda>;
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
@@ -101,7 +101,7 @@ export declare class Cliente extends api.Tastypie.Model<Cliente> {
     private _ongs;
     private _doacoes;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<Cliente>);
-    private initProfile(obj?);
+    private initProfile;
     save(): Promise<Cliente>;
     readonly ongs: api.Tastypie.Resource<ClienteOng>;
     readonly compras: api.Tastypie.Resource<Venda>;

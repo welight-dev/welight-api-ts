@@ -54,18 +54,18 @@ export declare class User {
     readonly plugin_navegador: utils.PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
-    private setProfile(data, kwargs?);
+    private setProfile;
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<User>;
     createAccountOng(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<User>;
     createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<User>;
     login(username: string, password: string, kwargs?: any): Promise<User>;
     loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<User>;
-    private _quickLogin(username, apikey, kwargs?);
+    private _quickLogin;
     quickLogin(auth?: {
         username: string;
         apikey: string;
     }, kwargs?: any): Promise<User>;
-    private _logout();
+    private _logout;
     logout(): Promise<any>;
     reset_password_request(email: string, kwargs?: any): Promise<any>;
     reset_password_execute(token: string, password: string, kwargs?: any): Promise<User>;

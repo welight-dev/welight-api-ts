@@ -679,6 +679,7 @@ export class OngRecursoComprovante extends api.Tastypie.Model<OngRecursoComprova
     public titulo: string;
     public descricao: string;
     public comprovante: string;
+    public url_video: string;
     public dt_updated: string;
     public dt_created: string;
 
@@ -862,6 +863,7 @@ export class OngProjetoEntregaComprovante extends api.Tastypie.Model<OngProjetoE
     public titulo: string;
     public descricao: string;
     public comprovante: string;
+    public url_video: string;
     public dt_updated: string;
     public dt_created: string;
 
