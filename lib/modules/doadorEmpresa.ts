@@ -21,12 +21,12 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public tela_resposta: EmpresaTelaResposta;
     public profile_detail: EmpresaDetail;
     public endereco: EmpresaEndereco;
-    public vtex: EmpresaVtex;
     private _doador: Doador;
     private _vendas: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<EmpresaOng>;
     private _cliente: api.Tastypie.Resource<Cliente>;
     private _faturas: api.Tastypie.Resource<Fatura>;
+    private _modulos: api.Tastypie.Resource<EmpresaModuloAtivo>;
 
     constructor(obj?:any){
         super(Empresa.resource, obj);
@@ -51,6 +51,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this._ongs = new api.Tastypie.Resource<EmpresaOng>('doador-empresa/empresa-ong', {model: EmpresaOng, defaults: {empresa_id: obj.id}});
                 this._cliente = new api.Tastypie.Resource<Cliente>('doador-empresa/cliente', {model: Cliente, defaults: {empresa_id: obj.id}});
                 this._faturas = new api.Tastypie.Resource<Fatura>('doador-empresa-fatura/fatura', {model: Fatura, defaults: {empresa_id: obj.id}});
+                this._modulos = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo', {model: EmpresaModuloAtivo, defaults: {empresa_id: obj.id}});
             }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
             if(obj.profile_detail) {
@@ -63,12 +64,6 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this.endereco = new EmpresaEndereco(obj.endereco);
             }else{
                 this.endereco = new EmpresaEndereco();
-            }
-
-            if(obj.vtex) {
-                this.vtex = new EmpresaVtex(obj.vtex);
-            }else{
-                this.vtex = new EmpresaVtex();
             }
         }
     }
@@ -93,6 +88,10 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
         return this._faturas;
     }
 
+    public get modulos(): api.Tastypie.Resource<EmpresaModuloAtivo> {
+        return this._modulos;
+    }
+
     public getEndereco(): Promise<EmpresaEndereco> {
         let _self = this;
         if(_self.id){
@@ -104,28 +103,6 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
             );
         }else{
             return api.Tastypie.Tools.generate_exception("[Empresa][getEndereco] Empresa não identificada.");
-        }
-    }
-
-    public getVtex(): Promise<EmpresaVtex> {
-        let _self = this;
-        if(_self.id){
-            return EmpresaVtex.resource.objects.findOne({empresa_id: _self.id}).then(
-                function(data: EmpresaVtex){
-                    _self.vtex = data;
-                    return data;
-                }
-            );
-        }else{
-            return api.Tastypie.Tools.generate_exception("[Empresa][getVtex] Empresa não identificada.");
-        }
-    }
-
-    public getVtexConf(): Promise<EmpresaVtex> {
-        if(this.id){
-            return EmpresaVtex.resource.objects.findOne({empresa_id: this.id});
-        }else{
-            return api.Tastypie.Tools.generate_exception("[Empresa][getVtexConf] Empresa não identificada.");
         }
     }
 
@@ -441,33 +418,134 @@ export class VendaAnalytics extends api.Tastypie.Model<VendaAnalytics> {
     }
 }
 
-export class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices> {
-    public static resource = new api.Tastypie.Resource<VtexIconChoices>('doador-empresa/vtex-icon-choices', {model: VtexIconChoices});
+export class WidgetIconChoices extends api.Tastypie.Model<WidgetIconChoices> {
+    public static resource = new api.Tastypie.Resource<WidgetIconChoices>('doador-empresa/widget-icon-choices', {model: WidgetIconChoices});
     public icon: string;
     public token: string;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
-        super(VtexIconChoices.resource, obj);
+        super(WidgetIconChoices.resource, obj);
     }
 }
 
-export class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
-    public static resource = new api.Tastypie.Resource<EmpresaVtex>('doador-empresa/vtex', {model: EmpresaVtex});
+export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     public empresa_id: number;
     public titulo: string;
     public icon: string;
     public doacao_porcent: boolean;
     public doacao_valor: number;
     public alinhamento: string;
-    public cor_icone: string;
     public cor_fundo: string;
+    public position: string;
     public ativo: boolean;
     public dt_updated: string;
     public dt_created: string;
 
+    constructor(obj?:any, resource?:api.Tastypie.Resource<EmpresaWidget>){
+        super(resource, obj);
+    }
+}
+
+export class EmpresaVtex extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaVtex>('doador-empresa/vtex', {model: EmpresaVtex});
+
     constructor(obj?:any){
-        super(EmpresaVtex.resource, obj);
+        super(obj, EmpresaVtex.resource);
+    }
+}
+
+export class EmpresaVnda extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaVnda>('doador-empresa/vnda', {model: EmpresaVnda});
+
+    constructor(obj?:any){
+        super(obj, EmpresaVnda.resource);
+    }
+}
+
+export class EmpresaLojaintegrada extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaLojaintegrada>('doador-empresa/loja-integrada', {model: EmpresaLojaintegrada});
+
+    constructor(obj?:any){
+        super(obj, EmpresaLojaintegrada.resource);
+    }
+}
+
+export class EmpresaModuloPlataforma {
+    public nome: string;
+    public token: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        if(obj){
+            this.nome = obj.nome;
+            this.token = obj.token;
+            this.dt_created = obj.dt_created;
+        }
+    }
+}
+
+export class EmpresaModulo extends api.Tastypie.Model<EmpresaModulo> {
+    public static resource = new api.Tastypie.Resource<EmpresaModulo>('doador-empresa/modulo', {model: EmpresaModulo});
+    public nome: string;
+    public token: string;
+    public dt_created: string;
+    public plataformas: Array<EmpresaModuloPlataforma>;
+
+    constructor(obj?:any){
+        super(EmpresaModulo.resource, obj);
+        this.plataformas = [];
+        if(obj){
+            if(obj.plataformas){
+                for(let plat of obj.plataformas){
+                    this.plataformas.push(new EmpresaModuloPlataforma(plat));
+                }
+            }
+        }
+    }
+}
+
+export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
+    public static resource = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo', {model: EmpresaModuloAtivo});
+    public empresa_id: number;
+    public modulo_id: number;
+    public dt_created: string;
+    public modulo: EmpresaModulo;
+    public plataforma_config: Array<{'plataforma': EmpresaModuloPlataforma, 'config':any}>;
+
+    constructor(obj?:any){
+        super(EmpresaModuloAtivo.resource, obj);
+        this.plataforma_config = [];
+        if(obj){
+            if(obj.modulo){
+                this.modulo = new EmpresaModulo(obj.modulo);
+            }
+
+            if(obj.plataforma_config){
+                for(let conf of obj.plataforma_config){
+                    let conf_obj: any;
+
+                    if(this.modulo.token == 'ecommerce'){
+                        if(conf.plataforma.token == 'vtex'){
+                            conf_obj = new EmpresaVtex(conf.config);
+                        }else if(conf.plataforma.token == 'vnda'){
+                            conf_obj = new EmpresaVnda(conf.config);
+                        }else if(conf.plataforma.token == 'lojaintegrada'){
+                            conf_obj = new EmpresaLojaintegrada(conf.config);
+                        }else{
+                            conf_obj = conf.config;
+                        }
+                    }
+
+                    this.plataforma_config.push(
+                        {
+                          'plataforma': new EmpresaModuloPlataforma(conf.plataforma),
+                          'config': conf_obj
+                        }
+                    );
+                }
+            }
+        }
     }
 }

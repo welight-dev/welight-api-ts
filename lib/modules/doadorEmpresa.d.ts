@@ -16,12 +16,12 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     tela_resposta: EmpresaTelaResposta;
     profile_detail: EmpresaDetail;
     endereco: EmpresaEndereco;
-    vtex: EmpresaVtex;
     private _doador;
     private _vendas;
     private _ongs;
     private _cliente;
     private _faturas;
+    private _modulos;
     constructor(obj?: any);
     save(): Promise<Empresa>;
     private initProfile;
@@ -30,9 +30,8 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     readonly ongs: api.Tastypie.Resource<EmpresaOng>;
     readonly clientes: api.Tastypie.Resource<Cliente>;
     readonly faturas: api.Tastypie.Resource<Fatura>;
+    readonly modulos: api.Tastypie.Resource<EmpresaModuloAtivo>;
     getEndereco(): Promise<EmpresaEndereco>;
-    getVtex(): Promise<EmpresaVtex>;
-    getVtexConf(): Promise<EmpresaVtex>;
     createAccount(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<Empresa>;
     login(username: string, password: string, kwargs?: any): Promise<Empresa>;
     quickLogin(auth?: {
@@ -197,26 +196,63 @@ export declare class VendaAnalytics extends api.Tastypie.Model<VendaAnalytics> {
     }>;
     constructor(obj?: any);
 }
-export declare class VtexIconChoices extends api.Tastypie.Model<VtexIconChoices> {
-    static resource: api.Tastypie.Resource<VtexIconChoices>;
+export declare class WidgetIconChoices extends api.Tastypie.Model<WidgetIconChoices> {
+    static resource: api.Tastypie.Resource<WidgetIconChoices>;
     icon: string;
     token: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
 }
-export declare class EmpresaVtex extends api.Tastypie.Model<EmpresaVtex> {
-    static resource: api.Tastypie.Resource<EmpresaVtex>;
+export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     empresa_id: number;
     titulo: string;
     icon: string;
     doacao_porcent: boolean;
     doacao_valor: number;
     alinhamento: string;
-    cor_icone: string;
     cor_fundo: string;
+    position: string;
     ativo: boolean;
     dt_updated: string;
     dt_created: string;
+    constructor(obj?: any, resource?: api.Tastypie.Resource<EmpresaWidget>);
+}
+export declare class EmpresaVtex extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaVtex>;
+    constructor(obj?: any);
+}
+export declare class EmpresaVnda extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaVnda>;
+    constructor(obj?: any);
+}
+export declare class EmpresaLojaintegrada extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaLojaintegrada>;
+    constructor(obj?: any);
+}
+export declare class EmpresaModuloPlataforma {
+    nome: string;
+    token: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class EmpresaModulo extends api.Tastypie.Model<EmpresaModulo> {
+    static resource: api.Tastypie.Resource<EmpresaModulo>;
+    nome: string;
+    token: string;
+    dt_created: string;
+    plataformas: Array<EmpresaModuloPlataforma>;
+    constructor(obj?: any);
+}
+export declare class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
+    static resource: api.Tastypie.Resource<EmpresaModuloAtivo>;
+    empresa_id: number;
+    modulo_id: number;
+    dt_created: string;
+    modulo: EmpresaModulo;
+    plataforma_config: Array<{
+        'plataforma': EmpresaModuloPlataforma;
+        'config': any;
+    }>;
     constructor(obj?: any);
 }
