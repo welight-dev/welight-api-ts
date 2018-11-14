@@ -51,7 +51,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this._ongs = new api.Tastypie.Resource<EmpresaOng>('doador-empresa/empresa-ong', {model: EmpresaOng, defaults: {empresa_id: obj.id}});
                 this._cliente = new api.Tastypie.Resource<Cliente>('doador-empresa/cliente', {model: Cliente, defaults: {empresa_id: obj.id}});
                 this._faturas = new api.Tastypie.Resource<Fatura>('doador-empresa-fatura/fatura', {model: Fatura, defaults: {empresa_id: obj.id}});
-                this._modulos = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo', {model: EmpresaModuloAtivo, defaults: {empresa_id: obj.id}});
+                this._modulos = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo-ativo', {model: EmpresaModuloAtivo, defaults: {empresa_id: obj.id}});
             }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
             if(obj.profile_detail) {
@@ -507,7 +507,7 @@ export class EmpresaModulo extends api.Tastypie.Model<EmpresaModulo> {
 }
 
 export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
-    public static resource = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo', {model: EmpresaModuloAtivo});
+    public static resource = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo-ativo', {model: EmpresaModuloAtivo});
     public empresa_id: number;
     public modulo_id: number;
     public dt_created: string;
