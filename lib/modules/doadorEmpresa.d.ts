@@ -112,6 +112,8 @@ export declare class Venda extends api.Tastypie.Model<Venda> {
     cliente_id: number;
     empresa: Empresa;
     cliente: Cliente;
+    modulo: EmpresaModulo;
+    plataforma: EmpresaModuloPlataforma;
     uid: string;
     venda_moeda: string;
     venda_valor: number;
@@ -122,7 +124,6 @@ export declare class Venda extends api.Tastypie.Model<Venda> {
     doacao_valor_brl: number;
     total_taxa_adm: number;
     doacao_ong: number;
-    origem: string;
     status_venda: string;
     status_doacao: string;
     teste_ab: string;

@@ -307,6 +307,8 @@ export class Venda extends api.Tastypie.Model<Venda> {
 
     public empresa: Empresa;
     public cliente: Cliente;
+    public modulo: EmpresaModulo;
+    public plataforma: EmpresaModuloPlataforma;
     public uid: string;
 
     public venda_moeda: string;
@@ -323,7 +325,6 @@ export class Venda extends api.Tastypie.Model<Venda> {
     public total_taxa_adm: number;
     public doacao_ong: number;
 
-    public origem: string;
     public status_venda: string;
     public status_doacao: string;
 
@@ -345,6 +346,8 @@ export class Venda extends api.Tastypie.Model<Venda> {
                 this.cliente = new Cliente(obj.cliente);
                 this._ongs = new api.Tastypie.Resource<ClienteVendaOng>('doador-empresa/cliente-venda-ong', {model: ClienteVendaOng, defaults: {cliente_id: this.cliente.id, cliente_key: this.cliente.cliente_key, venda_id: this.id}});
             }
+            if(obj.modulo) this.modulo = new EmpresaModulo(obj.modulo);
+            if(obj.plataforma) this.plataforma = new EmpresaModuloPlataforma(obj.plataforma);
         }
     }
 
