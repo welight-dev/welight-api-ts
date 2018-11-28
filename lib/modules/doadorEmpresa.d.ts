@@ -231,6 +231,10 @@ export declare class EmpresaLojaintegrada extends EmpresaWidget {
     static resource: api.Tastypie.Resource<EmpresaLojaintegrada>;
     constructor(obj?: any);
 }
+export declare class EmpresaShopfy extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaShopfy>;
+    constructor(obj?: any);
+}
 export declare class EmpresaModuloPlataforma {
     nome: string;
     token: string;
@@ -255,5 +259,15 @@ export declare class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModulo
         'plataforma': EmpresaModuloPlataforma;
         'config': any;
     }>;
+    constructor(obj?: any);
+}
+export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
+    static resource: api.Tastypie.Resource<EmpresaPdv>;
+    empresa_id: number;
+    porcentagem: boolean;
+    doacao_porcent: number;
+    doacao_valor: number;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }

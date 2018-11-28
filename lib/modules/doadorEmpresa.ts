@@ -65,6 +65,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
             }else{
                 this.endereco = new EmpresaEndereco();
             }
+            this._modulos.objects.find();
         }
     }
 
@@ -475,6 +476,14 @@ export class EmpresaLojaintegrada extends EmpresaWidget {
     }
 }
 
+export class EmpresaShopfy extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaShopfy>('doador-empresa/shopfy', {model: EmpresaShopfy});
+
+    constructor(obj?:any){
+        super(obj, EmpresaShopfy.resource);
+    }
+}
+
 export class EmpresaModuloPlataforma {
     public nome: string;
     public token: string;
@@ -536,8 +545,14 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                             conf_obj = new EmpresaVnda(conf.config);
                         }else if(conf.plataforma.token == 'lojaintegrada'){
                             conf_obj = new EmpresaLojaintegrada(conf.config);
+                        }else if(conf.plataforma.token == 'shopfy'){
+                            conf_obj = new EmpresaShopfy(conf.config);
                         }else{
                             conf_obj = conf.config;
+                        }
+                    }else if(this.modulo.token == 'pdv'){
+                        if(conf.plataforma.token == 'welight'){
+                            conf_obj = new EmpresaPdv(conf.config);
                         }
                     }
 
@@ -550,5 +565,20 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                 }
             }
         }
+    }
+}
+
+
+export class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
+    public static resource = new api.Tastypie.Resource<EmpresaPdv>('doador-empresa/pdv', {model: EmpresaPdv});
+    public empresa_id: number;
+    public porcentagem: boolean;
+    public doacao_porcent: number;
+    public doacao_valor: number;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(EmpresaPdv.resource, obj);
     }
 }
