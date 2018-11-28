@@ -52,6 +52,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this._cliente = new api.Tastypie.Resource<Cliente>('doador-empresa/cliente', {model: Cliente, defaults: {empresa_id: obj.id}});
                 this._faturas = new api.Tastypie.Resource<Fatura>('doador-empresa-fatura/fatura', {model: Fatura, defaults: {empresa_id: obj.id}});
                 this._modulos = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo-ativo', {model: EmpresaModuloAtivo, defaults: {empresa_id: obj.id}});
+                this._modulos.objects.find();
             }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
             if(obj.profile_detail) {
@@ -65,7 +66,6 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
             }else{
                 this.endereco = new EmpresaEndereco();
             }
-            this._modulos.objects.find();
         }
     }
 
