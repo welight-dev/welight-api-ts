@@ -147,6 +147,7 @@ export declare class EmpresaTelaResposta extends api.Tastypie.Model<EmpresaTelaR
     static resource: api.Tastypie.Resource<EmpresaTelaResposta>;
     empresa_id: number;
     banner: string;
+    titulo: string;
     mensagem: string;
     dt_updated: string;
     dt_created: string;
@@ -267,6 +268,8 @@ export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     porcentagem: boolean;
     doacao_porcent: number;
     doacao_valor: number;
+    titulo_sucesso: string;
+    mensagem_sucesso: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

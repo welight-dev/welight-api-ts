@@ -378,6 +378,7 @@ export class EmpresaTelaResposta extends api.Tastypie.Model<EmpresaTelaResposta>
 
     public empresa_id: number;
     public banner: string;
+    public titulo: string;
     public mensagem: string;
     public dt_updated: string;
     public dt_created: string;
@@ -575,6 +576,8 @@ export class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     public porcentagem: boolean;
     public doacao_porcent: number;
     public doacao_valor: number;
+    public titulo_sucesso: string;
+    public mensagem_sucesso: string;
     public dt_updated: string;
     public dt_created: string;
 
