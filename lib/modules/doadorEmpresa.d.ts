@@ -270,6 +270,27 @@ export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     doacao_valor: number;
     titulo_sucesso: string;
     mensagem_sucesso: string;
+    titulos_ui: {
+        font_type: string;
+        font_color: string;
+        font_weight: number;
+        font_custom: string;
+    };
+    formulario_ui: {
+        font_type: string;
+        font_color: string;
+        font_weight: number;
+        font_custom: string;
+        background_color: string;
+    };
+    botao_ui: {
+        font_type: string;
+        font_color: string;
+        font_weight: number;
+        font_custom: string;
+        background_color: string;
+        border_weight: number;
+    };
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
