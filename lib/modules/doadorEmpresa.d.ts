@@ -268,8 +268,6 @@ export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     porcentagem: boolean;
     doacao_porcent: number;
     doacao_valor: number;
-    titulo_sucesso: string;
-    mensagem_sucesso: string;
     titulos_ui: {
         font_type: string;
         font_color: string;
@@ -291,6 +289,11 @@ export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
         background_color: string;
         border_weight: number;
     };
+    pagina_img_fundo: string;
+    pagina_img_logo: string;
+    pagina_cor_fundo: string;
+    titulo_sucesso: string;
+    mensagem_sucesso: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
