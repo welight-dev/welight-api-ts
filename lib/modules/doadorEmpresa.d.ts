@@ -268,7 +268,7 @@ export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     porcentagem: boolean;
     doacao_porcent: number;
     doacao_valor: number;
-    titulos_ui: {
+    titulo_ui: {
         font_type: string;
         font_color: string;
         font_weight: number;
