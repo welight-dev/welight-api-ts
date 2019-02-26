@@ -577,25 +577,48 @@ export class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     public doacao_porcent: number;
     public doacao_valor: number;
     public titulo_ui: {
-        font_type: string,
+        font_family: string,
+        font_family_custom: string,
         font_color: string,
-        font_weight: number,
-        font_custom: string
+        font_size: number,
+        font_weight: string,
+        background_color: string,
+        border_width: number,
+        border_color: string,
+        border_type: string
     };
     public formulario_ui: {
-        font_type: string,
+        font_family: string,
+        font_family_custom: string,
         font_color: string,
-        font_weight: number,
-        font_custom: string,
-        background_color: string
+        font_size: number,
+        font_weight: string,
+        background_color: string,
+        border_width: number,
+        border_color: string,
+        border_type: string
     };
     public botao_ui: {
-        font_type: string,
+        font_family: string,
+        font_family_custom: string,
         font_color: string,
-        font_weight: number,
-        font_custom: string,
+        font_size: number,
+        font_weight: string,
         background_color: string,
-        border_weight: number
+        border_width: number,
+        border_color: string,
+        border_type: string
+    };
+    public subtitulo_ui: {
+        font_family: string,
+        font_family_custom: string,
+        font_color: string,
+        font_size: number,
+        font_weight: string,
+        background_color: string,
+        border_width: number,
+        border_color: string,
+        border_type: string
     };
     public pagina_img_fundo: string;
     public pagina_img_logo: string;
