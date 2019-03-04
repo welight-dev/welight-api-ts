@@ -55,14 +55,19 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this._modulos.objects.find();
             }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
-            if(obj.profile_detail) {
+
+            if(obj.profile_detail.id) {
                 this.profile_detail = new EmpresaDetail(obj.profile_detail);
+            }else if(obj.id){
+                  this.profile_detail = new EmpresaDetail({empresa_id: obj.id});
             }else{
                 this.profile_detail = new EmpresaDetail();
             }
 
-            if(obj.endereco) {
+            if(obj.endereco.id) {
                 this.endereco = new EmpresaEndereco(obj.endereco);
+            }else if(obj.id){
+                this.endereco = new EmpresaEndereco({empresa_id: obj.id});
             }else{
                 this.endereco = new EmpresaEndereco();
             }
