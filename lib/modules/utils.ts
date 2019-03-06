@@ -47,22 +47,24 @@ export class PluginNavegador {
         let _self = this;
         return new Promise<any>(function(resolve, reject) {
             if(chrome){
-                let limitTimeInstall = setTimeout(function() {
+                window.open('https://chrome.google.com/webstore/detail/ghkiiifahcdlbeieldikdjheaokhajdi', '_blank');
+                setTimeout(function() {                    
+                    _self.instalado = true;
                     resolve(true);
-                }, 10000);
-                chrome.webstore.install(
-                    'https://chrome.google.com/webstore/detail/ghkiiifahcdlbeieldikdjheaokhajdi',
-                    function(){
-                        clearTimeout(limitTimeInstall);
-                        _self.instalado = true;
-                        resolve(true);
-                    },
-                    function(error: any){
-                        clearTimeout(limitTimeInstall);
-                        _self.instalado = true;
-                        resolve(true);
-                    }
-                );
+                }, 5000);
+                // chrome.webstore.install(
+                //     'https://chrome.google.com/webstore/detail/ghkiiifahcdlbeieldikdjheaokhajdi',
+                //     function(){
+                //         clearTimeout(limitTimeInstall);
+                //         _self.instalado = true;
+                //         resolve(true);
+                //     },
+                //     function(error: any){
+                //         clearTimeout(limitTimeInstall);
+                //         _self.instalado = true;
+                //         resolve(true);
+                //     }
+                // );
             }else{
                 reject('chrome.webstore not found.');
             }
