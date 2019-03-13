@@ -263,10 +263,14 @@ export declare class OngStatus {
     total_debito_comprovado: number;
     constructor(obj?: any);
 }
-export declare class OngOrigemCredito {
+export declare class OngOrigemCredito extends api.Tastypie.Model<OngOrigemCredito> {
+    static resource: api.Tastypie.Resource<OngOrigemCredito>;
     id: number;
     nome: string;
+    token: string;
     grupo: string;
+    source_id: number;
+    ong_id: number;
     constructor(obj?: any);
 }
 export declare class OngRecurso extends api.Tastypie.Model<OngRecurso> {

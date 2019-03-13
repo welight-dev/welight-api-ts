@@ -607,17 +607,18 @@ export class OngStatus {
     }
 }
 
-export class OngOrigemCredito {
+export class OngOrigemCredito extends api.Tastypie.Model<OngOrigemCredito> {
+    public static resource = new api.Tastypie.Resource<OngOrigemCredito>('ong/origem-credito', {model: OngOrigemCredito});
+
     public id: number;
     public nome: string;
+    public token: string;
     public grupo: string;
+    public source_id: number;
+    public ong_id: number;
 
     constructor(obj?:any){
-        if(obj){
-            this.id = obj.id;
-            this.nome = obj.nome;
-            this.grupo = obj.grupo;
-        }
+        super(OngOrigemCredito.resource, obj);
     }
 }
 
