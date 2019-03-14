@@ -47,8 +47,8 @@ export class PluginNavegador {
         let _self = this;
         return new Promise<any>(function(resolve, reject) {
             if(chrome){
-                window.open('https://chrome.google.com/webstore/detail/ghkiiifahcdlbeieldikdjheaokhajdi', '_blank');
-                setTimeout(function() {                    
+                window.open('https://chrome.google.com/webstore/detail/welight/ghkiiifahcdlbeieldikdjheaokhajdi', '_blank');
+                setTimeout(function() {
                     _self.instalado = true;
                     resolve(true);
                 }, 5000);
