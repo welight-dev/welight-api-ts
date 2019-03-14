@@ -1,5 +1,5 @@
 {
-  "name": "welight-api-ts",
+  "name": "@welight/welight-api-ts",
   "version": "1.0.144",
   "description": "TypeScript client for Welight platform",
   "main": "./lib/welight.js",
