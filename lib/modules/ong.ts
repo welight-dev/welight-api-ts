@@ -761,11 +761,11 @@ export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
     }
 
     public static creditar(obj:{ong_id:number, origem_credito_id: number, valor: number}): Promise<OngCarteira> {
-        return this._creditar.objects.create(obj);
+        return OngCarteira._creditar.objects.create(obj);
     }
 
     public static transferir(obj:{ong_id:number, origem_credito_id: number, ong_banco_id: number, valor: number}): Promise<OngCarteira> {
-        return this._transferir.objects.create(obj);
+        return OngCarteira._transferir.objects.create(obj);
     }
 }
 
