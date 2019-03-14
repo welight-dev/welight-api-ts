@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/mw-ferretti/welight-api-ts/issues"
   },
-  "homepage": "https://github.com/mw-ferretti/welight-api-ts#readme"
+  "homepage": "https://github.com/mw-ferretti/welight-api-ts#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
