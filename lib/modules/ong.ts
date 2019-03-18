@@ -735,6 +735,51 @@ export class OngCarteiraTransferencia {
     }
 }
 
+export class OngCarteiraCreditoCustomComprovante extends api.Tastypie.Model<OngCarteiraCreditoCustomComprovante> {
+    public static resource = new api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>('ong/carteira-credito-custom-comprovante', {model: OngCarteiraCreditoCustomComprovante});
+
+    public credito_custom_id: number;
+    public titulo: string;
+    public descricao: string;
+    public comprovante: string;
+    public url_video: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OngCarteiraCreditoCustomComprovante.resource, obj);
+    }
+}
+
+export class OngCarteiraCreditoCustom {
+    public ong_carteira_id: number;
+    public user_id: number;
+    public user_name: string;
+    public user_email: string;
+    public carteira_debito_id: string;
+    public dt_created: string;
+
+    private _comprovante: api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>;
+
+    constructor(obj?:any){
+        if(obj){
+          let _self = this;
+          for(let property in obj) {
+              if (obj.hasOwnProperty(property) && property.charAt(0) != '_') {
+                  _self[property] = obj[property];
+              }
+          }
+          if(obj.id){
+              this._comprovante = new api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>('ong/carteira-credito-custom-comprovante', {model: OngCarteiraCreditoCustomComprovante, defaults: {credito_custom_id:obj.id}});
+          }
+        }
+    }
+
+    public get comprovante(): api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante> {
+        return this._comprovante;
+    }
+}
+
 export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
 
     public static resource = new api.Tastypie.Resource<OngCarteira>('ong/carteira', {model: OngCarteira});
@@ -749,6 +794,7 @@ export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
     public valor: number;
     public status: string;
     public transferencia: OngCarteiraTransferencia;
+    public credito_custom: OngCarteiraCreditoCustom;
     public dt_updated: string;
     public dt_created: string;
 
@@ -757,6 +803,7 @@ export class OngCarteira extends api.Tastypie.Model<OngCarteira>{
         if(obj){
           if(obj.origem_credito) this.origem_credito = new OngOrigemCredito(obj.origem_credito);
           if(obj.transferencia) this.transferencia = new OngCarteiraTransferencia(obj.transferencia);
+          if(obj.credito_custom) this.credito_custom = new OngCarteiraCreditoCustom(obj.credito_custom);
         }
     }
 

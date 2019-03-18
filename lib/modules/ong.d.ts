@@ -337,6 +337,28 @@ export declare class OngCarteiraTransferencia {
     dt_created: string;
     constructor(obj?: any);
 }
+export declare class OngCarteiraCreditoCustomComprovante extends api.Tastypie.Model<OngCarteiraCreditoCustomComprovante> {
+    static resource: api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>;
+    credito_custom_id: number;
+    titulo: string;
+    descricao: string;
+    comprovante: string;
+    url_video: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngCarteiraCreditoCustom {
+    ong_carteira_id: number;
+    user_id: number;
+    user_name: string;
+    user_email: string;
+    carteira_debito_id: string;
+    dt_created: string;
+    private _comprovante;
+    constructor(obj?: any);
+    readonly comprovante: api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>;
+}
 export declare class OngCarteira extends api.Tastypie.Model<OngCarteira> {
     static resource: api.Tastypie.Resource<OngCarteira>;
     private static _creditar;
@@ -349,6 +371,7 @@ export declare class OngCarteira extends api.Tastypie.Model<OngCarteira> {
     valor: number;
     status: string;
     transferencia: OngCarteiraTransferencia;
+    credito_custom: OngCarteiraCreditoCustom;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
