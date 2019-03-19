@@ -488,11 +488,11 @@ export class EmpresaLojaintegrada extends EmpresaWidget {
     }
 }
 
-export class EmpresaShopfy extends EmpresaWidget {
-    public static resource = new api.Tastypie.Resource<EmpresaShopfy>('doador-empresa/shopfy', {model: EmpresaShopfy});
+export class EmpresaShopify extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/shopify', {model: EmpresaShopify});
 
     constructor(obj?:any){
-        super(obj, EmpresaShopfy.resource);
+        super(obj, EmpresaShopify.resource);
     }
 }
 
@@ -558,7 +558,7 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                         }else if(conf.plataforma.token == 'lojaintegrada'){
                             conf_obj = new EmpresaLojaintegrada(conf.config);
                         }else if(conf.plataforma.token == 'shopfy'){
-                            conf_obj = new EmpresaShopfy(conf.config);
+                            conf_obj = new EmpresaShopify(conf.config);
                         }else{
                             conf_obj = conf.config;
                         }

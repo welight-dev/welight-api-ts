@@ -232,8 +232,8 @@ export declare class EmpresaLojaintegrada extends EmpresaWidget {
     static resource: api.Tastypie.Resource<EmpresaLojaintegrada>;
     constructor(obj?: any);
 }
-export declare class EmpresaShopfy extends EmpresaWidget {
-    static resource: api.Tastypie.Resource<EmpresaShopfy>;
+export declare class EmpresaShopify extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaShopify>;
     constructor(obj?: any);
 }
 export declare class EmpresaModuloPlataforma {
