@@ -557,7 +557,7 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                             conf_obj = new EmpresaVnda(conf.config);
                         }else if(conf.plataforma.token == 'lojaintegrada'){
                             conf_obj = new EmpresaLojaintegrada(conf.config);
-                        }else if(conf.plataforma.token == 'shopfy'){
+                        }else if(conf.plataforma.token == 'shopify'){
                             conf_obj = new EmpresaShopify(conf.config);
                         }else{
                             conf_obj = conf.config;

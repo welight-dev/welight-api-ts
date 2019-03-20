@@ -379,6 +379,7 @@ export declare class OngCarteira extends api.Tastypie.Model<OngCarteira> {
         ong_id: number;
         origem_credito_id: number;
         valor: number;
+        ong_banco_id: number;
     }): Promise<OngCarteira>;
     static transferir(obj: {
         ong_id: number;
