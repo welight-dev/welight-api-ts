@@ -752,6 +752,7 @@ export class OngCarteiraCreditoCustomComprovante extends api.Tastypie.Model<OngC
 }
 
 export class OngCarteiraCreditoCustom {
+    public id: number;
     public ong_carteira_id: number;
     public user_id: number;
     public user_name: string;

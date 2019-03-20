@@ -349,6 +349,7 @@ export declare class OngCarteiraCreditoCustomComprovante extends api.Tastypie.Mo
     constructor(obj?: any);
 }
 export declare class OngCarteiraCreditoCustom {
+    id: number;
     ong_carteira_id: number;
     user_id: number;
     user_name: string;
