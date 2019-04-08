@@ -5,6 +5,7 @@ import * as api from "ts-resource-tastypie";
 import { Doador } from "./doador";
 import { Ong } from "./ong";
 import { Fatura, FaturaDistribuicao } from "./doadorEmpresaFatura";
+import { StyleUi } from "./utils";
 
 export class Empresa extends api.Tastypie.Model<Empresa> {
     public static resource = new api.Tastypie.Resource<Empresa>('doador-empresa/profile', {model: Empresa});
@@ -587,59 +588,29 @@ export class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
     public porcentagem: boolean;
     public doacao_porcent: number;
     public doacao_valor: number;
-    public titulo_ui: {
-        font_family: string,
-        font_family_custom: string,
-        font_color: string,
-        font_size: number,
-        font_weight: string,
-        background_color: string,
-        border_width: number,
-        border_color: string,
-        border_type: string
-    };
-    public formulario_ui: {
-        font_family: string,
-        font_family_custom: string,
-        font_color: string,
-        font_size: number,
-        font_weight: string,
-        background_color: string,
-        border_width: number,
-        border_color: string,
-        border_type: string
-    };
-    public botao_ui: {
-        font_family: string,
-        font_family_custom: string,
-        font_color: string,
-        font_size: number,
-        font_weight: string,
-        background_color: string,
-        border_width: number,
-        border_color: string,
-        border_type: string
-    };
-    public subtitulo_ui: {
-        font_family: string,
-        font_family_custom: string,
-        font_color: string,
-        font_size: number,
-        font_weight: string,
-        background_color: string,
-        border_width: number,
-        border_color: string,
-        border_type: string
-    };
+    public titulo_ui: StyleUi;
+    public formulario_ui: StyleUi;
+    public botao_ui: StyleUi;
+    public subtitulo_ui: StyleUi;
+    public pagina_img_logo_ui: StyleUi;
     public pagina_img_fundo: string;
     public pagina_img_logo: string;
     public pagina_cor_fundo: string;
     public titulo_sucesso: string;
     public mensagem_sucesso: string;
+    public mensagem_select_ong: string;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
         super(EmpresaPdv.resource, obj);
+
+        if(obj){
+            if (obj.titulo_ui) this.titulo_ui = new StyleUi(obj.titulo_ui);
+            if (obj.formulario_ui) this.formulario_ui = new StyleUi(obj.formulario_ui);
+            if (obj.botao_ui) this.botao_ui = new StyleUi(obj.botao_ui);
+            if (obj.subtitulo_ui) this.subtitulo_ui = new StyleUi(obj.subtitulo_ui);
+            if (obj.pagina_img_logo_ui) this.pagina_img_logo_ui = new StyleUi(obj.pagina_img_logo_ui);
+        }
     }
 }

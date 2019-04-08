@@ -93,3 +93,30 @@ export class PluginNavegador {
         document.dispatchEvent($wl_msg_event);
     }
 }
+
+export class StyleUi {
+    public font_family: string;
+    public font_family_custom: string;
+    public font_color: string;
+    public font_size: number;
+    public font_weight: string;
+    public background_color: string;
+    public border_width: number;
+    public border_color: string;
+    public border_type: string;
+    public height: string;
+    public width: string;
+
+    constructor(obj?:any){
+        if(obj){
+            let _self = this;
+            let properties: Array<string> = api.Tastypie.Tools.getProperties(obj);
+            for(let propertie of properties){
+                try {
+                    _self[propertie] = obj[propertie];
+                }
+                catch (e) {}
+            }
+        }
+    }
+}

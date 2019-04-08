@@ -27,3 +27,17 @@ export declare class PluginNavegador {
         impacto_total: number;
     }): void;
 }
+export declare class StyleUi {
+    font_family: string;
+    font_family_custom: string;
+    font_color: string;
+    font_size: number;
+    font_weight: string;
+    background_color: string;
+    border_width: number;
+    border_color: string;
+    border_type: string;
+    height: string;
+    width: string;
+    constructor(obj?: any);
+}
