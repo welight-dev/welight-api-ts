@@ -200,8 +200,8 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         )
     }
 
-    public gerar_fatura(cpf: string, email: string, qtde: number, convidados: Array<{nome:string, cpf:string, email:string, sexo:string}>, ongs?: Array<number>): Promise<IngressoFatura> {
-        return this._gerar_fatura.objects.create({ingresso_id: this.id, cpf: cpf, email: email, qtde: qtde, convidados:convidados, ongs:ongs}).then(
+    public gerar_fatura(cpf: string, email: string, qtde: number, tipo_pagamento: string, convidados: Array<{nome:string, cpf:string, email:string, sexo:string}>, ongs?: Array<number>): Promise<IngressoFatura> {
+        return this._gerar_fatura.objects.create({ingresso_id: this.id, cpf: cpf, email: email, qtde: qtde, tipo_pagamento: tipo_pagamento, convidados:convidados, ongs:ongs}).then(
             function(data: any){
                 return new IngressoFatura(data);
             }

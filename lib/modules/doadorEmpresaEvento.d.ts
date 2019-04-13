@@ -89,7 +89,7 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         nome: string;
         cpf: string;
     }>, ongs: Array<number>): Promise<IngressoFatura>;
-    gerar_fatura(cpf: string, email: string, qtde: number, convidados: Array<{
+    gerar_fatura(cpf: string, email: string, qtde: number, tipo_pagamento: string, convidados: Array<{
         nome: string;
         cpf: string;
         email: string;
