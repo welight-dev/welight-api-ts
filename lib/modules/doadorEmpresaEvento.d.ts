@@ -13,11 +13,13 @@ export declare class IngressoFatura {
     ingresso_id: number;
     nome: string;
     cpf: string;
+    email: string;
     qtde: number;
     moeda: string;
     total: number;
     pago: boolean;
     vencimento: string;
+    token: string;
     dt_updated: string;
     dt_created: string;
     pagamento: IngressoFaturaPagamento;
@@ -28,6 +30,8 @@ export declare class IngressoFaturaCliente {
     ingresso_fatura_id: number;
     nome: string;
     cpf: string;
+    email: string;
+    sexo: string;
     entrada_confirmada: boolean;
     dt_entrada: string;
     constructor(obj?: any);
@@ -75,6 +79,8 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     evento: Evento;
     private _check_fatura_vip;
     private _gerar_fatura_vip;
+    private _gerar_fatura;
+    private _check_fatura;
     private _check_entrada;
     private _confirmar_entrada;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<IngressoPublic>);
@@ -83,6 +89,13 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         nome: string;
         cpf: string;
     }>, ongs: Array<number>): Promise<IngressoFatura>;
+    gerar_fatura(cpf: string, email: string, qtde: number, convidados: Array<{
+        nome: string;
+        cpf: string;
+        email: string;
+        sexo: string;
+    }>, ongs?: Array<number>): Promise<IngressoFatura>;
+    check_fatura(token: string): Promise<IngressoFatura>;
     check_entrada(ingresso_id: number, cpf: string): Promise<IngressoFatura>;
     confirmar_entrada(ingresso_id: number, cpf: string): Promise<IngressoFatura>;
 }

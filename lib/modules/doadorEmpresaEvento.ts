@@ -27,11 +27,13 @@ export class IngressoFatura {
     public ingresso_id: number;
     public nome: string;
     public cpf: string;
+    public email: string;
     public qtde: number;
     public moeda: string;
     public total: number;
     public pago: boolean;
     public vencimento: string;
+    public token: string;
     public dt_updated: string;
     public dt_created: string;
 
@@ -39,24 +41,27 @@ export class IngressoFatura {
     public convidados: Array<IngressoFaturaCliente>;
 
     constructor(obj?:any){
-        this.ingresso_id = obj.ingresso_id;
-        this.nome = obj.nome;
-        this.cpf = obj.cpf;
-        this.qtde = obj.qtde;
-        this.moeda = obj.moeda;
-        this.total = obj.total;
-        this.pago = obj.pago;
-        this.vencimento = obj.vencimento;
-        this.dt_updated = obj.dt_updated;
-        this.dt_created = obj.dt_created;
+        if(obj){
+            this.ingresso_id = obj.ingresso_id;
+            this.nome = obj.nome;
+            this.cpf = obj.cpf;
+            this.email = obj.email;
+            this.qtde = obj.qtde;
+            this.moeda = obj.moeda;
+            this.total = obj.total;
+            this.pago = obj.pago;
+            this.vencimento = obj.vencimento;
+            this.token = obj.token;
+            this.dt_updated = obj.dt_updated;
+            this.dt_created = obj.dt_created;
 
-        let _self = this;
-        if(obj.pagamento) _self.pagamento = new IngressoFaturaPagamento(obj.pagamento);
+            if(obj.pagamento) this.pagamento = new IngressoFaturaPagamento(obj.pagamento);
 
-        if(obj.convidados){
-            _self.convidados = [];
-            for(let convidado of obj.convidados){
-                _self.convidados.push(new IngressoFaturaCliente(convidado));
+            if(obj.convidados){
+                this.convidados = [];
+                for(let convidado of obj.convidados){
+                    this.convidados.push(new IngressoFaturaCliente(convidado));
+                }
             }
         }
     }
@@ -66,15 +71,21 @@ export class IngressoFaturaCliente {
     public ingresso_fatura_id: number;
     public nome: string;
     public cpf: string;
+    public email: string;
+    public sexo: string;
     public entrada_confirmada: boolean;
     public dt_entrada: string;
 
     constructor(obj?:any){
-        this.ingresso_fatura_id = obj.ingresso_fatura_id;
-        this.nome = obj.nome;
-        this.cpf = obj.cpf;
-        this.entrada_confirmada = obj.entrada_confirmada;
-        this.dt_entrada = obj.dt_entrada;
+        if(obj){
+            this.ingresso_fatura_id = obj.ingresso_fatura_id;
+            this.nome = obj.nome;
+            this.cpf = obj.cpf;
+            this.email = obj.email;
+            this.sexo = obj.sexo;
+            this.entrada_confirmada = obj.entrada_confirmada;
+            this.dt_entrada = obj.dt_entrada;
+        }
     }
 }
 
@@ -88,13 +99,15 @@ export class IngressoFaturaPagamento {
     public dt_created: string;
 
     constructor(obj?:any){
-        this.ingresso_fatura_id = obj.ingresso_fatura_id;
-        this.invoice_id = obj.invoice_id;
-        this.tipo = obj.tipo;
-        this.status = obj.status;
-        this.secure_url = obj.secure_url;
-        this.dt_updated = obj.dt_updated;
-        this.dt_created = obj.dt_created;
+        if(obj){
+            this.ingresso_fatura_id = obj.ingresso_fatura_id;
+            this.invoice_id = obj.invoice_id;
+            this.tipo = obj.tipo;
+            this.status = obj.status;
+            this.secure_url = obj.secure_url;
+            this.dt_updated = obj.dt_updated;
+            this.dt_created = obj.dt_created;
+        }
     }
 }
 
@@ -103,12 +116,13 @@ export class FaturaVip {
     public faturas: Array<IngressoFatura>;
 
     constructor(obj?:any){
-        let _self = this;
-        if(obj.vip) _self.vip = new ClienteVip(obj.vip);
-        if(obj.faturas){
-            _self.faturas = [];
-            for(let fatura of obj.faturas){
-                _self.faturas.push(new IngressoFatura(fatura));
+        if(obj){
+            if(obj.vip) this.vip = new ClienteVip(obj.vip);
+            if(obj.faturas){
+                this.faturas = [];
+                for(let fatura of obj.faturas){
+                    this.faturas.push(new IngressoFatura(fatura));
+                }
             }
         }
     }
@@ -129,8 +143,9 @@ export class Evento extends api.Tastypie.Model<Evento> {
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<Evento>){
         super(_resource || Evento.resource, obj);
-        let _self = this;
-        if(_self.empresa) _self.empresa = new Empresa(_self.empresa);
+        if(obj){
+            if(obj.empresa) this.empresa = new Empresa(obj.empresa);
+        }
     }
 }
 
@@ -148,25 +163,29 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     public dt_updated: string;
     public dt_created: string;
     public evento: Evento;
-    private _check_fatura_vip: api.Tastypie.Resource<any>;
-    private _gerar_fatura_vip: api.Tastypie.Resource<any>;
-    private _check_entrada: api.Tastypie.Resource<any>;
-    private _confirmar_entrada: api.Tastypie.Resource<any>;
+    private _check_fatura_vip: api.Tastypie.Resource<FaturaVip>;
+    private _gerar_fatura_vip: api.Tastypie.Resource<IngressoFatura>;
+    private _gerar_fatura: api.Tastypie.Resource<IngressoFatura>;
+    private _check_fatura: api.Tastypie.Resource<IngressoFatura>;
+    private _check_entrada: api.Tastypie.Resource<IngressoFatura>;
+    private _confirmar_entrada: api.Tastypie.Resource<IngressoFatura>;
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<IngressoPublic>){
         super(_resource || IngressoPublic.resource, obj);
-        this._check_fatura_vip = new api.Tastypie.Resource<any>('doador-empresa-evento/ingresso-public/check-fatura-vip');
-        this._gerar_fatura_vip = new api.Tastypie.Resource<any>('doador-empresa-evento/ingresso-public/gerar-fatura-vip');
-        this._check_entrada = new api.Tastypie.Resource<any>('doador-empresa-evento/ingresso-public/check-entrada');
-        this._confirmar_entrada = new api.Tastypie.Resource<any>('doador-empresa-evento/ingresso-public/confirmar-entrada');
+        this._check_fatura_vip = new api.Tastypie.Resource<FaturaVip>('doador-empresa-evento/ingresso-public/check-fatura-vip');
+        this._gerar_fatura_vip = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/gerar-fatura-vip');
+        this._gerar_fatura = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/gerar-fatura');
+        this._check_fatura = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/check-fatura');
+        this._check_entrada = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/check-entrada');
+        this._confirmar_entrada = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/confirmar-entrada');
 
-        let _self = this;
-        if(_self.evento) _self.evento = new Evento(_self.evento);
+        if(obj){
+          if(obj.evento) this.evento = new Evento(obj.evento);
+        }
     }
 
     public check_fatura_vip(ingresso_id: number, cpf: string): Promise<FaturaVip> {
-        let _self = this;
-        return _self._check_fatura_vip.objects.findOne({ingresso_id: ingresso_id, cpf: cpf}).then(
+        return this._check_fatura_vip.objects.findOne({ingresso_id: ingresso_id, cpf: cpf}).then(
             function(data: any){
                 return new FaturaVip(data);
             }
@@ -174,8 +193,23 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     }
 
     public gerar_fatura_vip(ingresso_id: number, cpf: string, qtde: number, convidados: Array<{nome:string, cpf:string}>, ongs: Array<number>): Promise<IngressoFatura> {
-        let _self = this;
-        return _self._gerar_fatura_vip.objects.create({ingresso_id: ingresso_id, cpf: cpf, qtde: qtde, convidados:convidados, ongs:ongs}).then(
+        return this._gerar_fatura_vip.objects.create({ingresso_id: ingresso_id, cpf: cpf, qtde: qtde, convidados:convidados, ongs:ongs}).then(
+            function(data: any){
+                return new IngressoFatura(data);
+            }
+        )
+    }
+
+    public gerar_fatura(cpf: string, email: string, qtde: number, convidados: Array<{nome:string, cpf:string, email:string, sexo:string}>, ongs?: Array<number>): Promise<IngressoFatura> {
+        return this._gerar_fatura.objects.create({ingresso_id: this.id, cpf: cpf, email: email, qtde: qtde, convidados:convidados, ongs:ongs}).then(
+            function(data: any){
+                return new IngressoFatura(data);
+            }
+        )
+    }
+
+    public check_fatura(token: string): Promise<IngressoFatura> {
+        return this._check_fatura.objects.findOne({token: token}).then(
             function(data: any){
                 return new IngressoFatura(data);
             }
@@ -183,8 +217,7 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     }
 
     public check_entrada(ingresso_id: number, cpf: string): Promise<IngressoFatura> {
-        let _self = this;
-        return _self._check_entrada.objects.findOne({ingresso_id: ingresso_id, cpf: cpf}).then(
+        return this._check_entrada.objects.findOne({ingresso_id: ingresso_id, cpf: cpf}).then(
             function(data: any){
                 return new IngressoFatura(data);
             }
@@ -192,8 +225,7 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     }
 
     public confirmar_entrada(ingresso_id: number, cpf: string): Promise<IngressoFatura> {
-        let _self = this;
-        return _self._confirmar_entrada.objects.create({ingresso_id: ingresso_id, cpf: cpf}).then(
+        return this._confirmar_entrada.objects.create({ingresso_id: ingresso_id, cpf: cpf}).then(
             function(data: any){
                 return new IngressoFatura(data);
             }
