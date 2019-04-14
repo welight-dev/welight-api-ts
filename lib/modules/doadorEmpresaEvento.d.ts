@@ -24,6 +24,7 @@ export declare class IngressoFatura {
     dt_created: string;
     pagamento: IngressoFaturaPagamento;
     convidados: Array<IngressoFaturaCliente>;
+    ingresso: IngressoPublic;
     constructor(obj?: any);
 }
 export declare class IngressoFaturaCliente {

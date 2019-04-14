@@ -39,6 +39,7 @@ export class IngressoFatura {
 
     public pagamento: IngressoFaturaPagamento;
     public convidados: Array<IngressoFaturaCliente>;
+    public ingresso: IngressoPublic;
 
     constructor(obj?:any){
         if(obj){
@@ -63,6 +64,8 @@ export class IngressoFatura {
                     this.convidados.push(new IngressoFaturaCliente(convidado));
                 }
             }
+
+            if(obj.ingresso) this.ingresso = new IngressoPublic(obj.ingresso);
         }
     }
 }
