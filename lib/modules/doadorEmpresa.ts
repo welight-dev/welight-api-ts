@@ -456,6 +456,62 @@ export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     public alinhamento: string;
     public cor_fundo: string;
     public position: string;
+    public form_ui: StyleUi;
+    public botao_ui: StyleUi;
+    public pagina_conf: {
+       "principal": {
+           "alinhamento": string,
+           "abertura": string,
+           "url_dinamica": boolean,
+           "url": string,
+           "url_selecionada": string,
+           "url_posicao": string,
+           "integracao": {
+              "tipo": string,
+              "local": string,
+              "metodo": string
+           }
+       },
+       "carrinho": {
+           "alinhamento": string,
+           "abertura": string,
+           "url_dinamica": boolean,
+           "url": string,
+           "url_selecionada": string,
+           "url_posicao": string,
+           "integracao": {
+              "tipo": string,
+              "local": string,
+              "metodo": string
+           }
+       },
+       "confirmacao": {
+           "alinhamento": string,
+           "abertura": string,
+           "url_dinamica": boolean,
+           "url": string,
+           "url_selecionada": string,
+           "url_posicao": string,
+           "integracao": {
+              "tipo": string,
+              "local": string,
+              "metodo": string
+           }
+       },
+       "sucesso": {
+           "alinhamento": string,
+           "abertura": string,
+           "url_dinamica": boolean,
+           "url": string,
+           "url_selecionada": string,
+           "url_posicao": string,
+           "integracao": {
+              "tipo": string,
+              "local": string,
+              "metodo": string
+           }
+       }
+    };
     public ativo: boolean;
     public dt_updated: string;
     public dt_created: string;
@@ -499,6 +555,7 @@ export class EmpresaShopify extends EmpresaWidget {
 
 export class EmpresaModuloPlataforma {
     public nome: string;
+    public logo: string;
     public token: string;
     public dt_created: string;
 

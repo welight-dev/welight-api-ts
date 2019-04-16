@@ -216,6 +216,62 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     alinhamento: string;
     cor_fundo: string;
     position: string;
+    form_ui: StyleUi;
+    botao_ui: StyleUi;
+    pagina_conf: {
+        "principal": {
+            "alinhamento": string;
+            "abertura": string;
+            "url_dinamica": boolean;
+            "url": string;
+            "url_selecionada": string;
+            "url_posicao": string;
+            "integracao": {
+                "tipo": string;
+                "local": string;
+                "metodo": string;
+            };
+        };
+        "carrinho": {
+            "alinhamento": string;
+            "abertura": string;
+            "url_dinamica": boolean;
+            "url": string;
+            "url_selecionada": string;
+            "url_posicao": string;
+            "integracao": {
+                "tipo": string;
+                "local": string;
+                "metodo": string;
+            };
+        };
+        "confirmacao": {
+            "alinhamento": string;
+            "abertura": string;
+            "url_dinamica": boolean;
+            "url": string;
+            "url_selecionada": string;
+            "url_posicao": string;
+            "integracao": {
+                "tipo": string;
+                "local": string;
+                "metodo": string;
+            };
+        };
+        "sucesso": {
+            "alinhamento": string;
+            "abertura": string;
+            "url_dinamica": boolean;
+            "url": string;
+            "url_selecionada": string;
+            "url_posicao": string;
+            "integracao": {
+                "tipo": string;
+                "local": string;
+                "metodo": string;
+            };
+        };
+    };
     ativo: boolean;
     dt_updated: string;
     dt_created: string;
@@ -239,6 +295,7 @@ export declare class EmpresaShopify extends EmpresaWidget {
 }
 export declare class EmpresaModuloPlataforma {
     nome: string;
+    logo: string;
     token: string;
     dt_created: string;
     constructor(obj?: any);
