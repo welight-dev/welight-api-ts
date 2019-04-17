@@ -254,7 +254,7 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
     public facebook: string;
     public instagram: string;
 
-    public oscip_number: string;
+    public oscip: boolean;
     public diretor_nome: string;
     public diretor_assinatura: string;
 
