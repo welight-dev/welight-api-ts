@@ -1,6 +1,6 @@
 import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
-import { Ods } from "./onu";
+import { Ods, MetricUnit, Metric } from "./onu";
 export declare class Ong extends api.Tastypie.Model<Ong> {
     static resource: api.Tastypie.Resource<Ong>;
     nome: string;
@@ -180,14 +180,12 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     };
     private _endereco;
     private _ods;
-    private _indicadores;
     private _recursos;
     private _entregas;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     readonly ods: api.Tastypie.Resource<OngProjetoOds>;
-    readonly indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
     readonly recursos: api.Tastypie.Resource<OngRecurso>;
     readonly entregas: api.Tastypie.Resource<OngProjetoEntrega>;
 }
@@ -227,35 +225,62 @@ export declare class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
     dt_created: string;
     constructor(obj?: any);
 }
-export declare class Indicador extends api.Tastypie.Model<Indicador> {
-    static resource: api.Tastypie.Resource<Indicador>;
-    nome: string;
-    ativo: boolean;
-    aprovado: boolean;
-    dt_updated: string;
-    dt_created: string;
-    constructor(obj?: any);
-}
-export declare class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidade> {
-    static resource: api.Tastypie.Resource<IndicadorUnidade>;
-    unidade: string;
+export declare class OngProjetoMetricRegisterEvidence extends api.Tastypie.Model<OngProjetoMetricRegisterEvidence> {
+    static resource: api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>;
+    ong_projeto_metric_register_id: number;
+    titulo: string;
     descricao: string;
-    texto: string;
+    comprovante: string;
+    url_video: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
 }
-export declare class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador> {
-    static resource: api.Tastypie.Resource<OngProjetoIndicador>;
-    ong_projeto_id: number;
-    indicador_unidade_id: number;
-    indicador_unidade: IndicadorUnidade;
-    indicador: string;
-    ponto_zero: string;
-    dt_ponto_zero: string;
+export declare class OngProjetoMetricRegister extends api.Tastypie.Model<OngProjetoMetricRegister> {
+    static resource: api.Tastypie.Resource<OngProjetoMetricRegister>;
+    ong_projeto_metric_config_id: number;
+    total: string;
+    type: string;
+    dt_register: string;
     dt_updated: string;
     dt_created: string;
+    private _evidencies;
     constructor(obj?: any);
+    readonly evidencies: api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>;
+}
+export declare class OngProjetoMetricConfig extends api.Tastypie.Model<OngProjetoMetricConfig> {
+    static resource: api.Tastypie.Resource<OngProjetoMetricConfig>;
+    ong_projeto_metric_id: number;
+    ong_projeto_endereco_id: number;
+    medicao: string;
+    medicao_meta: string;
+    medicao_frequencia: number;
+    medicao_mes: Array<number>;
+    metric_unit: MetricUnit;
+    base_value: string;
+    base_date: string;
+    meta_value: string;
+    meta_date: string;
+    ong_projeto_endereco: OngProjetoEndereco;
+    dt_updated: string;
+    dt_created: string;
+    private _registers;
+    constructor(obj?: any);
+    readonly register: api.Tastypie.Resource<OngProjetoMetricRegister>;
+}
+export declare class OngProjetoMetric extends api.Tastypie.Model<OngProjetoMetric> {
+    static resource: api.Tastypie.Resource<OngProjetoMetric>;
+    ong_projeto_id: number;
+    metric_id: number;
+    dt_updated: string;
+    dt_created: string;
+    private _ong_projeto;
+    private _metric;
+    private _metric_config;
+    constructor(obj?: any);
+    readonly ong_projeto: OngProjeto;
+    readonly metric: Metric;
+    readonly metric_config: api.Tastypie.Resource<OngProjetoMetricConfig>;
 }
 export declare class OngStatus {
     qtde_pontos: number;

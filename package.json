@@ -1,6 +1,6 @@
 {
   "name": "@welight/welight-api-ts",
-  "version": "1.0.156",
+  "version": "1.0.157",
   "description": "TypeScript client for Welight platform",
   "main": "./lib/welight.js",
   "types": "./lib/welight.d.ts",
@@ -10,10 +10,10 @@
   "dependencies": {
     "@types/crypto-js": "^3.1.43",
     "crypto-js": "^3.1.9-1",
-    "ts-resource-tastypie": "^1.0.40"
+    "ts-resource-tastypie": "^1.0.43"
   },
   "devDependencies": {
-    "typescript": "^2.9.2"
+    "typescript": "^3.4.5"
   },
   "scripts": {
     "build": "tsc"

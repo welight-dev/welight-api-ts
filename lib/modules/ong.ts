@@ -3,7 +3,8 @@
 
 import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
-import { Ods } from "./onu";
+import { Ods, MetricUnit, Metric } from "./onu";
+
 
 export class Ong extends api.Tastypie.Model<Ong> {
     public static resource = new api.Tastypie.Resource<Ong>('ong/profile', {model: Ong});
@@ -449,7 +450,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _ods: api.Tastypie.Resource<OngProjetoOds>;
-    private _indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
+    // private _indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
     private _recursos: api.Tastypie.Resource<OngRecurso>;
     private _entregas: api.Tastypie.Resource<OngProjetoEntrega>;
 
@@ -462,7 +463,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
         if(this.id){
             this._endereco = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco, defaults: {ong_projeto_id: this.id}});
             this._ods = new api.Tastypie.Resource<OngProjetoOds>('ong/projeto-ods', {model: OngProjetoOds, defaults: {ong_projeto_id: this.id}});
-            this._indicadores = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador, defaults: {ong_projeto_id: this.id}});
+            // this._indicadores = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador, defaults: {ong_projeto_id: this.id}});
             this._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_projeto_id: this.id}});
             this._entregas = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega, defaults: {ong_projeto_id: this.id}});
         }
@@ -474,10 +475,6 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     public get ods(): api.Tastypie.Resource<OngProjetoOds> {
         return this._ods;
-    }
-
-    public get indicadores(): api.Tastypie.Resource<OngProjetoIndicador> {
-        return this._indicadores;
     }
 
     public get recursos(): api.Tastypie.Resource<OngRecurso> {
@@ -543,53 +540,135 @@ export class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {
     }
 }
 
-export class Indicador extends api.Tastypie.Model<Indicador> {
-    public static resource = new api.Tastypie.Resource<Indicador>('ong/indicador', {model: Indicador});
 
-    public nome: string;
-    public ativo: boolean;
-    public aprovado: boolean;
-    public dt_updated: string;
-    public dt_created: string;
+export class OngProjetoMetricRegisterEvidence extends api.Tastypie.Model<OngProjetoMetricRegisterEvidence> {
+    public static resource = new api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>('ong/projeto-metric-register-evidence', {model: OngProjetoMetricRegisterEvidence});
 
-    constructor(obj?:any){
-        super(Indicador.resource, obj);
-    }
-}
-
-export class IndicadorUnidade extends api.Tastypie.Model<IndicadorUnidade> {
-    public static resource = new api.Tastypie.Resource<IndicadorUnidade>('ong/indicador-unidade', {model: IndicadorUnidade});
-
-    public unidade: string;
+    public ong_projeto_metric_register_id: number;
+    public titulo: string;
     public descricao: string;
-    public texto: string;
+    public comprovante: string;
+    public url_video: string;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
-        super(IndicadorUnidade.resource, obj);
+        super(OngProjetoMetricRegisterEvidence.resource, obj);
     }
 }
 
-export class OngProjetoIndicador extends api.Tastypie.Model<OngProjetoIndicador> {
-    public static resource = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador});
 
-    public ong_projeto_id: number;
-    public indicador_unidade_id: number;
-    public indicador_unidade: IndicadorUnidade;
-    public indicador: string;
-    public ponto_zero: string;
-    public dt_ponto_zero: string;
+export class OngProjetoMetricRegister extends api.Tastypie.Model<OngProjetoMetricRegister> {
+    public static resource = new api.Tastypie.Resource<OngProjetoMetricRegister>('ong/projeto-metric-register', {model: OngProjetoMetricRegister});
+
+    public ong_projeto_metric_config_id: number;
+    public total: string;
+    public type: string;
+    public dt_register: string;
     public dt_updated: string;
     public dt_created: string;
 
+    private _evidencies: api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>;
+
     constructor(obj?:any){
-        super(OngProjetoIndicador.resource, obj);
+        super(OngProjetoMetricRegister.resource, obj);
+
         if(obj){
-            if(obj.indicador_unidade) this.indicador_unidade = new IndicadorUnidade(obj.indicador_unidade);
+            if(obj.id){
+                this._evidencies = new api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>(
+                  OngProjetoMetricRegisterEvidence.resource.endpoint,
+                  {model: OngProjetoMetricRegisterEvidence, defaults: {ong_projeto_metric_config_id: obj.id}}
+                );
+            }
         }
     }
+
+    public get evidencies(): api.Tastypie.Resource<OngProjetoMetricRegisterEvidence> {
+        return this._evidencies;
+    }
 }
+
+
+export class OngProjetoMetricConfig extends api.Tastypie.Model<OngProjetoMetricConfig> {
+    public static resource = new api.Tastypie.Resource<OngProjetoMetricConfig>('ong/projeto-metric-config', {model: OngProjetoMetricConfig});
+
+    public ong_projeto_metric_id: number;
+    public ong_projeto_endereco_id: number;
+    public medicao: string;
+    public medicao_meta: string;
+    public medicao_frequencia: number;
+    public medicao_mes: Array<number>;
+    public metric_unit: MetricUnit;
+    public base_value: string;
+    public base_date: string;
+    public meta_value: string;
+    public meta_date: string;
+    public ong_projeto_endereco: OngProjetoEndereco;
+    public dt_updated: string;
+    public dt_created: string;
+
+    private _registers: api.Tastypie.Resource<OngProjetoMetricRegister>;
+
+    constructor(obj?:any){
+        super(OngProjetoMetricConfig.resource, obj);
+        if(obj){
+            if(obj.metric_unit) this.metric_unit = new MetricUnit(obj.metric_unit);
+            if(obj.ong_projeto_endereco) this.ong_projeto_endereco = new OngProjetoEndereco(obj.ong_projeto_endereco);
+            if(obj.id){
+                this._registers = new api.Tastypie.Resource<OngProjetoMetricRegister>(
+                  OngProjetoMetricRegister.resource.endpoint,
+                  {model: OngProjetoMetricRegister, defaults: {ong_projeto_metric_id: obj.id}}
+                );
+            }
+        }
+    }
+
+    public get register(): api.Tastypie.Resource<OngProjetoMetricRegister> {
+        return this._registers;
+    }
+}
+
+
+export class OngProjetoMetric extends api.Tastypie.Model<OngProjetoMetric> {
+    public static resource = new api.Tastypie.Resource<OngProjetoMetric>('ong/projeto-metric', {model: OngProjetoMetric});
+
+    public ong_projeto_id: number;
+    public metric_id: number;
+    public dt_updated: string;
+    public dt_created: string;
+
+    private _ong_projeto: OngProjeto;
+    private _metric: Metric;
+    private _metric_config: api.Tastypie.Resource<OngProjetoMetricConfig>;
+
+    constructor(obj?:any){
+        super(OngProjetoMetric.resource, obj);
+        if(obj){
+            if(obj.ong_projeto) this._ong_projeto = new OngProjeto(obj.ong_projeto);
+            if(obj.metric) this._metric = new Metric(obj.metric);
+
+            if(obj.id){
+                this._metric_config = new api.Tastypie.Resource<OngProjetoMetricConfig>(
+                  OngProjetoMetricConfig.resource.endpoint,
+                  {model: OngProjetoMetricConfig, defaults: {ong_projeto_metric_id: obj.id}}
+                );
+            }
+        }
+    }
+
+    public get ong_projeto(): OngProjeto {
+        return this._ong_projeto;
+    }
+
+    public get metric(): Metric {
+        return this._metric;
+    }
+
+    public get metric_config(): api.Tastypie.Resource<OngProjetoMetricConfig> {
+        return this._metric_config;
+    }
+}
+
 
 export class OngStatus {
     public qtde_pontos: number;
