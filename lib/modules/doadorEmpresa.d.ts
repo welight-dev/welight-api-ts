@@ -293,6 +293,54 @@ export declare class EmpresaShopify extends EmpresaWidget {
     static resource: api.Tastypie.Resource<EmpresaShopify>;
     constructor(obj?: any);
 }
+export declare class EmpresaBigcommerce extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaBigcommerce>;
+    constructor(obj?: any);
+}
+export declare class EmpresaVolusion extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaVolusion>;
+    constructor(obj?: any);
+}
+export declare class Empresa3dCart extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<Empresa3dCart>;
+    constructor(obj?: any);
+}
+export declare class EmpresaXtech extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaShopify>;
+    constructor(obj?: any);
+}
+export declare class EmpresaNuvemShop extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaShopify>;
+    constructor(obj?: any);
+}
+export declare class EmpresaMercadoShops extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaMercadoShops>;
+    constructor(obj?: any);
+}
+export declare class EmpresaIluria extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaIluria>;
+    constructor(obj?: any);
+}
+export declare class EmpresaPrestaShop extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaPrestaShop>;
+    constructor(obj?: any);
+}
+export declare class EmpresaMagento extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaMagento>;
+    constructor(obj?: any);
+}
+export declare class EmpresaVirtueMart extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaVirtueMart>;
+    constructor(obj?: any);
+}
+export declare class EmpresaOpenCart extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaOpenCart>;
+    constructor(obj?: any);
+}
+export declare class EmpresaSignaShop extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaShopify>;
+    constructor(obj?: any);
+}
 export declare class EmpresaModuloPlataforma {
     nome: string;
     logo: string;

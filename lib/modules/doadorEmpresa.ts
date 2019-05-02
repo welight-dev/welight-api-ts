@@ -553,6 +553,102 @@ export class EmpresaShopify extends EmpresaWidget {
     }
 }
 
+export class EmpresaBigcommerce extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaBigcommerce>('doador-empresa/bigcommerce', {model: EmpresaBigcommerce});
+
+    constructor(obj?:any){
+        super(obj, EmpresaBigcommerce.resource);
+    }
+}
+
+export class EmpresaVolusion extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaVolusion>('doador-empresa/volusion', {model: EmpresaVolusion});
+
+    constructor(obj?:any){
+        super(obj, EmpresaVolusion.resource);
+    }
+}
+
+export class Empresa3dCart extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<Empresa3dCart>('doador-empresa/3dcart', {model: Empresa3dCart});
+
+    constructor(obj?:any){
+        super(obj, Empresa3dCart.resource);
+    }
+}
+
+export class EmpresaXtech extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/xtech', {model: EmpresaXtech});
+
+    constructor(obj?:any){
+        super(obj, EmpresaXtech.resource);
+    }
+}
+
+export class EmpresaNuvemShop extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/nuvemshop', {model: EmpresaNuvemShop});
+
+    constructor(obj?:any){
+        super(obj, EmpresaNuvemShop.resource);
+    }
+}
+
+export class EmpresaMercadoShops extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaMercadoShops>('doador-empresa/mercadoshops', {model: EmpresaMercadoShops});
+
+    constructor(obj?:any){
+        super(obj, EmpresaMercadoShops.resource);
+    }
+}
+
+export class EmpresaIluria extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaIluria>('doador-empresa/iluria', {model: EmpresaIluria});
+
+    constructor(obj?:any){
+        super(obj, EmpresaIluria.resource);
+    }
+}
+
+export class EmpresaPrestaShop extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaPrestaShop>('doador-empresa/prestashop', {model: EmpresaPrestaShop});
+
+    constructor(obj?:any){
+        super(obj, EmpresaPrestaShop.resource);
+    }
+}
+
+export class EmpresaMagento extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaMagento>('doador-empresa/magento', {model: EmpresaMagento});
+
+    constructor(obj?:any){
+        super(obj, EmpresaMagento.resource);
+    }
+}
+
+export class EmpresaVirtueMart extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaVirtueMart>('doador-empresa/virtuemart', {model: EmpresaVirtueMart});
+
+    constructor(obj?:any){
+        super(obj, EmpresaVirtueMart.resource);
+    }
+}
+
+export class EmpresaOpenCart extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaOpenCart>('doador-empresa/opencart', {model: EmpresaOpenCart});
+
+    constructor(obj?:any){
+        super(obj, EmpresaOpenCart.resource);
+    }
+}
+
+export class EmpresaSignaShop extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/signashop', {model: EmpresaSignaShop});
+
+    constructor(obj?:any){
+        super(obj, EmpresaSignaShop.resource);
+    }
+}
+
 export class EmpresaModuloPlataforma {
     public nome: string;
     public logo: string;
@@ -562,6 +658,7 @@ export class EmpresaModuloPlataforma {
     constructor(obj?:any){
         if(obj){
             this.nome = obj.nome;
+            this.logo = obj.logo;
             this.token = obj.token;
             this.dt_created = obj.dt_created;
         }
@@ -617,6 +714,30 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                             conf_obj = new EmpresaLojaintegrada(conf.config);
                         }else if(conf.plataforma.token == 'shopify'){
                             conf_obj = new EmpresaShopify(conf.config);
+                        }else if(conf.plataforma.token == 'bigcommerce'){
+                            conf_obj = new EmpresaBigcommerce(conf.config);
+                        }else if(conf.plataforma.token == 'volusion'){
+                            conf_obj = new EmpresaVolusion(conf.config);
+                        }else if(conf.plataforma.token == '3dCart'){
+                            conf_obj = new Empresa3dCart(conf.config);
+                        }else if(conf.plataforma.token == 'xtech'){
+                            conf_obj = new EmpresaXtech(conf.config);
+                        }else if(conf.plataforma.token == 'nuvemshop'){
+                            conf_obj = new EmpresaNuvemShop(conf.config);
+                        }else if(conf.plataforma.token == 'mercadoshops'){
+                            conf_obj = new EmpresaMercadoShops(conf.config);
+                        }else if(conf.plataforma.token == 'iluria'){
+                            conf_obj = new EmpresaIluria(conf.config);
+                        }else if(conf.plataforma.token == 'prestashop'){
+                            conf_obj = new EmpresaPrestaShop(conf.config);
+                        }else if(conf.plataforma.token == 'magento'){
+                            conf_obj = new EmpresaMagento(conf.config);
+                        }else if(conf.plataforma.token == 'virtuemart'){
+                            conf_obj = new EmpresaVirtueMart(conf.config);
+                        }else if(conf.plataforma.token == 'opencart'){
+                            conf_obj = new EmpresaOpenCart(conf.config);
+                        }else if(conf.plataforma.token == 'signashop'){
+                            conf_obj = new EmpresaSignaShop(conf.config);
                         }else{
                             conf_obj = conf.config;
                         }
