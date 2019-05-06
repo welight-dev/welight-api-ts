@@ -26,6 +26,7 @@ export class ClienteVip {
 }
 
 export class IngressoCupom {
+    public id: number;
     public ingresso_id: number;
     public nome_parceiro: string;
     public desconto: number;
@@ -36,6 +37,7 @@ export class IngressoCupom {
 
     constructor(obj?:any){
         if(obj){
+            this.id = obj.id;
             this.ingresso_id = obj.ingresso_id;
             this.nome_parceiro = obj.nome_parceiro;
             this.desconto = obj.desconto;
@@ -48,6 +50,7 @@ export class IngressoCupom {
 }
 
 export class IngressoCupomFatura {
+    public id: number;
     public ingresso_fatura_id: number;
     public qtde: number;
     public dt_updated: string;
@@ -57,6 +60,7 @@ export class IngressoCupomFatura {
 
     constructor(obj?:any){
         if(obj){
+            this.id = obj.id;
             this.ingresso_fatura_id = obj.ingresso_fatura_id;
             this.qtde = obj.qtde;
             this.dt_updated = obj.dt_updated;
@@ -72,6 +76,7 @@ export class IngressoCupomFatura {
 }
 
 export class IngressoFatura {
+    public id: number;
     public ingresso_id: number;
     public nome: string;
     public cpf: string;
@@ -94,6 +99,7 @@ export class IngressoFatura {
 
     constructor(obj?:any){
         if(obj){
+            this.id = obj.id;
             this.ingresso_id = obj.ingresso_id;
             this.nome = obj.nome;
             this.cpf = obj.cpf;

@@ -10,6 +10,7 @@ export declare class ClienteVip {
     constructor(obj?: any);
 }
 export declare class IngressoCupom {
+    id: number;
     ingresso_id: number;
     nome_parceiro: string;
     desconto: number;
@@ -20,6 +21,7 @@ export declare class IngressoCupom {
     constructor(obj?: any);
 }
 export declare class IngressoCupomFatura {
+    id: number;
     ingresso_fatura_id: number;
     qtde: number;
     dt_updated: string;
@@ -29,6 +31,7 @@ export declare class IngressoCupomFatura {
     readonly ingresso_cupom: IngressoCupom;
 }
 export declare class IngressoFatura {
+    id: number;
     ingresso_id: number;
     nome: string;
     cpf: string;
