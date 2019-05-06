@@ -9,6 +9,25 @@ export declare class ClienteVip {
     dt_created: string;
     constructor(obj?: any);
 }
+export declare class IngressoCupom {
+    ingresso_id: number;
+    nome_parceiro: string;
+    desconto: number;
+    qtde: number;
+    codigo: string;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class IngressoCupomFatura {
+    ingresso_fatura_id: number;
+    qtde: number;
+    dt_updated: string;
+    dt_created: string;
+    private _ingresso_cupom;
+    constructor(obj?: any);
+    readonly ingresso_cupom: IngressoCupom;
+}
 export declare class IngressoFatura {
     ingresso_id: number;
     nome: string;
@@ -16,6 +35,9 @@ export declare class IngressoFatura {
     email: string;
     qtde: number;
     moeda: string;
+    total_ingresso: number;
+    total_desconto: number;
+    total_taxa_adm: number;
     total: number;
     pago: boolean;
     vencimento: string;
@@ -74,6 +96,8 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     valor: number;
     taxa: number;
     total: number;
+    doacao_taxa: number;
+    doacao_total: number;
     slug: string;
     dt_updated: string;
     dt_created: string;
@@ -83,6 +107,7 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     private _gerar_fatura;
     private _check_fatura;
     private _check_entrada;
+    private _check_cupom;
     private _confirmar_entrada;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<IngressoPublic>);
     check_fatura_vip(ingresso_id: number, cpf: string): Promise<FaturaVip>;
@@ -95,8 +120,9 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         cpf: string;
         email: string;
         sexo: string;
-    }>, ongs?: Array<number>): Promise<IngressoFatura>;
+    }>, ongs?: Array<number>, desconto_id?: number): Promise<IngressoFatura>;
     check_fatura(token: string): Promise<IngressoFatura>;
     check_entrada(ingresso_id: number, cpf: string): Promise<IngressoFatura>;
+    check_cupom(ingresso_id: number, codigo: string, qtde: number): Promise<IngressoCupomFatura>;
     confirmar_entrada(ingresso_id: number, cpf: string): Promise<IngressoFatura>;
 }

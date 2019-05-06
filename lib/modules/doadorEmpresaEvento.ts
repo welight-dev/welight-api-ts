@@ -14,12 +14,60 @@ export class ClienteVip {
     public dt_created: string;
 
     constructor(obj?:any){
-        this.ingresso_id = obj.ingresso_id;
-        this.nome = obj.nome;
-        this.cpf = obj.cpf;
-        this.qtde_ingresso = obj.qtde_ingresso;
-        this.dt_updated = obj.dt_updated;
-        this.dt_created = obj.dt_created;
+        if(obj){
+            this.ingresso_id = obj.ingresso_id;
+            this.nome = obj.nome;
+            this.cpf = obj.cpf;
+            this.qtde_ingresso = obj.qtde_ingresso;
+            this.dt_updated = obj.dt_updated;
+            this.dt_created = obj.dt_created;
+        }
+    }
+}
+
+export class IngressoCupom {
+    public ingresso_id: number;
+    public nome_parceiro: string;
+    public desconto: number;
+    public qtde: number;
+    public codigo: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        if(obj){
+            this.ingresso_id = obj.ingresso_id;
+            this.nome_parceiro = obj.nome_parceiro;
+            this.desconto = obj.desconto;
+            this.qtde = obj.qtde;
+            this.codigo = obj.codigo;
+            this.dt_updated = obj.dt_updated;
+            this.dt_created = obj.dt_created;
+        }
+    }
+}
+
+export class IngressoCupomFatura {
+    public ingresso_fatura_id: number;
+    public qtde: number;
+    public dt_updated: string;
+    public dt_created: string;
+
+    private _ingresso_cupom: IngressoCupom;
+
+    constructor(obj?:any){
+        if(obj){
+            this.ingresso_fatura_id = obj.ingresso_fatura_id;
+            this.qtde = obj.qtde;
+            this.dt_updated = obj.dt_updated;
+            this.dt_created = obj.dt_created;
+
+            if(obj.ingresso_cupom) this._ingresso_cupom = new IngressoCupom(obj.ingresso_cupom);
+        }
+    }
+
+    public get ingresso_cupom(): IngressoCupom {
+        return this._ingresso_cupom;
     }
 }
 
@@ -30,6 +78,9 @@ export class IngressoFatura {
     public email: string;
     public qtde: number;
     public moeda: string;
+    public total_ingresso: number;
+    public total_desconto: number;
+    public total_taxa_adm: number;
     public total: number;
     public pago: boolean;
     public vencimento: string;
@@ -162,6 +213,8 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     public valor: number;
     public taxa: number;
     public total: number;
+    public doacao_taxa: number;
+    public doacao_total: number;
     public slug: string;
     public dt_updated: string;
     public dt_created: string;
@@ -171,6 +224,7 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     private _gerar_fatura: api.Tastypie.Resource<IngressoFatura>;
     private _check_fatura: api.Tastypie.Resource<IngressoFatura>;
     private _check_entrada: api.Tastypie.Resource<IngressoFatura>;
+    private _check_cupom: api.Tastypie.Resource<IngressoCupomFatura>;
     private _confirmar_entrada: api.Tastypie.Resource<IngressoFatura>;
 
     constructor(obj?:any, _resource?:api.Tastypie.Resource<IngressoPublic>){
@@ -180,6 +234,7 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         this._gerar_fatura = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/gerar-fatura');
         this._check_fatura = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/check-fatura');
         this._check_entrada = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/check-entrada');
+        this._check_cupom = new api.Tastypie.Resource<IngressoCupomFatura>('doador-empresa-evento/ingresso-public/check_cupom');
         this._confirmar_entrada = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/confirmar-entrada');
 
         if(obj){
@@ -203,8 +258,8 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         )
     }
 
-    public gerar_fatura(nome: string, cpf: string, email: string, qtde: number, tipo_pagamento: string, convidados: Array<{nome:string, cpf:string, email:string, sexo:string}>, ongs?: Array<number>): Promise<IngressoFatura> {
-        return this._gerar_fatura.objects.create({ingresso_id: this.id, nome: nome, cpf: cpf, email: email, qtde: qtde, tipo_pagamento: tipo_pagamento, convidados:convidados, ongs:ongs}).then(
+    public gerar_fatura(nome: string, cpf: string, email: string, qtde: number, tipo_pagamento: string, convidados: Array<{nome:string, cpf:string, email:string, sexo:string}>, ongs?: Array<number>, desconto_id?: number): Promise<IngressoFatura> {
+        return this._gerar_fatura.objects.create({ingresso_id: this.id, nome: nome, cpf: cpf, email: email, qtde: qtde, tipo_pagamento: tipo_pagamento, convidados:convidados, ongs:ongs, desconto_id:desconto_id}).then(
             function(data: any){
                 return new IngressoFatura(data);
             }
@@ -223,6 +278,14 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         return this._check_entrada.objects.findOne({ingresso_id: ingresso_id, cpf: cpf}).then(
             function(data: any){
                 return new IngressoFatura(data);
+            }
+        )
+    }
+
+    public check_cupom(ingresso_id: number, codigo: string, qtde: number): Promise<IngressoCupomFatura> {
+        return this._check_cupom.objects.findOne({ingresso_id: ingresso_id, codigo: codigo, qtde: qtde}).then(
+            function(data: any){
+                return new IngressoCupomFatura(data);
             }
         )
     }
