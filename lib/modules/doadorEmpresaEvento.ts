@@ -240,7 +240,7 @@ export class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
         this._gerar_fatura = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/gerar-fatura');
         this._check_fatura = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/check-fatura');
         this._check_entrada = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/check-entrada');
-        this._check_cupom = new api.Tastypie.Resource<IngressoCupomFatura>('doador-empresa-evento/ingresso-public/check_cupom');
+        this._check_cupom = new api.Tastypie.Resource<IngressoCupomFatura>('doador-empresa-evento/ingresso-public/check-cupom');
         this._confirmar_entrada = new api.Tastypie.Resource<IngressoFatura>('doador-empresa-evento/ingresso-public/confirmar-entrada');
 
         if(obj){
