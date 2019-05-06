@@ -106,6 +106,9 @@ export class IngressoFatura {
             this.email = obj.email;
             this.qtde = obj.qtde;
             this.moeda = obj.moeda;
+            this.total_ingresso = obj.total_ingresso;
+            this.total_desconto = obj.total_desconto;
+            this.total_taxa_adm = obj.total_taxa_adm;
             this.total = obj.total;
             this.pago = obj.pago;
             this.vencimento = obj.vencimento;
