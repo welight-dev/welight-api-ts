@@ -106,6 +106,7 @@ export class StyleUi {
     public border_type: string;
     public height: string;
     public width: string;
+    public extra: any;
 
     constructor(obj?:any){
         if(obj){

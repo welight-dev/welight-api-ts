@@ -392,6 +392,12 @@ export class EmpresaTelaResposta extends api.Tastypie.Model<EmpresaTelaResposta>
     public banner: string;
     public titulo: string;
     public mensagem: string;
+    public pagina_ui: StyleUi;
+    public titulo_pagina_ui: StyleUi;
+    public subtitulo_pagina_ui: StyleUi;
+    public titulo_doacao_ui: StyleUi;
+    public subtitulo_doacao_ui: StyleUi;
+    public botao_ui: StyleUi;
     public dt_updated: string;
     public dt_created: string;
 

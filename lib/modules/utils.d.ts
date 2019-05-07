@@ -39,5 +39,6 @@ export declare class StyleUi {
     border_type: string;
     height: string;
     width: string;
+    extra: any;
     constructor(obj?: any);
 }

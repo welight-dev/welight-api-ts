@@ -150,6 +150,12 @@ export declare class EmpresaTelaResposta extends api.Tastypie.Model<EmpresaTelaR
     banner: string;
     titulo: string;
     mensagem: string;
+    pagina_ui: StyleUi;
+    titulo_pagina_ui: StyleUi;
+    subtitulo_pagina_ui: StyleUi;
+    titulo_doacao_ui: StyleUi;
+    subtitulo_doacao_ui: StyleUi;
+    botao_ui: StyleUi;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
