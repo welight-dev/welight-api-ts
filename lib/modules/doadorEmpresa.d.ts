@@ -16,7 +16,6 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     acesso_ativo: boolean;
     tela_resposta: EmpresaTelaResposta;
     profile_detail: EmpresaDetail;
-    endereco: EmpresaEndereco;
     private _doador;
     private _vendas;
     private _ongs;

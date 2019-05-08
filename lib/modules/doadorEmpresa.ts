@@ -21,7 +21,6 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     public acesso_ativo: boolean;
     public tela_resposta: EmpresaTelaResposta;
     public profile_detail: EmpresaDetail;
-    public endereco: EmpresaEndereco;
     private _doador: Doador;
     private _vendas: api.Tastypie.Resource<Venda>;
     private _ongs: api.Tastypie.Resource<EmpresaOng>;
@@ -53,30 +52,13 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
                 this._cliente = new api.Tastypie.Resource<Cliente>('doador-empresa/cliente', {model: Cliente, defaults: {empresa_id: obj.id}});
                 this._faturas = new api.Tastypie.Resource<Fatura>('doador-empresa-fatura/fatura', {model: Fatura, defaults: {empresa_id: obj.id}});
                 this._modulos = new api.Tastypie.Resource<EmpresaModuloAtivo>('doador-empresa/modulo-ativo', {model: EmpresaModuloAtivo, defaults: {empresa_id: obj.id}});
-                this._modulos.objects.find();
             }
             if(obj.tela_resposta) this.tela_resposta = new EmpresaTelaResposta(obj.tela_resposta);
 
             if(obj.profile_detail) {
-                obj.profile_detail = {
-                    ...obj.profile_detail,
-                    empresa_id: obj.id ? obj.id : null
-                }
-
                 this.profile_detail = new EmpresaDetail(obj.profile_detail);
             }else{
                 this.profile_detail = new EmpresaDetail(obj.id ? {empresa_id: obj.id} : {});
-            }
-
-            if(obj.endereco) {
-                obj.endereco = {
-                    ...obj.endereco,
-                    empresa_id: obj.id ? obj.id : null
-                }
-
-                this.endereco = new EmpresaEndereco(obj.endereco);
-            }else{
-                this.endereco = new EmpresaEndereco(obj.id ? {empresa_id: obj.id} : {});
             }
         }
     }
@@ -106,11 +88,9 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
     }
 
     public getEndereco(): Promise<EmpresaEndereco> {
-        let _self = this;
-        if(_self.id){
-            return EmpresaEndereco.resource.objects.findOne({empresa_id: _self.id}).then(
+        if(this.id){
+            return EmpresaEndereco.resource.objects.findOne({empresa_id: this.id}).then(
                 function(data: EmpresaEndereco){
-                    _self.endereco = data;
                     return data;
                 }
             );
