@@ -204,7 +204,10 @@ export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEnd
     cidade: string;
     estado: string;
     pais: string;
-    coordenadas: string;
+    coordenadas: {
+        lat: string;
+        lng: string;
+    };
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
