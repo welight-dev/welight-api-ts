@@ -3,7 +3,7 @@
 
 import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
-import { Ods, MetricUnit, Metric } from "./onu";
+import { Ods, MetricCategory, MetricUnit, Metric } from "./onu";
 
 
 export class Ong extends api.Tastypie.Model<Ong> {
@@ -430,29 +430,13 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public periodo_continuo: boolean;
     public dt_inicio: string;
     public dt_fim: string;
-    public sem_local: boolean;
-    public sem_local_obs: string;
     public ativo: boolean;
     public inicializado: boolean;
     public dt_updated: string;
     public dt_created: string;
-    public status: {
-      total_entrega: number,
-      total_investido: number,
-      metricas: {
-        mt_pessoas: number,
-        mt_animais: number,
-        mt_arvores: number,
-        mt_areas: number,
-        mt_criancas: number
-      }
-    };
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
-    private _ods: api.Tastypie.Resource<OngProjetoOds>;
-    // private _indicadores: api.Tastypie.Resource<OngProjetoIndicador>;
-    private _recursos: api.Tastypie.Resource<OngRecurso>;
-    private _entregas: api.Tastypie.Resource<OngProjetoEntrega>;
+    private _metric: api.Tastypie.Resource<OngProjetoMetric>;
 
     public getSobre(): Promise<OngProjetoSobre> {
         return OngProjetoSobre.resource.objects.findOne({ong_projeto_id: this.id});
@@ -462,10 +446,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
         super(OngProjeto.resource, obj);
         if(this.id){
             this._endereco = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco, defaults: {ong_projeto_id: this.id}});
-            this._ods = new api.Tastypie.Resource<OngProjetoOds>('ong/projeto-ods', {model: OngProjetoOds, defaults: {ong_projeto_id: this.id}});
-            // this._indicadores = new api.Tastypie.Resource<OngProjetoIndicador>('ong/projeto-indicador', {model: OngProjetoIndicador, defaults: {ong_projeto_id: this.id}});
-            this._recursos = new api.Tastypie.Resource<OngRecurso>('ong/recurso', {model: OngRecurso, defaults: {ong_projeto_id: this.id}});
-            this._entregas = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega, defaults: {ong_projeto_id: this.id}});
+            this._metric = new api.Tastypie.Resource<OngProjetoMetric>('ong/projeto-metric', {model: OngProjetoMetric, defaults: {ong_projeto_id: this.id}});
         }
     }
 
@@ -473,16 +454,12 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
         return this._endereco;
     }
 
-    public get ods(): api.Tastypie.Resource<OngProjetoOds> {
-        return this._ods;
+    public get metric(): api.Tastypie.Resource<OngProjetoMetric> {
+        return this._metric;
     }
 
-    public get recursos(): api.Tastypie.Resource<OngRecurso> {
-        return this._recursos;
-    }
-
-    public get entregas(): api.Tastypie.Resource<OngProjetoEntrega> {
-        return this._entregas;
+    public get_metric_summary(): any {
+        return OngProjetoMetricSummary.resource.objects.findOne({ong_projeto_id: this.id});
     }
 }
 
@@ -495,11 +472,41 @@ export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     public meta: string;
     public como_alcacar_meta: string;
     public como_medir_impacto: string;
+    public website: string;
+    public video: string;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
         super(OngProjetoSobre.resource, obj);
+    }
+}
+
+export class OngProjetoMetricSummary extends api.Tastypie.Model<OngProjetoMetricSummary> {
+    public static resource = new api.Tastypie.Resource<OngProjetoMetricSummary>('ong/projeto/get-projeto-summary', {model: OngProjetoMetricSummary});
+
+    public categories: Array<MetricCategory>;
+    public ods: Array<Ods>;
+
+    constructor(obj?:any){
+        super(OngProjetoMetricSummary.resource, obj);
+
+        this.categories = [];
+        this.ods = [];
+
+        if(obj){
+            if(obj.categories){
+                for(let cat of obj.categories){
+                    this.categories.push(new MetricCategory(cat));
+                }
+            }
+
+            if(obj.ods){
+                for(let o of obj.ods){
+                    this.ods.push(new Ods(o));
+                }
+            }
+        }
     }
 }
 

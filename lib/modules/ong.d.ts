@@ -1,6 +1,6 @@
 import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
-import { Ods, MetricUnit, Metric } from "./onu";
+import { Ods, MetricCategory, MetricUnit, Metric } from "./onu";
 export declare class Ong extends api.Tastypie.Model<Ong> {
     static resource: api.Tastypie.Resource<Ong>;
     nome: string;
@@ -161,33 +161,17 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     periodo_continuo: boolean;
     dt_inicio: string;
     dt_fim: string;
-    sem_local: boolean;
-    sem_local_obs: string;
     ativo: boolean;
     inicializado: boolean;
     dt_updated: string;
     dt_created: string;
-    status: {
-        total_entrega: number;
-        total_investido: number;
-        metricas: {
-            mt_pessoas: number;
-            mt_animais: number;
-            mt_arvores: number;
-            mt_areas: number;
-            mt_criancas: number;
-        };
-    };
     private _endereco;
-    private _ods;
-    private _recursos;
-    private _entregas;
+    private _metric;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
-    readonly ods: api.Tastypie.Resource<OngProjetoOds>;
-    readonly recursos: api.Tastypie.Resource<OngRecurso>;
-    readonly entregas: api.Tastypie.Resource<OngProjetoEntrega>;
+    readonly metric: api.Tastypie.Resource<OngProjetoMetric>;
+    get_metric_summary(): any;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     static resource: api.Tastypie.Resource<OngProjetoSobre>;
@@ -197,8 +181,16 @@ export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre>
     meta: string;
     como_alcacar_meta: string;
     como_medir_impacto: string;
+    website: string;
+    video: string;
     dt_updated: string;
     dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OngProjetoMetricSummary extends api.Tastypie.Model<OngProjetoMetricSummary> {
+    static resource: api.Tastypie.Resource<OngProjetoMetricSummary>;
+    categories: Array<MetricCategory>;
+    ods: Array<Ods>;
     constructor(obj?: any);
 }
 export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
