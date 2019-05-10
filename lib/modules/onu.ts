@@ -45,6 +45,8 @@ export class MetricSubcategory {
     public dt_created: string;
     public dt_updated: string;
 
+    public metric_category_id: number;
+
     constructor(obj?:any){
         if(obj){
             this.id = obj.id;
@@ -86,6 +88,8 @@ export class MetricUnit {
     public slug: string;
     public dt_created: string;
     public dt_updated: string;
+
+    public metric_unit_group_id: number;
 
     constructor(obj?:any){
         if(obj){

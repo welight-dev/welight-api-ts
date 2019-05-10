@@ -32,6 +32,7 @@ export declare class MetricSubcategory {
     slug: string;
     dt_created: string;
     dt_updated: string;
+    metric_category_id: number;
     constructor(obj?: any);
 }
 export declare class MetricCategory extends api.Tastypie.Model<MetricCategory> {
@@ -56,6 +57,7 @@ export declare class MetricUnit {
     slug: string;
     dt_created: string;
     dt_updated: string;
+    metric_unit_group_id: number;
     constructor(obj?: any);
 }
 export declare class MetricUnitGroup extends api.Tastypie.Model<MetricUnitGroup> {
