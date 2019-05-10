@@ -54,6 +54,7 @@ export class MetricSubcategory {
             this.slug = obj.slug;
             this.dt_created = obj.dt_created;
             this.dt_updated = obj.dt_updated;
+            this.metric_category_id = obj.metric_category_id;
         }
     }
 }
@@ -99,6 +100,7 @@ export class MetricUnit {
             this.slug = obj.slug;
             this.dt_created = obj.dt_created;
             this.dt_updated = obj.dt_updated;
+            this.metric_unit_group_id = obj.metric_unit_group_id;
         }
     }
 }
