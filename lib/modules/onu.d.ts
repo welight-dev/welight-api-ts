@@ -24,6 +24,7 @@ export declare class MetricStandard extends api.Tastypie.Model<MetricStandard> {
     constructor(obj?: any);
 }
 export declare class MetricSubcategory {
+    id: number;
     name: {
         'PT-BR': string;
         'EN-US': string;
@@ -46,6 +47,7 @@ export declare class MetricCategory extends api.Tastypie.Model<MetricCategory> {
     constructor(obj?: any);
 }
 export declare class MetricUnit {
+    id: number;
     name: {
         'PT-BR': string;
         'EN-US': string;

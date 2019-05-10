@@ -39,6 +39,7 @@ export class MetricStandard extends api.Tastypie.Model<MetricStandard> {
 }
 
 export class MetricSubcategory {
+    public id: number;
     public name: {'PT-BR': string, 'EN-US': string};
     public slug: string;
     public dt_created: string;
@@ -46,6 +47,7 @@ export class MetricSubcategory {
 
     constructor(obj?:any){
         if(obj){
+            this.id = obj.id;
             this.name = obj.name;
             this.slug = obj.slug;
             this.dt_created = obj.dt_created;
@@ -78,6 +80,7 @@ export class MetricCategory extends api.Tastypie.Model<MetricCategory> {
 
 
 export class MetricUnit {
+    public id: number;
     public name: {'PT-BR': string, 'EN-US': string};
     public unit: string;
     public slug: string;
@@ -86,6 +89,7 @@ export class MetricUnit {
 
     constructor(obj?:any){
         if(obj){
+            this.id = obj.id;
             this.name = obj.name;
             this.unit = obj.unit;
             this.slug = obj.slug;
@@ -166,7 +170,7 @@ export class Metric extends api.Tastypie.Model<Metric> {
     public get metric_unit_group(): MetricUnitGroup {
         return this._metric_unit_group;
     }
-    
+
     public get metric_unit(): MetricUnit {
         return this._metric_unit;
     }
