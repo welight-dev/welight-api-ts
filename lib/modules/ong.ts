@@ -522,7 +522,8 @@ export class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
     public cidade: string;
     public estado: string;
     public pais: string;
-    public coordenadas: {lat: string, lng: string};
+    public regiao: string;
+    public coordenadas: {lat: string, lng: string};    
     public dt_updated: string;
     public dt_created: string;
 
