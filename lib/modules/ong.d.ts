@@ -171,7 +171,7 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     readonly metric: api.Tastypie.Resource<OngProjetoMetric>;
-    get_metric_summary(): any;
+    get_metric_summary(): Promise<OngProjetoMetricSummary>;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     static resource: api.Tastypie.Resource<OngProjetoSobre>;

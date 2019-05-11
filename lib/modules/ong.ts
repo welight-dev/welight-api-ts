@@ -458,7 +458,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
         return this._metric;
     }
 
-    public get_metric_summary(): any {
+    public get_metric_summary(): Promise<OngProjetoMetricSummary> {
         return OngProjetoMetricSummary.resource.objects.findOne({ong_projeto_id: this.id});
     }
 }
