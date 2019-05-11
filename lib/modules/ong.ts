@@ -483,7 +483,7 @@ export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
 }
 
 export class OngProjetoMetricSummary extends api.Tastypie.Model<OngProjetoMetricSummary> {
-    public static resource = new api.Tastypie.Resource<OngProjetoMetricSummary>('ong/projeto/get-projeto-summary', {model: OngProjetoMetricSummary});
+    public static resource = new api.Tastypie.Resource<OngProjetoMetricSummary>('ong/projeto/metric-summary', {model: OngProjetoMetricSummary});
 
     public categories: Array<MetricCategory>;
     public ods: Array<Ods>;
