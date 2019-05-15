@@ -182,6 +182,7 @@ export class Metric extends api.Tastypie.Model<Metric> {
 
     constructor(obj?:any){
         super(Metric.resource, obj);
+        this._metric_ods = [];
         if(obj){
             if(obj.metric_standard) this._metric_standard = new MetricStandard(obj.metric_standard);
             if(obj.metric_category) this._metric_category = new MetricCategory(obj.metric_category);
