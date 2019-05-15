@@ -72,6 +72,14 @@ export declare class MetricUnitGroup extends api.Tastypie.Model<MetricUnitGroup>
     units: Array<MetricUnit>;
     constructor(obj?: any);
 }
+export declare class MetricOds {
+    id: number;
+    metric: Metric;
+    ods: Ods;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+}
 export declare class Metric extends api.Tastypie.Model<Metric> {
     static resource: api.Tastypie.Resource<Metric>;
     name: {
@@ -96,6 +104,7 @@ export declare class Metric extends api.Tastypie.Model<Metric> {
     private _metric_subcategory;
     private _metric_unit_group;
     private _metric_unit;
+    private _metric_ods;
     constructor(obj?: any);
     readonly metric_standard: MetricStandard;
     readonly metric_category: MetricCategory;

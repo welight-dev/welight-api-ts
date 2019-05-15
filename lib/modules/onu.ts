@@ -129,6 +129,35 @@ export class MetricUnitGroup extends api.Tastypie.Model<MetricUnitGroup> {
 }
 
 
+export class MetricOds {
+    public id: number;
+    public metric: Metric;
+    public ods: Ods;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        if(obj){
+            this.id = obj.id;
+
+            if(obj.metric){
+                this.metric = new Metric(obj.metric);
+            }else{
+                this.metric = new Metric();
+            }
+
+            if(obj.ods){
+                this.ods = new Ods(obj.ods);
+            }else{
+                this.metric = new Metric();
+            }
+
+            this.dt_created = obj.dt_created;
+        }
+    }
+}
+
+
 export class Metric extends api.Tastypie.Model<Metric> {
     public static resource = new api.Tastypie.Resource<Metric>('onu/metric', {model: Metric});
 
@@ -149,6 +178,7 @@ export class Metric extends api.Tastypie.Model<Metric> {
     private _metric_subcategory: MetricSubcategory;
     private _metric_unit_group: MetricUnitGroup;
     private _metric_unit: MetricUnit;
+    private _metric_ods: Array<MetricOds>;
 
     constructor(obj?:any){
         super(Metric.resource, obj);
@@ -158,6 +188,12 @@ export class Metric extends api.Tastypie.Model<Metric> {
             if(obj.metric_subcategory) this._metric_subcategory = new MetricSubcategory(obj.metric_subcategory);
             if(obj.metric_unit_group) this._metric_unit_group = new MetricUnitGroup(obj.metric_unit_group);
             if(obj.metric_unit) this._metric_unit = new MetricUnit(obj.metric_unit);
+
+            if(obj.metric_ods){
+                for(let mo of obj.metric_ods){
+                    this._metric_ods.push(new MetricOds(mo));
+                }
+            }
         }
     }
 
