@@ -197,23 +197,27 @@ export class Metric extends api.Tastypie.Model<Metric> {
         }
     }
 
-    public get metric_standard(): MetricStandard {
+    public get standard(): MetricStandard {
         return this._metric_standard;
     }
 
-    public get metric_category(): MetricCategory {
+    public get category(): MetricCategory {
         return this._metric_category;
     }
 
-    public get metric_subcategory(): MetricSubcategory {
+    public get subcategory(): MetricSubcategory {
         return this._metric_subcategory;
     }
 
-    public get metric_unit_group(): MetricUnitGroup {
+    public get unit_group(): MetricUnitGroup {
         return this._metric_unit_group;
     }
 
-    public get metric_unit(): MetricUnit {
+    public get unit(): MetricUnit {
         return this._metric_unit;
+    }
+
+    public get ods(): Array<MetricOds> {
+        return this._metric_ods;
     }
 }
