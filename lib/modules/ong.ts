@@ -523,7 +523,7 @@ export class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
     public estado: string;
     public pais: string;
     public regiao: string;
-    public coordenadas: {lat: string, lng: string};    
+    public coordenadas: {lat: string, lng: string};
     public dt_updated: string;
     public dt_created: string;
 
@@ -642,6 +642,7 @@ export class OngProjetoMetric extends api.Tastypie.Model<OngProjetoMetric> {
 
     public ong_projeto_id: number;
     public metric_id: number;
+    public configured: boolean;
     public dt_updated: string;
     public dt_created: string;
 

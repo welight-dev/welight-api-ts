@@ -268,6 +268,7 @@ export declare class OngProjetoMetric extends api.Tastypie.Model<OngProjetoMetri
     static resource: api.Tastypie.Resource<OngProjetoMetric>;
     ong_projeto_id: number;
     metric_id: number;
+    configured: boolean;
     dt_updated: string;
     dt_created: string;
     private _ong_projeto;
