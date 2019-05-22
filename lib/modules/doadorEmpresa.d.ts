@@ -315,11 +315,11 @@ export declare class Empresa3dCart extends EmpresaWidget {
     constructor(obj?: any);
 }
 export declare class EmpresaXtech extends EmpresaWidget {
-    static resource: api.Tastypie.Resource<EmpresaShopify>;
+    static resource: api.Tastypie.Resource<EmpresaXtech>;
     constructor(obj?: any);
 }
 export declare class EmpresaNuvemShop extends EmpresaWidget {
-    static resource: api.Tastypie.Resource<EmpresaShopify>;
+    static resource: api.Tastypie.Resource<EmpresaNuvemShop>;
     constructor(obj?: any);
 }
 export declare class EmpresaMercadoShops extends EmpresaWidget {
@@ -347,7 +347,11 @@ export declare class EmpresaOpenCart extends EmpresaWidget {
     constructor(obj?: any);
 }
 export declare class EmpresaSignaShop extends EmpresaWidget {
-    static resource: api.Tastypie.Resource<EmpresaShopify>;
+    static resource: api.Tastypie.Resource<EmpresaSignaShop>;
+    constructor(obj?: any);
+}
+export declare class EmpresaHotmart extends EmpresaWidget {
+    static resource: api.Tastypie.Resource<EmpresaHotmart>;
     constructor(obj?: any);
 }
 export declare class EmpresaModuloPlataforma {

@@ -568,7 +568,7 @@ export class Empresa3dCart extends EmpresaWidget {
 }
 
 export class EmpresaXtech extends EmpresaWidget {
-    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/xtech', {model: EmpresaXtech});
+    public static resource = new api.Tastypie.Resource<EmpresaXtech>('doador-empresa/xtech', {model: EmpresaXtech});
 
     constructor(obj?:any){
         super(obj, EmpresaXtech.resource);
@@ -576,7 +576,7 @@ export class EmpresaXtech extends EmpresaWidget {
 }
 
 export class EmpresaNuvemShop extends EmpresaWidget {
-    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/nuvemshop', {model: EmpresaNuvemShop});
+    public static resource = new api.Tastypie.Resource<EmpresaNuvemShop>('doador-empresa/nuvemshop', {model: EmpresaNuvemShop});
 
     constructor(obj?:any){
         super(obj, EmpresaNuvemShop.resource);
@@ -632,10 +632,18 @@ export class EmpresaOpenCart extends EmpresaWidget {
 }
 
 export class EmpresaSignaShop extends EmpresaWidget {
-    public static resource = new api.Tastypie.Resource<EmpresaShopify>('doador-empresa/signashop', {model: EmpresaSignaShop});
+    public static resource = new api.Tastypie.Resource<EmpresaSignaShop>('doador-empresa/signashop', {model: EmpresaSignaShop});
 
     constructor(obj?:any){
         super(obj, EmpresaSignaShop.resource);
+    }
+}
+
+export class EmpresaHotmart extends EmpresaWidget {
+    public static resource = new api.Tastypie.Resource<EmpresaHotmart>('doador-empresa/hotmart', {model: EmpresaHotmart});
+
+    constructor(obj?:any){
+        super(obj, EmpresaHotmart.resource);
     }
 }
 
@@ -728,6 +736,8 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                             conf_obj = new EmpresaOpenCart(conf.config);
                         }else if(conf.plataforma.token == 'signashop'){
                             conf_obj = new EmpresaSignaShop(conf.config);
+                        }else if(conf.plataforma.token == 'hotmart'){
+                            conf_obj = new EmpresaHotmart(conf.config);
                         }else{
                             conf_obj = conf.config;
                         }
