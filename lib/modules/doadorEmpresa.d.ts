@@ -225,6 +225,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     botao_ui: StyleUi;
     pagina_conf: {
         "principal": {
+            "ativo": boolean;
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
@@ -238,6 +239,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             };
         };
         "carrinho": {
+            "ativo": boolean;
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
@@ -251,6 +253,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             };
         };
         "confirmacao": {
+            "ativo": boolean;
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
@@ -264,6 +267,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             };
         };
         "sucesso": {
+            "ativo": boolean;
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
