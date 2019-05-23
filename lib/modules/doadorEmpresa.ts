@@ -716,7 +716,7 @@ export class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
                             conf_obj = new EmpresaBigcommerce(conf.config);
                         }else if(conf.plataforma.token == 'volusion'){
                             conf_obj = new EmpresaVolusion(conf.config);
-                        }else if(conf.plataforma.token == '3dCart'){
+                        }else if(conf.plataforma.token == '3dcart'){
                             conf_obj = new Empresa3dCart(conf.config);
                         }else if(conf.plataforma.token == 'xtech'){
                             conf_obj = new EmpresaXtech(conf.config);
