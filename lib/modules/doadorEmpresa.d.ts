@@ -266,7 +266,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
-            "url": string;
+            "url": Array<string>;
             "url_selecionada": string;
             "url_posicao": string;
             "integracao": {
@@ -280,7 +280,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
-            "url": string;
+            "url": Array<string>;
             "url_selecionada": string;
             "url_posicao": string;
             "integracao": {
@@ -294,7 +294,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
-            "url": string;
+            "url": Array<string>;
             "url_selecionada": string;
             "url_posicao": string;
             "integracao": {
@@ -308,7 +308,7 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "alinhamento": string;
             "abertura": string;
             "url_dinamica": boolean;
-            "url": string;
+            "url": Array<string>;
             "url_selecionada": string;
             "url_posicao": string;
             "integracao": {
