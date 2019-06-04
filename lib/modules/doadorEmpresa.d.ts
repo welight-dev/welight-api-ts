@@ -39,6 +39,43 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
         apikey: string;
     }, kwargs?: any): Promise<Empresa>;
 }
+export declare class EmpresaProduto extends api.Tastypie.Model<EmpresaProduto> {
+    static resource: api.Tastypie.Resource<EmpresaProduto>;
+    id: number;
+    nome: string;
+    token: string;
+    dt_created: string;
+    modulos: Array<EmpresaModulo>;
+    constructor(obj?: any);
+}
+export declare class EmpresaModulo extends api.Tastypie.Model<EmpresaModulo> {
+    static resource: api.Tastypie.Resource<EmpresaModulo>;
+    nome: string;
+    token: string;
+    dt_created: string;
+    produto: EmpresaProduto;
+    plataformas: Array<EmpresaModuloPlataforma>;
+    constructor(obj?: any);
+}
+export declare class EmpresaModuloPlataforma {
+    nome: string;
+    logo: string;
+    token: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
+    static resource: api.Tastypie.Resource<EmpresaModuloAtivo>;
+    empresa_id: number;
+    modulo_id: number;
+    dt_created: string;
+    modulo: EmpresaModulo;
+    plataforma_config: Array<{
+        'plataforma': EmpresaModuloPlataforma;
+        'config': any;
+    }>;
+    constructor(obj?: any);
+}
 export declare class EmpresaDetail extends api.Tastypie.Model<EmpresaDetail> {
     static resource: api.Tastypie.Resource<EmpresaDetail>;
     empresa_id: number;
@@ -352,33 +389,6 @@ export declare class EmpresaSignaShop extends EmpresaWidget {
 }
 export declare class EmpresaHotmart extends EmpresaWidget {
     static resource: api.Tastypie.Resource<EmpresaHotmart>;
-    constructor(obj?: any);
-}
-export declare class EmpresaModuloPlataforma {
-    nome: string;
-    logo: string;
-    token: string;
-    dt_created: string;
-    constructor(obj?: any);
-}
-export declare class EmpresaModulo extends api.Tastypie.Model<EmpresaModulo> {
-    static resource: api.Tastypie.Resource<EmpresaModulo>;
-    nome: string;
-    token: string;
-    dt_created: string;
-    plataformas: Array<EmpresaModuloPlataforma>;
-    constructor(obj?: any);
-}
-export declare class EmpresaModuloAtivo extends api.Tastypie.Model<EmpresaModuloAtivo> {
-    static resource: api.Tastypie.Resource<EmpresaModuloAtivo>;
-    empresa_id: number;
-    modulo_id: number;
-    dt_created: string;
-    modulo: EmpresaModulo;
-    plataforma_config: Array<{
-        'plataforma': EmpresaModuloPlataforma;
-        'config': any;
-    }>;
     constructor(obj?: any);
 }
 export declare class EmpresaPdv extends api.Tastypie.Model<EmpresaPdv> {
