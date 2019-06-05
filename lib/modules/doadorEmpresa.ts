@@ -573,6 +573,7 @@ export class WidgetIconChoices extends api.Tastypie.Model<WidgetIconChoices> {
 export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     public empresa_id: number;
     public titulo: string;
+    public subtitulo: string;
     public icon: string;
     public doacao_porcent: boolean;
     public doacao_valor: number;
