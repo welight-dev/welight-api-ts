@@ -37,6 +37,8 @@ export class Environment {
                 url = 'https://ong-dev.welight.co'+(uri||'');
             }else if(name == 'doador_empresa'){
                 url = 'https://easyimpact-dev.welight.co'+(uri||'');
+            }else if(name == 'doador_fundo'){
+                url = 'https://funds-dev.welight.co'+(uri||'');
             }
         }else if(Environment.env == 'prod'){
             if(name == 'home'){
@@ -47,6 +49,8 @@ export class Environment {
                 url = 'https://ong.welight.co'+(uri||'');
             }else if(name == 'doador_empresa'){
                 url = 'https://easyimpact.welight.co'+(uri||'');
+            }else if(name == 'doador_fundo'){
+                url = 'https://funds.welight.co'+(uri||'');
             }
         }
 
