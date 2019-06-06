@@ -23,7 +23,7 @@ export class AppManager {
         this._route_landing_page = route_landing_page;
     }
 
-    public init(app_id?: number): void {
+    private _init_app(app_id?: number): Promise<AppManager> {
         let param: any = {};
         if(app_id){
             param = {id: app_id};
@@ -38,6 +38,8 @@ export class AppManager {
         }else if(this._app_token == 'ong'){
             this._app_profile = new Ong(param);
         }
+
+        return;
     }
 
     public get profile(): Doador | Empresa | Org | Ong {
