@@ -1,7 +1,7 @@
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
-import * as api from "ts-resource-tastypie";
+import { Tastypie } from "ts-resource-tastypie";
 
 export class Environment {
 
@@ -16,10 +16,10 @@ export class Environment {
     public static set(env: string): void {
         if(Environment.types.hasOwnProperty(env)){
             Environment.env = env;
-            api.Tastypie.Provider.add(
-                new api.Tastypie.Provider({name:'welight', url:Environment.types[env]})
+            Tastypie.Provider.add(
+                new Tastypie.Provider({name:'welight', url:Environment.types[env]})
             );
-            api.Tastypie.Provider.setDefault('welight');
+            Tastypie.Provider.setDefault('welight');
         }
     }
 
