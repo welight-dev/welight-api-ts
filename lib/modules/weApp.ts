@@ -99,7 +99,8 @@ export class AppManager {
           app_token: string,
           route_account_new?: string,
           route_account_list?: string,
-          route_landing_page?: string
+          route_landing_page?: string,
+          fnc_change_route?: any
         }
     ){
         Environment.set(setup.env);
