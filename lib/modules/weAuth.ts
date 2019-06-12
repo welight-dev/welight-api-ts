@@ -24,6 +24,24 @@ export class Auth {
     }
 }
 
+export class AppPermission {
+    private _name: string;
+    private _token: string;
+
+    constructor(obj?: {name: string, token: string}){
+        this._name = obj.name;
+        this._token = obj.token;
+    }
+
+    public get name(): string {
+        return this._name;
+    }
+
+    public get token(): string {
+        return this._token;
+    }
+}
+
 export class UserApp {
     private _id: number;
     private _app_name: string;
@@ -31,14 +49,28 @@ export class UserApp {
     private _app_profile_id: number;
     private _display_name: string;
     private _admin: boolean;
+    private _permissions: Array<AppPermission>;
 
-    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, admin: boolean){
+    constructor(
+      id: number,
+      app_name: string,
+      app_token: string,
+      app_profile_id: number,
+      display_name: string,
+      admin: boolean,
+      permissions: Array<any>
+    ){
         this._id = id;
         this._app_name = app_name;
         this._app_token = app_token;
         this._app_profile_id = app_profile_id;
         this._display_name = display_name;
         this._admin = admin;
+        this._permissions = [];
+
+        for(let perm of permissions){
+            this._permissions.push(perm);
+        }
     }
 
     public get id(): number {
@@ -63,6 +95,26 @@ export class UserApp {
 
     public get admin(): boolean {
         return this._admin;
+    }
+
+    public has_perm(perm_token_list: Array<string>): boolean {
+        if(this._admin){
+            return true;
+        }else{
+            let resp_return: boolean = false;
+            for(let token of perm_token_list){
+                for(let perm of this._permissions){
+                    if(perm.name == token){
+                        resp_return = true;
+                        break;
+                    }
+                }
+                if(resp_return){
+                    break;
+                }
+            }
+            return resp_return;
+        }
     }
 }
 
@@ -172,6 +224,63 @@ export class User {
           }
         }
         return userapp_return;
+    }
+
+    public getUserAppByProfile(token: string, profile_id: number): UserApp {
+        let userapp_return: UserApp;
+        for(let userapp of this.apps){
+          if(userapp.app_token == token && userapp.app_profile_id == profile_id){
+              userapp_return = userapp;
+              break;
+          }
+        }
+        return userapp_return;
+    }
+
+    public has_perm(obj_perm: {
+      app_token: string,
+      app_profile_id: number,
+      perm_token_list: Array<string>
+    }): boolean {
+
+        let obj_userapp: UserApp;
+
+        if(this._current_user_app.app_token == obj_perm.app_token
+          && this._current_user_app.app_profile_id == obj_perm.app_profile_id){
+              obj_userapp = this._current_user_app;
+        }else{
+            obj_userapp = this.getUserAppByProfile(obj_perm.app_token, obj_perm.app_profile_id);
+        }
+
+        if(!obj_userapp){
+            return false;
+        }
+
+        let obj_member = {
+            admin: false,
+            member: false
+        }
+
+        for(let token of obj_perm.perm_token_list){
+            if(token == 'admin'){
+                obj_member.admin = true;
+                break;
+            }
+
+            if(token == 'member'){
+                obj_member.member = true;
+            }
+        }
+
+        if(obj_member.admin){
+            return obj_userapp.admin;
+        }
+
+        if(obj_member.member){
+            return true;
+        }
+
+        return obj_userapp.has_perm(obj_perm.perm_token_list);
     }
 
     private setProfile(data: any, kwargs?: any): void{

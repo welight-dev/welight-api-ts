@@ -18,6 +18,7 @@ export class AppProfile {
     private _org: Org;
     private _ong: Ong;
     private _app_token: string;
+    private _app_profile_id: number;
     private _initialized: boolean;
 
     constructor(app_token: string){
@@ -26,6 +27,7 @@ export class AppProfile {
         this._org = new Org();
         this._ong = new Ong();
         this._app_token = app_token;
+        this._app_profile_id = null;
         this._initialized = false;
     }
 
@@ -33,24 +35,28 @@ export class AppProfile {
         if(this._app_token == 'doador'){
             return Doador.resource.objects.findOne(obj_filter).then(resp => {
                 this._doador = resp;
+                this._app_profile_id = resp.id;
                 this._initialized = true;
                 return this;
             });
         }else if(this._app_token == 'doador_empresa'){
             return Empresa.resource.objects.findOne(obj_filter).then(resp => {
                 this._empresa = resp;
+                this._app_profile_id = resp.id;
                 this._initialized = true;
                 return this;
             });
         }else if(this._app_token == 'doador_fundo'){
             return Org.resource.objects.findOne(obj_filter).then(resp => {
                 this._org = resp;
+                this._app_profile_id = resp.id;
                 this._initialized = true;
                 return this;
             });
         }else if(this._app_token == 'ong'){
             return Ong.resource.objects.findOne(obj_filter).then(resp => {
                 this._ong = resp;
+                this._app_profile_id = resp.id;
                 this._initialized = true;
                 return this;
             });
@@ -79,6 +85,10 @@ export class AppProfile {
         return this._app_token;
     }
 
+    public get app_profile_id(): number {
+        return this._app_profile_id;
+    }
+
     public get initialized(): boolean {
         return this._initialized;
     }
@@ -92,6 +102,7 @@ export class AppManager {
     private _route_account_new: string;
     private _route_account_list: string;
     private _route_landing_page: string;
+    private _fnc_change_route: any;
 
     constructor(
         setup: {
@@ -131,9 +142,9 @@ export class AppManager {
         return this._app_profile;
     }
 
-    public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<AppManager> {
+    public quickLogin(auth?: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
         return this._user.quickLogin(auth, kwargs).then((user: User) => {
-            return this;
+            return true;
         });
     }
 
@@ -159,5 +170,45 @@ export class AppManager {
                 return false;
             });
         }
+    }
+
+    public authGuardMember(): Promise<boolean> {
+        if(this._user.is_authenticated && this._app_profile.initialized){
+            return Promise.resolve(this.user_has_perm(['member']));
+        }else{
+            if(this._user.is_authenticated){
+                return this._loading_app_profile_member();
+            }else{
+                return this._user.quickLogin().then(() => {
+                    return this._loading_app_profile_member().then(resp => {
+                        return resp;
+                    })
+                }).catch(() => {
+                    return false;
+                });
+            }
+        }
+    }
+
+    public user_has_perm(perm_token_list: Array<string>): boolean {
+        return this._user.has_perm({
+          app_token: this._app_token,
+          app_profile_id: this._app_profile.app_profile_id,
+          perm_token_list: perm_token_list
+        });
+    }
+
+    private _loading_app_profile_member(): Promise<boolean> {
+        if(!this._user.current_user_app){
+            return Promise.resolve(false);
+        }
+
+        if(this._user.current_user_app.app_token != this._app_token){
+            return Promise.resolve(false);
+        }
+
+        return this._app_profile.init({id: this._user.current_user_app.app_profile_id}).then((resp) => {
+            return resp.initialized;
+        }).catch(() => { return false;});
     }
 }
