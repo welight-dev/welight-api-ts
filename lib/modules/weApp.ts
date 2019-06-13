@@ -32,7 +32,14 @@ export class AppProfile {
     }
 
     public init(obj_filter:{id?: number, slug?: string}): Promise<AppProfile> {
-        if(this._app_token == 'doador'){
+        if(this._app_token == 'home'){
+            return Doador.resource.objects.findOne(obj_filter).then(resp => {
+                this._doador = resp;
+                this._app_profile_id = resp.id;
+                this._initialized = true;
+                return this;
+            });
+        }else if(this._app_token == 'doador'){
             return Doador.resource.objects.findOne(obj_filter).then(resp => {
                 this._doador = resp;
                 this._app_profile_id = resp.id;
@@ -99,31 +106,45 @@ export class AppManager {
     private _user: User;
     private _app_profile: AppProfile;
     private _app_token: string;
+    private _route_app_home: string;
     private _route_account_new: string;
     private _route_account_list: string;
     private _route_landing_page: string;
+    private _route_access_denied: string;
+    private _route_page_not_found: string;
     private _fnc_change_route: any;
 
     constructor(
         setup: {
-          env: string,
-          app_token: string,
-          route_account_new?: string,
-          route_account_list?: string,
-          route_landing_page?: string,
-          fnc_change_route?: any
+            env: string,
+            app_token: string,
+            fnc_change_route?: any,
+            route_app_home?: string,
+            route_account_new?: string,
+            route_account_list?: string,
+            route_landing_page?: string,
+            route_access_denied?: string,
+            route_page_not_found?: string
         }
     ){
         Environment.set(setup.env);
         this._app_token = setup.app_token;
+        this._fnc_change_route = setup.fnc_change_route;
+        this._route_app_home = (setup.route_app_home || "/");
         this._route_account_new = setup.route_account_new;
         this._route_account_list = setup.route_account_list;
         this._route_landing_page = setup.route_landing_page;
+        this._route_access_denied = setup.route_access_denied;
+        this._route_page_not_found = setup.route_page_not_found;
         this._app_profile = new AppProfile(setup.app_token);
     }
 
     public get token(): string {
         return this._app_token;
+    }
+
+    public get route_app_home(): string {
+        return this._route_app_home;
     }
 
     public get route_account_new(): string {
@@ -138,8 +159,49 @@ export class AppManager {
         return this._route_landing_page;
     }
 
+    public get route_access_denied(): string {
+        return this._route_access_denied;
+    }
+
+    public get route_page_not_found(): string {
+        return this._route_page_not_found;
+    }
+
     public get profile(): AppProfile {
         return this._app_profile;
+    }
+
+    public concatDomainSite(app_token: string, uri?: string): string {
+        if(uri && !uri.startsWith("/")){
+            uri = `/${uri}`;
+        }
+        return Environment.getDomainSite(app_token, uri);
+    }
+
+    public concatDomainApi(uri?: string): string {
+        if(uri && !uri.startsWith("/")){
+            uri = `/${uri}`;
+        }
+        return Tastypie.Provider.getDefault().concatDomain(uri);
+    }
+
+    public changeRoute(app_route: string, app_token?: string, next?:{app_route: string, app_token: string}): void {
+        if(!app_route.startsWith("/")){
+            app_route = `/${app_route}`;
+        }
+
+        if(!app_token || (app_token == this._app_token)){
+            if(this._fnc_change_route){
+              this._fnc_change_route([app_route]);
+            }
+        }else{
+
+            if(next){
+                app_route = `${app_route}?nextd=${next.app_token}&next=${next.app_route}`;
+            }
+
+            window.location.href = this.concatDomainSite(app_token, app_route);
+        }
     }
 
     public quickLogin(auth?: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
@@ -172,7 +234,7 @@ export class AppManager {
         }
     }
 
-    public authGuardMember(): Promise<boolean> {
+    public authGuardMember(current_route: string): Promise<boolean> {
         if(this._user.is_authenticated && this._app_profile.initialized){
             return Promise.resolve(this.user_has_perm(['member']));
         }else{

@@ -203,9 +203,8 @@ export class User {
     }
 
     public getUserAppAdmin(app_token: string): UserApp {
-        let _self = this;
         let userapp_return: UserApp;
-        for(let userapp of _self.apps){
+        for(let userapp of this.apps){
           if(userapp.app_token == app_token && userapp.admin){
               userapp_return = userapp;
               break;
@@ -215,9 +214,8 @@ export class User {
     }
 
     public getUserAppById(id: number): UserApp {
-        let _self = this;
         let userapp_return: UserApp;
-        for(let userapp of _self.apps){
+        for(let userapp of this.apps){
           if(userapp.id == id){
               userapp_return = userapp;
               break;
@@ -299,8 +297,17 @@ export class User {
            _self._auth = new Auth(data.auth.username, data.auth.api_key);
            _self._account = new UserAccount(data);
 
+           _self._apps = [];
            for(let userapp of data.apps){
-              _self._apps.push(new UserApp(userapp.id, userapp.app_name, userapp.app_token, userapp.app_profile_id, userapp.display_name, userapp.admin));
+              _self._apps.push(new UserApp(
+                userapp.id,
+                userapp.app_name,
+                userapp.app_token,
+                userapp.app_profile_id,
+                userapp.display_name,
+                userapp.admin,
+                userapp.permissions
+              ));
            }
 
            if(kwargs){
