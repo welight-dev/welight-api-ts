@@ -272,8 +272,9 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "url_posicao": string;
             "integracao": {
                 "tipo": string;
-                "local": string;
+                "index": string;
                 "metodo": string;
+                "visualizacao": string;
             };
         };
         "carrinho": {
@@ -286,8 +287,9 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "url_posicao": string;
             "integracao": {
                 "tipo": string;
-                "local": string;
+                "index": string;
                 "metodo": string;
+                "visualizacao": string;
             };
         };
         "confirmacao": {
@@ -300,8 +302,9 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "url_posicao": string;
             "integracao": {
                 "tipo": string;
-                "local": string;
+                "index": string;
                 "metodo": string;
+                "visualizacao": string;
             };
         };
         "sucesso": {
@@ -314,8 +317,9 @@ export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
             "url_posicao": string;
             "integracao": {
                 "tipo": string;
-                "local": string;
+                "index": string;
                 "metodo": string;
+                "visualizacao": string;
             };
         };
     };

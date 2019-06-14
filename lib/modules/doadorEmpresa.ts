@@ -593,7 +593,7 @@ export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
            "url_posicao": string,
            "integracao": {
               "tipo": string,
-              "local": string,
+              "index": string,
               "metodo": string,
               "visualizacao": string
            }
@@ -608,7 +608,7 @@ export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
            "url_posicao": string,
            "integracao": {
               "tipo": string,
-              "local": string,
+              "index": string,
               "metodo": string,
               "visualizacao": string
            }
@@ -623,7 +623,7 @@ export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
            "url_posicao": string,
            "integracao": {
               "tipo": string,
-              "local": string,
+              "index": string,
               "metodo": string,
               "visualizacao": string
            }
@@ -638,7 +638,7 @@ export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
            "url_posicao": string,
            "integracao": {
               "tipo": string,
-              "local": string,
+              "index": string,
               "metodo": string,
               "visualizacao": string
            }

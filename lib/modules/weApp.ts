@@ -118,23 +118,23 @@ export class AppManager {
         setup: {
             env: string,
             app_token: string,
-            fnc_change_route?: any,
-            route_app_home?: string,
-            route_account_new?: string,
+            fnc_change_route: any,
+            route_app_home: string,
+            route_account_new: string,
+            route_access_denied: string,
+            route_page_not_found: string,
             route_account_list?: string,
-            route_landing_page?: string,
-            route_access_denied?: string,
-            route_page_not_found?: string
+            route_landing_page?: string
         }
     ){
         Environment.set(setup.env);
         this._app_token = setup.app_token;
         this._fnc_change_route = setup.fnc_change_route;
-        this._route_app_home = (setup.route_app_home || "/");
+        this._route_app_home = setup.route_app_home;
         this._route_account_new = setup.route_account_new;
+        this._route_access_denied = setup.route_access_denied;
         this._route_account_list = setup.route_account_list;
         this._route_landing_page = setup.route_landing_page;
-        this._route_access_denied = setup.route_access_denied;
         this._route_page_not_found = setup.route_page_not_found;
         this._app_profile = new AppProfile(setup.app_token);
     }
@@ -196,6 +196,10 @@ export class AppManager {
             }
         }else{
 
+            if(this._user.is_authenticated && app_token != 'home'){
+                app_route = `${app_route}/quick-login/${this._user.auth.username}/${this._user.auth.api_key}`;
+            }
+
             if(next){
                 app_route = `${app_route}?nextd=${next.app_token}&next=${next.app_route}`;
             }
@@ -205,8 +209,20 @@ export class AppManager {
     }
 
     public quickLogin(auth?: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
-        return this._user.quickLogin(auth, kwargs).then((user: User) => {
+        return this._user.quickLogin(auth, kwargs).then(() => {
+            if(kwargs.hasOwnProperty('app_route')){
+                this.changeRoute(kwargs.app_route);
+            }else{
+                this.changeRoute('/');
+            }
             return true;
+        }).catch(() => {
+            if(kwargs.hasOwnProperty('app_route')){
+                this.changeRoute('login', 'home', {app_route: kwargs.app_route, app_token: this._app_token});
+            }else{
+                this.changeRoute('login', 'home');
+            }
+            return false;
         });
     }
 
@@ -222,34 +238,31 @@ export class AppManager {
         }
     }
 
-    public authGuardUser(): Promise<boolean> {
+    public authGuardUser(current_app_route: string): Promise<boolean> {
         if(this._user.is_authenticated){
             return Promise.resolve(true);
         }else{
             return this._user.quickLogin().then(() => {
                 return true;
             }).catch(() => {
+                this.changeRoute('login', 'home', {app_route: current_app_route, app_token: this._app_token});
                 return false;
             });
         }
     }
 
-    public authGuardMember(current_route: string): Promise<boolean> {
-        if(this._user.is_authenticated && this._app_profile.initialized){
-            return Promise.resolve(this.user_has_perm(['member']));
-        }else{
-            if(this._user.is_authenticated){
-                return this._loading_app_profile_member();
+    public authGuardMember(current_app_route: string): Promise<boolean> {
+        return this.authGuardUser(current_app_route).then((auth: boolean) => {
+            if(auth){
+                if(this._app_profile.initialized){
+                    return Promise.resolve(this.user_has_perm(['member']));
+                }else{
+                    return this._loading_app_profile_member();
+                }
             }else{
-                return this._user.quickLogin().then(() => {
-                    return this._loading_app_profile_member().then(resp => {
-                        return resp;
-                    })
-                }).catch(() => {
-                    return false;
-                });
+                return false;
             }
-        }
+        })
     }
 
     public user_has_perm(perm_token_list: Array<string>): boolean {

@@ -7,6 +7,16 @@ export declare class Auth {
     readonly username: string;
     readonly api_key: string;
 }
+export declare class AppPermission {
+    private _name;
+    private _token;
+    constructor(obj?: {
+        name: string;
+        token: string;
+    });
+    readonly name: string;
+    readonly token: string;
+}
 export declare class UserApp {
     private _id;
     private _app_name;
@@ -14,13 +24,15 @@ export declare class UserApp {
     private _app_profile_id;
     private _display_name;
     private _admin;
-    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, admin: boolean);
+    private _permissions;
+    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, admin: boolean, permissions: Array<any>);
     readonly id: number;
     readonly app_name: string;
     readonly app_token: string;
     readonly app_profile_id: number;
     readonly display_name: string;
     readonly admin: boolean;
+    has_perm(perm_token_list: Array<string>): boolean;
 }
 export declare class User {
     private _id;
@@ -54,6 +66,12 @@ export declare class User {
     readonly plugin_navegador: utils.PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
+    getUserAppByProfile(token: string, profile_id: number): UserApp;
+    has_perm(obj_perm: {
+        app_token: string;
+        app_profile_id: number;
+        perm_token_list: Array<string>;
+    }): boolean;
     private setProfile;
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<User>;
     createAccountOng(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<User>;
