@@ -144,88 +144,43 @@ export class AppDevice {
     }
 }
 
-export class AppManager {
-
-    private _user: User;
-    private _app_profile: AppProfile;
-    private _app_token: string;
-    private _route_app_home: string;
-    private _route_account_new: string;
-    private _route_account_list: string;
-    private _route_landing_page: string;
-    private _route_access_denied: string;
-    private _route_page_not_found: string;
+export class AppRoute {
+    private _app_manager: AppManager;
     private _fnc_change_route: any;
-    private _device: AppDevice;
-    private _auth_loading: boolean;
-    private _create_account_loading: boolean;
+    private _uri: {
+        home: string,
+        landing_page: string
+        account_new: string,
+        account_list: string,
+        access_denied: string,
+        not_found: string
+    }
 
     constructor(
-        setup: {
-            env: string,
-            app_token: string,
-            device: AppDevice,
-            fnc_change_route: any,
-            route_app_home: string,
-            route_account_new: string,
-            route_access_denied: string,
-            route_page_not_found: string,
-            route_account_list?: string,
-            route_landing_page?: string
-        }
-    ){
-        Environment.set(setup.env);
-        this._auth_loading = true;
-        this._app_token = setup.app_token;
-        this._device = setup.device;
-        this._fnc_change_route = setup.fnc_change_route;
-        this._route_app_home = setup.route_app_home;
-        this._route_account_new = setup.route_account_new;
-        this._route_access_denied = setup.route_access_denied;
-        this._route_account_list = setup.route_account_list;
-        this._route_landing_page = setup.route_landing_page;
-        this._route_page_not_found = setup.route_page_not_found;
-        this._app_profile = new AppProfile(setup.app_token);
+        app_manager: AppManager,
+        fnc_change_route: any,
+        uri:{
+            home:string,
+            landing_page: string,
+            account_new: string,
+            account_list: string,
+            access_denied: string,
+            not_found: string,
+    }){
+        this._app_manager = app_manager;
+        this._fnc_change_route = fnc_change_route;
+        this._uri = uri;
     }
 
-    public get token(): string {
-        return this._app_token;
-    }
-
-    public get device(): AppDevice {
-        return this._device;
-    }
-
-    public get route_app_home(): string {
-        return this._route_app_home;
-    }
-
-    public get route_account_new(): string {
-        return this._route_account_new;
-    }
-
-    public get route_access_denied(): string {
-        return this._route_access_denied;
-    }
-
-    public get route_account_list(): string {
-        return this._route_account_list;
-    }
-
-    public get route_landing_page(): string {
-        return this._route_landing_page;
-    }
-
-    public get route_page_not_found(): string {
-        return this._route_page_not_found;
-    }
-
-    public get profile(): AppProfile {
-        return this._app_profile;
-    }
-
-    public get auth_loading(): boolean {
-        return this._auth_loading;
+    public get uri(): {
+        home: string,
+        landing_page: string
+        account_new: string,
+        account_list: string,
+        access_denied: string,
+        not_found: string
+    }  {
+      return this._uri;
     }
 
     public concatDomainSite(app_token: string, uri?: string): string {
@@ -242,35 +197,98 @@ export class AppManager {
         return Tastypie.Provider.getDefault().concatDomain(uri);
     }
 
-    public changeRoute(app_route: string, app_token?: string, kwargs?: any): void {
+    public change(app_route: string, app_token?: string, kwargs?: any): void {
 
         if(!app_route.startsWith("/")){
             app_route = `/${app_route}`;
         }
 
-        if(!app_token || (app_token == this._app_token)){
+        if(!app_token || (app_token == this._app_manager.app_token)){
             if(this._fnc_change_route){
                 if(kwargs.hasOwnProperty('next')){
                     app_route = `${app_route}/?nextd=${kwargs.next.app_token}/next=${kwargs.next.app_route}`;
                 }
-                this._fnc_change_route([app_route]);
+                this._fnc_change_route(app_route);
             }
         }else{
-            if(this._user.is_authenticated && app_token != 'home'){
+            if(this._app_manager.user.is_authenticated && app_token != 'home'){
                 if(kwargs.hasOwnProperty('user_app_id')){
-                    app_route = `/quick-login/${this._user.auth.username}/${this._user.auth.api_key}/${kwargs.user_app_id}?next=${app_route.substring(1)}`;
+                    app_route = `/quick-login/${this._app_manager.user.auth.username}/${this._app_manager.user.auth.api_key}/${kwargs.user_app_id}?next=${app_route.substring(1)}`;
                 }else{
-                    app_route = `/quick-login/${this._user.auth.username}/${this._user.auth.api_key}?next=${app_route.substring(1)}`;
+                    app_route = `/quick-login/${this._app_manager.user.auth.username}/${this._app_manager.user.auth.api_key}?next=${app_route.substring(1)}`;
                 }
             }else if(app_route == 'login' && app_token == 'home'){
                 if(kwargs.hasOwnProperty('next')){
                     app_route = `/login/?nextd=${kwargs.next.app_token}/next=${kwargs.next.app_route}`;
                 }else{
-                    app_route = `/login/?nextd=${this._app_token}/next=/`;
+                    app_route = `/login/?nextd=${this._app_manager.app_token}/next=/`;
                 }
             }
             window.location.href = this.concatDomainSite(app_token, app_route);
         }
+    }
+}
+
+export class AppManager {
+
+    private _user: User;
+    private _app_profile: AppProfile;
+    private _app_token: string;
+    private _device: AppDevice;
+    private _route: AppRoute;
+    private _auth_loading: boolean;
+    private _create_account_loading: boolean;
+
+    constructor(
+        setup: {
+            env: string,
+            app_token: string,
+            device: AppDevice,
+            fnc_change_route: any,
+            route: {
+                home: string,
+                landing_page: string
+                account_new: string,
+                account_list: string,
+                access_denied: string,
+                not_found: string
+            }
+        }
+    ){
+        Environment.set(setup.env);
+        this._auth_loading = true;
+        this._app_token = setup.app_token;
+        this._device = setup.device;
+        this._app_profile = new AppProfile(setup.app_token);
+        this._route = new AppRoute(this, setup.fnc_change_route, setup.route);
+    }
+
+    public get user(): User {
+        return this._user;
+    }
+
+    public get profile(): AppProfile {
+        return this._app_profile;
+    }
+
+    public get app_token(): string {
+        return this._app_token;
+    }
+
+    public get device(): AppDevice {
+        return this._device;
+    }
+
+    public get route(): AppRoute {
+        return this._route;
+    }
+
+    public get auth_loading(): boolean {
+        return this._auth_loading;
+    }
+
+    public get create_account_loading(): boolean {
+        return this._create_account_loading;
     }
 
     public createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?: any): Promise<boolean> {
@@ -295,7 +313,7 @@ export class AppManager {
         return this._user.login(username, password, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('next')){
                 this._auth_loading = false;
-                this.changeRoute(kwargs.next.app_route, kwargs.next.app_token);
+                this._route.change(kwargs.next.app_route, kwargs.next.app_token);
             }else{
                 if(this._app_token == 'home'){
                     let user_app_selected = this._user.getUserAppAdmin('doador_empresa');
@@ -309,20 +327,20 @@ export class AppManager {
                     }
 
                     this._auth_loading = false;
-                    this.changeRoute("/", user_app_selected.app_token, {user_app_id: user_app_selected.id});
+                    this._route.change("/", user_app_selected.app_token, {user_app_id: user_app_selected.id});
                 }else{
                     this._auth_loading = false;
-                    this.changeRoute('/');
+                    this._route.change('/');
                 }
             }
             return true;
         }).catch(() => {
             if(kwargs.hasOwnProperty('next')){
                 this._auth_loading = false;
-                this.changeRoute('login', 'home', {next:{app_route: kwargs.next.app_route, app_token: kwargs.next.app_token}});
+                this._route.change('login', 'home', {next:{app_route: kwargs.next.app_route, app_token: kwargs.next.app_token}});
             }else{
                 this._auth_loading = false;
-                this.changeRoute('login', 'home');
+                this._route.change('login', 'home');
             }
             return false;
         });
@@ -333,19 +351,19 @@ export class AppManager {
         return this._user.quickLogin(auth, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('app_route')){
                 this._auth_loading = false;
-                this.changeRoute(kwargs.app_route);
+                this._route.change(kwargs.app_route);
             }else{
                 this._auth_loading = false;
-                this.changeRoute('/');
+                this._route.change('/');
             }
             return true;
         }).catch(() => {
             if(kwargs.hasOwnProperty('app_route')){
                 this._auth_loading = false;
-                this.changeRoute('login', 'home', {next:{app_route: kwargs.app_route, app_token: this._app_token}});
+                this._route.change('login', 'home', {next:{app_route: kwargs.app_route, app_token: this._app_token}});
             }else{
                 this._auth_loading = false;
-                this.changeRoute('login', 'home');
+                this._route.change('login', 'home');
             }
             return false;
         });
@@ -376,7 +394,7 @@ export class AppManager {
                 return true;
             }).catch(() => {
                 this._auth_loading = false;
-                this.changeRoute('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
+                this._route.change('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
                 return false;
             });
         }
@@ -392,7 +410,7 @@ export class AppManager {
                         return true;
                     }else{
                         this._auth_loading = false;
-                        this.changeRoute(this._route_access_denied);
+                        this._route.change(this._route.uri.access_denied);
                         return false;
                     }
                 }else{
@@ -403,7 +421,7 @@ export class AppManager {
                             return true;
                         }else{
                             this._auth_loading = false;
-                            this.changeRoute(this._route_access_denied);
+                            this._route.change(this._route.uri.access_denied);
                             return false;
                         }
                     });

@@ -1,4 +1,5 @@
 import { Tastypie } from "ts-resource-tastypie";
+import { User } from "./weAuth";
 import { Doador } from "./doador";
 import { Empresa } from "./doadorEmpresa";
 import { Org } from "./doadorFundo";
@@ -71,18 +72,36 @@ export declare class AppDevice {
         };
     });
 }
+export declare class AppRoute {
+    private _app_manager;
+    private _fnc_change_route;
+    private _uri;
+    constructor(app_manager: AppManager, fnc_change_route: any, uri: {
+        home: string;
+        landing_page: string;
+        account_new: string;
+        account_list: string;
+        access_denied: string;
+        not_found: string;
+    });
+    readonly uri: {
+        home: string;
+        landing_page: string;
+        account_new: string;
+        account_list: string;
+        access_denied: string;
+        not_found: string;
+    };
+    concatDomainSite(app_token: string, uri?: string): string;
+    concatDomainApi(uri?: string): string;
+    change(app_route: string, app_token?: string, kwargs?: any): void;
+}
 export declare class AppManager {
     private _user;
     private _app_profile;
     private _app_token;
-    private _route_app_home;
-    private _route_account_new;
-    private _route_account_list;
-    private _route_landing_page;
-    private _route_access_denied;
-    private _route_page_not_found;
-    private _fnc_change_route;
     private _device;
+    private _route;
     private _auth_loading;
     private _create_account_loading;
     constructor(setup: {
@@ -90,26 +109,22 @@ export declare class AppManager {
         app_token: string;
         device: AppDevice;
         fnc_change_route: any;
-        route_app_home: string;
-        route_account_new: string;
-        route_access_denied: string;
-        route_page_not_found: string;
-        route_account_list?: string;
-        route_landing_page?: string;
+        route: {
+            home: string;
+            landing_page: string;
+            account_new: string;
+            account_list: string;
+            access_denied: string;
+            not_found: string;
+        };
     });
-    readonly token: string;
-    readonly device: AppDevice;
-    readonly route_app_home: string;
-    readonly route_account_new: string;
-    readonly route_access_denied: string;
-    readonly route_account_list: string;
-    readonly route_landing_page: string;
-    readonly route_page_not_found: string;
+    readonly user: User;
     readonly profile: AppProfile;
+    readonly app_token: string;
+    readonly device: AppDevice;
+    readonly route: AppRoute;
     readonly auth_loading: boolean;
-    concatDomainSite(app_token: string, uri?: string): string;
-    concatDomainApi(uri?: string): string;
-    changeRoute(app_route: string, app_token?: string, kwargs?: any): void;
+    readonly create_account_loading: boolean;
     createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?: any): Promise<boolean>;
     login(username: string, password: string, kwargs?: any): Promise<boolean>;
     quickLogin(auth: {
