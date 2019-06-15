@@ -130,15 +130,16 @@ export class User {
     private _current_user_app: UserApp;
     private _plugin_navegador: utils.PluginNavegador;
 
-    private _we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account')
-    private _we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong')
-    private _we_auth_user_create_account_doador_empresa_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-empresa')
-    private _we_auth_user_login_resource = new api.Tastypie.Resource('we-auth/user/login')
-    private _we_auth_user_logout_resource = new api.Tastypie.Resource('we-auth/user/logout')
-    private _we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile')
-    private _we_auth_user_reset_pass_request_resource = new api.Tastypie.Resource('we-auth/user/reset-password-request')
-    private _we_auth_user_reset_pass_execute_resource = new api.Tastypie.Resource('we-auth/user/reset-password-execute')
-    private _we_auth_user_change_pass_resource = new api.Tastypie.Resource('we-auth/user/change-password')
+    private _we_auth_user_create_account_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_create_account_ong_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_create_account_doador_empresa_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_create_account_doador_fundo_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_login_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_logout_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_profile_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_reset_pass_request_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_reset_pass_execute_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_change_pass_resource: api.Tastypie.Resource<any>;
 
     constructor(){
         this.name = ''
@@ -148,6 +149,17 @@ export class User {
         this._account = new UserAccount();
         this._apps = [];
         this._plugin_navegador = new utils.PluginNavegador();
+
+        this._we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account');
+        this._we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong');
+        this._we_auth_user_create_account_doador_empresa_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-empresa');
+        this._we_auth_user_create_account_doador_fundo_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-fundo');
+        this._we_auth_user_login_resource = new api.Tastypie.Resource('we-auth/user/login');
+        this._we_auth_user_logout_resource = new api.Tastypie.Resource('we-auth/user/logout');
+        this._we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile');
+        this._we_auth_user_reset_pass_request_resource = new api.Tastypie.Resource('we-auth/user/reset-password-request');
+        this._we_auth_user_reset_pass_execute_resource = new api.Tastypie.Resource('we-auth/user/reset-password-execute');
+        this._we_auth_user_change_pass_resource = new api.Tastypie.Resource('we-auth/user/change-password');
 
         let _self = this;
         document.addEventListener("$wl_msg_checkSite", function(data){
@@ -203,7 +215,7 @@ export class User {
     }
 
     public getUserAppAdmin(app_token: string): UserApp {
-        let userapp_return: UserApp;
+        let userapp_return: UserApp = null;
         for(let userapp of this.apps){
           if(userapp.app_token == app_token && userapp.admin){
               userapp_return = userapp;
@@ -214,7 +226,7 @@ export class User {
     }
 
     public getUserAppById(id: number): UserApp {
-        let userapp_return: UserApp;
+        let userapp_return: UserApp = null;
         for(let userapp of this.apps){
           if(userapp.id == id){
               userapp_return = userapp;
@@ -225,7 +237,7 @@ export class User {
     }
 
     public getUserAppByProfile(token: string, profile_id: number): UserApp {
-        let userapp_return: UserApp;
+        let userapp_return: UserApp = null;
         for(let userapp of this.apps){
           if(userapp.app_token == token && userapp.app_profile_id == profile_id){
               userapp_return = userapp;
@@ -341,133 +353,130 @@ export class User {
     }
 
     public createAccount(name: string, email: string, password: string, kwargs?:any): Promise<User> {
-      let _self = this;
-      return _self._we_auth_user_create_account_resource.objects.create({
-          name: name,
-          email: email,
-          password: password,
-          kwargs: kwargs
-      }).then(
-          function(data: any){
-              _self.setProfile(data, kwargs);
-              if(_self._is_authenticated){
-                  return _self;
-              }else{
-                  return api.Tastypie.Tools.generate_exception("[WeAuth][create_account] Usuario não identificado");
-              }
-          }
-      )
+        return this._we_auth_user_create_account_resource.objects.create({
+            name: name,
+            email: email,
+            password: password,
+            kwargs: kwargs
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
+            }
+        });
     }
 
     public createAccountOng(nome: string, email: string, razao_social: string, cnpj:string, kwargs?:any): Promise<User> {
-      let _self = this;
-      return _self._we_auth_user_create_account_ong_resource.objects.create({
-          nome: nome,
-          email: email,
-          razao_social: razao_social,
-          cnpj: cnpj,
-          kwargs: kwargs
-      }).then(
-          function(data: any){
-              _self.setProfile(data, kwargs);
-              if(_self._is_authenticated){
-                  return _self;
-              }else{
-                  return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
-              }
-          }
-      )
+        return this._we_auth_user_create_account_ong_resource.objects.create({
+            nome: nome,
+            email: email,
+            razao_social: razao_social,
+            cnpj: cnpj,
+            kwargs: kwargs
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
+            }
+        });
     }
 
     public createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj:string, kwargs?:any): Promise<User> {
-      let _self = this;
-      return _self._we_auth_user_create_account_doador_empresa_resource.objects.create({
-          nome: nome,
-          email: email,
-          cpf_cnpj: cpf_cnpj,
-          kwargs: kwargs
-      }).then(
-          function(data: any){
-              _self.setProfile(data, kwargs);
-              if(_self._is_authenticated){
-                  return _self;
-              }else{
-                  return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_empresa] Usuario não identificado");
-              }
-          }
-      )
+        return this._we_auth_user_create_account_doador_empresa_resource.objects.create({
+            nome: nome,
+            email: email,
+            cpf_cnpj: cpf_cnpj,
+            kwargs: kwargs
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_empresa] Usuario não identificado");
+            }
+        });
+    }
+
+    public createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?:any): Promise<User> {
+        return this._we_auth_user_create_account_doador_fundo_resource.objects.create({
+            name: name,
+            email: email,
+            activity_id: activity_id,
+            kwargs: kwargs
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_fundo] Usuario não identificado");
+            }
+        });
     }
 
     public login(username: string, password: string, kwargs?:any): Promise<User> {
-        let _self = this;
-        return _self._we_auth_user_login_resource.objects.create({
+        return this._we_auth_user_login_resource.objects.create({
             username: username,
             password: password,
             kwargs: kwargs
-        }).then(
-            function(data: any){
-                _self.setProfile(data, kwargs);
-                if(_self._is_authenticated){
-                    return _self;
-                }else{
-                    return api.Tastypie.Tools.generate_exception("[WeAuth][login] Usuario não identificado");
-                }
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][login] Usuario não identificado");
             }
-        )
+        });
     }
 
     public loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<User> {
-        let _self = this;
-        return _self._we_auth_user_login_resource.objects.create({
+        return this._we_auth_user_login_resource.objects.create({
             username: username,
             facebook_uid: facebook_uid,
             facebook_access_token:  facebook_access_token,
             kwargs: kwargs
-        }).then(
-            function(data: any){
-                _self.setProfile(data, kwargs);
-                if(_self._is_authenticated){
-                    return _self;
-                }else{
-                    return api.Tastypie.Tools.generate_exception("[WeAuth][login] Usuario não identificado");
-                }
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][login_facebook] Usuario não identificado");
             }
-        )
+        });
     }
 
     private _quickLogin(username: string, apikey: string, kwargs?:any): Promise<User> {
-      let _self = this;
       api.Tastypie.Provider.setAuth('welight', username, apikey);
-      return _self._we_auth_user_profile_resource.objects.findOne({kwargs:kwargs}).then(
-          function(data: any){
-              _self.setProfile(data, kwargs);
-              if(_self._is_authenticated){
-                  return _self;
-              }else{
-                  return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
-              }
+      return this._we_auth_user_profile_resource.objects.findOne({kwargs:kwargs}).then((data: any) => {
+          this.setProfile(data, kwargs);
+          if(this._is_authenticated){
+              return this;
+          }else{
+              return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
           }
-      ).catch(function(){
-          _self._logout();
+      }).catch(function(){
+          this._logout();
           return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
       });
     }
 
     public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<User> {
-        let _self = this;
         if(auth){
-            return _self._quickLogin(auth.username, auth.apikey, kwargs);
+            return this._quickLogin(auth.username, auth.apikey, kwargs);
         }else{
             if(utils.Tools.localStorageSuported){
                 let weUser: string = localStorage.getItem('weUserX')
                 if(weUser){
-                    let auth_user = JSON.parse(crypto.AES.decrypt(weUser, _self._encrypt_key).toString(crypto.enc.Utf8));
-                    return _self._quickLogin(auth_user.username, auth_user.apikey, auth_user.kwargs);
+                    let auth_user = JSON.parse(crypto.AES.decrypt(weUser, this._encrypt_key).toString(crypto.enc.Utf8));
+                    return this._quickLogin(auth_user.username, auth_user.apikey, auth_user.kwargs);
                 }else{
                     return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
                 }
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][quickLogin] Usuario não identificado");
+                return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
             }
         }
     }
@@ -487,16 +496,13 @@ export class User {
     }
 
     public logout(): Promise<any> {
-        let _self = this;
         if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
-        return _self._we_auth_user_logout_resource.objects.findOne().then(
-            function(){
-              _self._logout();
-              return _self;
-            }
-        ).catch(function(){
-            _self._logout();
-            return _self;
+        return this._we_auth_user_logout_resource.objects.findOne().then(() => {
+            this._logout();
+            return this;
+        }).catch(function(){
+            this._logout();
+            return this;
         });
     }
 
@@ -508,40 +514,34 @@ export class User {
     }
 
     public reset_password_execute(token: string, password: string, kwargs?:any): Promise<User> {
-        let _self = this;
-        return _self._we_auth_user_reset_pass_execute_resource.objects.create({
+        return this._we_auth_user_reset_pass_execute_resource.objects.create({
             token: token,
             pass: password,
             kwargs: kwargs
-        }).then(
-            function(data: any){
-                _self.setProfile(data, kwargs);
-                if(_self._is_authenticated){
-                    return _self;
-                }else{
-                    return api.Tastypie.Tools.generate_exception("[WeAuth][reset_password_execute] Usuario não identificado");
-                }
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][reset_password_execute] Usuario não identificado");
             }
-        )
+        });
     }
 
     public change_password(username: string, pass_old: string, pass_new: string, kwargs?:any): Promise<User> {
-        let _self = this;
-        return _self._we_auth_user_change_pass_resource.objects.create({
+        return this._we_auth_user_change_pass_resource.objects.create({
             username: username,
             pass_old: pass_old,
             pass_new: pass_new,
             kwargs: kwargs
-        }).then(
-            function(data: any){
-                _self.setProfile(data, kwargs);
-                if(_self._is_authenticated){
-                    return _self;
-                }else{
-                    return api.Tastypie.Tools.generate_exception("[WeAuth][change_password] Usuario não identificado");
-                }
+        }).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][change_password] Usuario não identificado");
             }
-        )
+        });
     }
 
     public notificarPlugin(): void{

@@ -1,7 +1,7 @@
-import * as api from "ts-resource-tastypie";
+import { Tastypie } from "ts-resource-tastypie";
 import { Doador } from "./doador";
-export declare class Org extends api.Tastypie.Model<Org> {
-    static resource: api.Tastypie.Resource<Org>;
+export declare class Org extends Tastypie.Model<Org> {
+    static resource: Tastypie.Resource<Org>;
     activity: OrgActivity;
     name: string;
     email: string;
@@ -13,17 +13,20 @@ export declare class Org extends api.Tastypie.Model<Org> {
     currency: string;
     dt_created: string;
     dt_updated: string;
+    private _adm;
     constructor(obj?: any);
+    readonly adm: Tastypie.Resource<OrgAdm>;
+    getAddress(): Promise<OrgAddress>;
 }
-export declare class OrgActivity extends api.Tastypie.Model<OrgActivity> {
-    static resource: api.Tastypie.Resource<OrgActivity>;
+export declare class OrgActivity extends Tastypie.Model<OrgActivity> {
+    static resource: Tastypie.Resource<OrgActivity>;
     name: string;
     dt_created: string;
     dt_updated: string;
     constructor(obj?: any);
 }
-export declare class OrgAddress extends api.Tastypie.Model<OrgAddress> {
-    static resource: api.Tastypie.Resource<OrgAddress>;
+export declare class OrgAddress extends Tastypie.Model<OrgAddress> {
+    static resource: Tastypie.Resource<OrgAddress>;
     org_id: number;
     region: string;
     number: string;
@@ -38,8 +41,8 @@ export declare class OrgAddress extends api.Tastypie.Model<OrgAddress> {
     dt_updated: string;
     constructor(obj?: any);
 }
-export declare class OrgAdm extends api.Tastypie.Model<OrgAdm> {
-    static resource: api.Tastypie.Resource<OrgAdm>;
+export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
+    static resource: Tastypie.Resource<OrgAdm>;
     org_id: number;
     parent_id: number;
     doador: Doador;

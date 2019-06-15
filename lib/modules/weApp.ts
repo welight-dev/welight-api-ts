@@ -157,6 +157,8 @@ export class AppManager {
     private _route_page_not_found: string;
     private _fnc_change_route: any;
     private _device: AppDevice;
+    private _auth_loading: boolean;
+    private _create_account_loading: boolean;
 
     constructor(
         setup: {
@@ -173,6 +175,7 @@ export class AppManager {
         }
     ){
         Environment.set(setup.env);
+        this._auth_loading = true;
         this._app_token = setup.app_token;
         this._device = setup.device;
         this._fnc_change_route = setup.fnc_change_route;
@@ -221,6 +224,10 @@ export class AppManager {
         return this._app_profile;
     }
 
+    public get auth_loading(): boolean {
+        return this._auth_loading;
+    }
+
     public concatDomainSite(app_token: string, uri?: string): string {
         if(uri && !uri.startsWith("/")){
             uri = `/${uri}`;
@@ -266,22 +273,78 @@ export class AppManager {
         }
     }
 
-    public changeApp(app_route: string, app_token: string, user_app_id: string){
-        this.changeRoute(app_route=app_route, app_token=app_token, {user_app_id: user_app_id});
+    public createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?: any): Promise<boolean> {
+        if(this._app_token != 'doador_fundo'){
+            return Promise.resolve(false);
+        }
+
+        this._create_account_loading = true;
+        return this._user.createAccountDoadorFundo(name, email, activity_id, this._get_source_login(kwargs)).then(() => {
+            return this._loading_app_profile_member().then((auth: boolean) => {
+                this._create_account_loading = false;
+                return auth;
+            });
+        }).catch(() => {
+            this._create_account_loading = false;
+            return false;
+        });
+    }
+
+    public login(username: string, password: string, kwargs?:any): Promise<boolean> {
+        this._auth_loading = true;
+        return this._user.login(username, password, this._get_source_login(kwargs)).then(() => {
+            if(kwargs.hasOwnProperty('next')){
+                this._auth_loading = false;
+                this.changeRoute(kwargs.next.app_route, kwargs.next.app_token);
+            }else{
+                if(this._app_token == 'home'){
+                    let user_app_selected = this._user.getUserAppAdmin('doador_empresa');
+
+                    if(!user_app_selected){
+                        user_app_selected = this._user.getUserAppAdmin('ong');
+                    }
+
+                    if(!user_app_selected){
+                        user_app_selected = this._user.getUserAppAdmin('doador');
+                    }
+
+                    this._auth_loading = false;
+                    this.changeRoute("/", user_app_selected.app_token, {user_app_id: user_app_selected.id});
+                }else{
+                    this._auth_loading = false;
+                    this.changeRoute('/');
+                }
+            }
+            return true;
+        }).catch(() => {
+            if(kwargs.hasOwnProperty('next')){
+                this._auth_loading = false;
+                this.changeRoute('login', 'home', {next:{app_route: kwargs.next.app_route, app_token: kwargs.next.app_token}});
+            }else{
+                this._auth_loading = false;
+                this.changeRoute('login', 'home');
+            }
+            return false;
+        });
     }
 
     public quickLogin(auth: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
+        this._auth_loading = true;
         return this._user.quickLogin(auth, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('app_route')){
+                this._auth_loading = false;
                 this.changeRoute(kwargs.app_route);
             }else{
+                this._auth_loading = false;
                 this.changeRoute('/');
             }
             return true;
         }).catch(() => {
             if(kwargs.hasOwnProperty('app_route')){
+                this._auth_loading = false;
                 this.changeRoute('login', 'home', {next:{app_route: kwargs.app_route, app_token: this._app_token}});
             }else{
+                this._auth_loading = false;
                 this.changeRoute('login', 'home');
             }
             return false;
@@ -292,9 +355,12 @@ export class AppManager {
         if(this._user.is_authenticated){
             return Promise.resolve(true);
         }else{
+            this._auth_loading = true;
             return this._user.quickLogin().then(() => {
+                this._auth_loading = false;
                 return true;
             }).catch(() => {
+                this._auth_loading = false;
                 return true;
             });
         }
@@ -304,9 +370,12 @@ export class AppManager {
         if(this._user.is_authenticated){
             return Promise.resolve(true);
         }else{
+            this._auth_loading = true;
             return this._user.quickLogin().then(() => {
+                this._auth_loading = false;
                 return true;
             }).catch(() => {
+                this._auth_loading = false;
                 this.changeRoute('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
                 return false;
             });
@@ -316,18 +385,24 @@ export class AppManager {
     public authGuardMember(current_app_route: string): Promise<boolean> {
         return this.authGuardUser(current_app_route).then((auth: boolean) => {
             if(auth){
+                this._auth_loading = true;
                 if(this._app_profile.initialized){
                     if(this.user_has_perm(['member'])){
+                        this._auth_loading = false;
                         return true;
                     }else{
+                        this._auth_loading = false;
                         this.changeRoute(this._route_access_denied);
                         return false;
                     }
                 }else{
-                    this._loading_app_profile_member().then((auth) => {
+                    this._auth_loading = true;
+                    this._loading_app_profile_member().then((auth: boolean) => {
                         if(auth){
+                            this._auth_loading = false;
                             return true;
                         }else{
+                            this._auth_loading = false;
                             this.changeRoute(this._route_access_denied);
                             return false;
                         }

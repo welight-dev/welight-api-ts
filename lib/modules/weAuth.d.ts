@@ -48,6 +48,7 @@ export declare class User {
     private _we_auth_user_create_account_resource;
     private _we_auth_user_create_account_ong_resource;
     private _we_auth_user_create_account_doador_empresa_resource;
+    private _we_auth_user_create_account_doador_fundo_resource;
     private _we_auth_user_login_resource;
     private _we_auth_user_logout_resource;
     private _we_auth_user_profile_resource;
@@ -76,6 +77,7 @@ export declare class User {
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<User>;
     createAccountOng(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<User>;
     createAccountDoadorEmpresa(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<User>;
+    createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?: any): Promise<User>;
     login(username: string, password: string, kwargs?: any): Promise<User>;
     loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<User>;
     private _quickLogin;

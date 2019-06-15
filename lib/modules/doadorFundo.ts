@@ -1,11 +1,11 @@
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
-import * as api from "ts-resource-tastypie";
+import { Tastypie } from "ts-resource-tastypie";
 import { Doador } from "./doador"
 
-export class Org extends api.Tastypie.Model<Org> {
-    public static resource = new api.Tastypie.Resource<Org>('doador-fundo/profile', {model: Org});
+export class Org extends Tastypie.Model<Org> {
+    public static resource = new Tastypie.Resource<Org>('doador-fundo/profile', {model: Org});
 
     public activity: OrgActivity;
     public name: string;
@@ -19,13 +19,44 @@ export class Org extends api.Tastypie.Model<Org> {
     public dt_created: string;
     public dt_updated: string;
 
+    private _adm: Tastypie.Resource<OrgAdm>;
+
     constructor(obj?:any){
         super(Org.resource, obj);
+
+        if(obj){
+            if(obj.activity) this.activity = new OrgActivity(obj.activity);
+
+            if(obj.id){
+                this._adm = new Tastypie.Resource<OrgAdm>(
+                    OrgAdm.resource.endpoint,
+                    {model: OrgAdm, defaults: {org_id: obj.id}}
+                );
+            }
+        }
+    }
+
+    public get adm(): Tastypie.Resource<OrgAdm> {
+        return this._adm;
+    }
+
+    public getAddress(): Promise<OrgAddress> {
+        if(this.id){
+            return OrgAddress.resource.objects.findOne({org_id: this.id}).then((data) => {
+                if(data && data.id){
+                    return data;
+                }else{
+                    return new OrgAddress({org_id: this.id});
+                }
+            });
+        }else{
+            return Promise.resolve(new OrgAddress());
+        }
     }
 }
 
-export class OrgActivity extends api.Tastypie.Model<OrgActivity> {
-    public static resource = new api.Tastypie.Resource<OrgActivity>('doador-fundo/activity', {model: OrgActivity});
+export class OrgActivity extends Tastypie.Model<OrgActivity> {
+    public static resource = new Tastypie.Resource<OrgActivity>('doador-fundo/activity', {model: OrgActivity});
 
     public name: string;
     public dt_created: string;
@@ -36,8 +67,8 @@ export class OrgActivity extends api.Tastypie.Model<OrgActivity> {
     }
 }
 
-export class OrgAddress extends api.Tastypie.Model<OrgAddress> {
-    public static resource = new api.Tastypie.Resource<OrgAddress>('doador-fundo/address', {model: OrgAddress});
+export class OrgAddress extends Tastypie.Model<OrgAddress> {
+    public static resource = new Tastypie.Resource<OrgAddress>('doador-fundo/address', {model: OrgAddress});
 
     public org_id: number;
     public region: string;
@@ -57,8 +88,8 @@ export class OrgAddress extends api.Tastypie.Model<OrgAddress> {
     }
 }
 
-export class OrgAdm extends api.Tastypie.Model<OrgAdm> {
-    public static resource = new api.Tastypie.Resource<OrgAdm>('doador-fundo/adm', {model: OrgAdm});
+export class OrgAdm extends Tastypie.Model<OrgAdm> {
+    public static resource = new Tastypie.Resource<OrgAdm>('doador-fundo/adm', {model: OrgAdm});
 
     public org_id: number;
     public parent_id: number;
@@ -71,5 +102,9 @@ export class OrgAdm extends api.Tastypie.Model<OrgAdm> {
 
     constructor(obj?:any){
         super(OrgAdm.resource, obj);
+
+        if(obj){
+            if(obj.doador) this.doador = new Doador(obj.doador);
+        }
     }
 }
