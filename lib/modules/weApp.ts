@@ -256,7 +256,6 @@ export class AppManager {
         }
     ){
         Environment.set(setup.env);
-        this._auth_loading = true;
         this._app_token = setup.app_token;
         this._device = setup.device;
         this._app_profile = new AppProfile(setup.app_token);
