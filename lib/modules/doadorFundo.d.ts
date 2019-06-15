@@ -16,6 +16,7 @@ export declare class Org extends Tastypie.Model<Org> {
     private _adm;
     constructor(obj?: any);
     readonly adm: Tastypie.Resource<OrgAdm>;
+    send_invite_adm(name: string, email: string): Promise<OrgAdm>;
     getAddress(): Promise<OrgAddress>;
 }
 export declare class OrgActivity extends Tastypie.Model<OrgActivity> {
@@ -43,6 +44,7 @@ export declare class OrgAddress extends Tastypie.Model<OrgAddress> {
 }
 export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
     static resource: Tastypie.Resource<OrgAdm>;
+    static resource_add: Tastypie.Resource<OrgAdm>;
     org_id: number;
     parent_id: number;
     doador: Doador;
@@ -52,4 +54,9 @@ export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
     dt_created: string;
     dt_updated: string;
     constructor(obj?: any);
+    static add(obj: {
+        name: string;
+        email: string;
+        org_id: number;
+    }): Promise<OrgAdm>;
 }

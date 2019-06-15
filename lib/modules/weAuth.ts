@@ -125,6 +125,7 @@ export class User {
     private _auth: Auth;
     private _apps: Array<UserApp>;
     private _account: UserAccount;
+    private _address: UserAddress;
     private _is_authenticated: boolean;
     private _encrypt_key: string = 's7hsj2d12easd63ksye598sdhw312ed8';
     private _current_user_app: UserApp;
@@ -147,6 +148,7 @@ export class User {
         this._is_authenticated = false;
         this._auth = new Auth('','');
         this._account = new UserAccount();
+        this._address = new UserAddress();
         this._apps = [];
         this._plugin_navegador = new utils.PluginNavegador();
 
@@ -196,6 +198,10 @@ export class User {
 
     public get account(): UserAccount {
         return this._account;
+    }
+
+    public get address(): UserAddress {
+        return this._address;
     }
 
     public get is_authenticated(): any {
@@ -300,7 +306,8 @@ export class User {
          data.hasOwnProperty('email') &&
          data.hasOwnProperty('auth') &&
          data.hasOwnProperty('apps') &&
-         data.hasOwnProperty('account')){
+         data.hasOwnProperty('account') &&
+         data.hasOwnProperty('address')){
            api.Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
 
            _self._id = data.id;
@@ -308,17 +315,18 @@ export class User {
            _self._email = data.email;
            _self._auth = new Auth(data.auth.username, data.auth.api_key);
            _self._account = new UserAccount(data);
+           _self._address = new UserAddress(data);
 
            _self._apps = [];
            for(let userapp of data.apps){
               _self._apps.push(new UserApp(
-                userapp.id,
-                userapp.app_name,
-                userapp.app_token,
-                userapp.app_profile_id,
-                userapp.display_name,
-                userapp.admin,
-                userapp.permissions
+                  userapp.id,
+                  userapp.app_name,
+                  userapp.app_token,
+                  userapp.app_profile_id,
+                  userapp.display_name,
+                  userapp.admin,
+                  userapp.permissions
               ));
            }
 
@@ -343,8 +351,8 @@ export class User {
               localStorage.setItem('weUserX', encrypted_user);
             }
        }else{
-           _self.name = ''
-           _self._email = ''
+           _self.name = '';
+           _self._email = '';
            _self._is_authenticated = false;
            _self._auth = new Auth('','');
            _self._apps = [];
@@ -648,6 +656,39 @@ export class UserAccount extends api.Tastypie.Model<UserAccount> {
         return UserAccount.resource.objects.update(_self.user_id, {account:{foto:dataBase64}}).then(function(data){
             _self.setData(data);
             return _self;
+        });
+    }
+}
+
+export class UserAddress extends api.Tastypie.Model<UserAddress> {
+
+    public static resource = new api.Tastypie.Resource<UserAddress>('we-auth/user/profile', {model: UserAddress});
+
+    public user_id: number;
+    public region: string;
+    public number: string;
+    public street: string;
+    public complement: string;
+    public district: string;
+    public postcode: string;
+    public city: string;
+    public state: string;
+    public country: string;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(UserAddress.resource);
+        if(obj){
+            this.setData(obj.address);
+            this.user_id = obj.id
+        }
+    }
+
+    public save(): Promise<UserAddress> {
+        return UserAddress.resource.objects.update(this.user_id, {address: this.getData()}).then((data) => {
+            this.setData(data);
+            return this;
         });
     }
 }

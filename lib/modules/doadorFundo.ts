@@ -40,6 +40,24 @@ export class Org extends Tastypie.Model<Org> {
         return this._adm;
     }
 
+    public send_invite_adm(name: string, email: string): Promise<OrgAdm> {
+        if(this.id){
+            return OrgAdm.add({org_id: this.id, name: name, email: email}).then(resp_adm =>{
+                if(this._adm.page.initialized){
+                    return this._adm.page.refresh().then(() => {
+                        return resp_adm;
+                    }).catch(() => {
+                        return resp_adm;
+                    });
+                }else{
+                    return resp_adm;
+                }
+            });
+        }else{
+            return Promise.reject('Org not found.');
+        }
+    }
+
     public getAddress(): Promise<OrgAddress> {
         if(this.id){
             return OrgAddress.resource.objects.findOne({org_id: this.id}).then((data) => {
@@ -90,6 +108,7 @@ export class OrgAddress extends Tastypie.Model<OrgAddress> {
 
 export class OrgAdm extends Tastypie.Model<OrgAdm> {
     public static resource = new Tastypie.Resource<OrgAdm>('doador-fundo/adm', {model: OrgAdm});
+    public static resource_add = new Tastypie.Resource<OrgAdm>('doador-fundo/adm/add', {model: OrgAdm});
 
     public org_id: number;
     public parent_id: number;
@@ -106,5 +125,9 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
         if(obj){
             if(obj.doador) this.doador = new Doador(obj.doador);
         }
+    }
+
+    public static add(obj: {name: string, email: string, org_id: number}): Promise<OrgAdm> {
+        return OrgAdm.resource_add.objects.create(obj);
     }
 }

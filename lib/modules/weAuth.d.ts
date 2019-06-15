@@ -41,6 +41,7 @@ export declare class User {
     private _auth;
     private _apps;
     private _account;
+    private _address;
     private _is_authenticated;
     private _encrypt_key;
     private _current_user_app;
@@ -62,6 +63,7 @@ export declare class User {
     readonly auth: Auth;
     readonly apps: Array<UserApp>;
     readonly account: UserAccount;
+    readonly address: UserAddress;
     readonly is_authenticated: any;
     current_user_app: UserApp;
     readonly plugin_navegador: utils.PluginNavegador;
@@ -112,4 +114,21 @@ export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
     save(): Promise<UserAccount>;
     changeFoto(event: any): Promise<UserAccount>;
     changeFotoBase64(dataBase64: any): Promise<UserAccount>;
+}
+export declare class UserAddress extends api.Tastypie.Model<UserAddress> {
+    static resource: api.Tastypie.Resource<UserAddress>;
+    user_id: number;
+    region: string;
+    number: string;
+    street: string;
+    complement: string;
+    district: string;
+    postcode: string;
+    city: string;
+    state: string;
+    country: string;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+    save(): Promise<UserAddress>;
 }
