@@ -3,6 +3,7 @@
 
 import { Tastypie } from "ts-resource-tastypie";
 import { Environment } from "./config";
+import { Tools } from "./utils";
 import { User } from "./weAuth";
 import { Doador } from "./doador";
 import { Empresa } from "./doadorEmpresa";
@@ -101,6 +102,48 @@ export class AppProfile {
     }
 }
 
+export class AppDevice {
+    public is_mobile: boolean;
+
+    public app_site: {
+        os: string,
+        os_version: string,
+        browser: string,
+        browser_version: string,
+        invite?: {source: string, slug: string}
+    };
+
+    public app_mobile: {
+        registration_id: string,
+        device_id: string,
+        device_name: string,
+        device_type: string,
+        invite?: {source: string, slug: string}
+    };
+
+    constructor(device: {
+        is_mobile: boolean,
+        app_site?: {
+            os: string,
+            os_version: string,
+            browser: string,
+            browser_version: string,
+            invite?: {source: string, slug: string}
+        },
+        app_mobile?: {
+            registration_id: string,
+            device_id: string,
+            device_name: string,
+            device_type: string,
+            invite?: {source: string, slug: string}
+        }
+    }){
+      this.is_mobile = device.is_mobile;
+      if(device.app_site) this.app_site = device.app_site;
+      if(device.app_mobile) this.app_mobile = device.app_mobile;
+    }
+}
+
 export class AppManager {
 
     private _user: User;
@@ -113,11 +156,13 @@ export class AppManager {
     private _route_access_denied: string;
     private _route_page_not_found: string;
     private _fnc_change_route: any;
+    private _device: AppDevice;
 
     constructor(
         setup: {
             env: string,
             app_token: string,
+            device: AppDevice,
             fnc_change_route: any,
             route_app_home: string,
             route_account_new: string,
@@ -129,6 +174,7 @@ export class AppManager {
     ){
         Environment.set(setup.env);
         this._app_token = setup.app_token;
+        this._device = setup.device;
         this._fnc_change_route = setup.fnc_change_route;
         this._route_app_home = setup.route_app_home;
         this._route_account_new = setup.route_account_new;
@@ -143,6 +189,10 @@ export class AppManager {
         return this._app_token;
     }
 
+    public get device(): AppDevice {
+        return this._device;
+    }
+
     public get route_app_home(): string {
         return this._route_app_home;
     }
@@ -151,16 +201,16 @@ export class AppManager {
         return this._route_account_new;
     }
 
+    public get route_access_denied(): string {
+        return this._route_access_denied;
+    }
+
     public get route_account_list(): string {
         return this._route_account_list;
     }
 
     public get route_landing_page(): string {
         return this._route_landing_page;
-    }
-
-    public get route_access_denied(): string {
-        return this._route_access_denied;
     }
 
     public get route_page_not_found(): string {
@@ -185,31 +235,43 @@ export class AppManager {
         return Tastypie.Provider.getDefault().concatDomain(uri);
     }
 
-    public changeRoute(app_route: string, app_token?: string, next?:{app_route: string, app_token: string}): void {
+    public changeRoute(app_route: string, app_token?: string, kwargs?: any): void {
+
         if(!app_route.startsWith("/")){
             app_route = `/${app_route}`;
         }
 
         if(!app_token || (app_token == this._app_token)){
             if(this._fnc_change_route){
-              this._fnc_change_route([app_route]);
+                if(kwargs.hasOwnProperty('next')){
+                    app_route = `${app_route}/?nextd=${kwargs.next.app_token}/next=${kwargs.next.app_route}`;
+                }
+                this._fnc_change_route([app_route]);
             }
         }else{
-
             if(this._user.is_authenticated && app_token != 'home'){
-                app_route = `${app_route}/quick-login/${this._user.auth.username}/${this._user.auth.api_key}`;
+                if(kwargs.hasOwnProperty('user_app_id')){
+                    app_route = `/quick-login/${this._user.auth.username}/${this._user.auth.api_key}/${kwargs.user_app_id}?next=${app_route.substring(1)}`;
+                }else{
+                    app_route = `/quick-login/${this._user.auth.username}/${this._user.auth.api_key}?next=${app_route.substring(1)}`;
+                }
+            }else if(app_route == 'login' && app_token == 'home'){
+                if(kwargs.hasOwnProperty('next')){
+                    app_route = `/login/?nextd=${kwargs.next.app_token}/next=${kwargs.next.app_route}`;
+                }else{
+                    app_route = `/login/?nextd=${this._app_token}/next=/`;
+                }
             }
-
-            if(next){
-                app_route = `${app_route}?nextd=${next.app_token}&next=${next.app_route}`;
-            }
-
             window.location.href = this.concatDomainSite(app_token, app_route);
         }
     }
 
-    public quickLogin(auth?: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
-        return this._user.quickLogin(auth, kwargs).then(() => {
+    public changeApp(app_route: string, app_token: string, user_app_id: string){
+        this.changeRoute(app_route=app_route, app_token=app_token, {user_app_id: user_app_id});
+    }
+
+    public quickLogin(auth: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
+        return this._user.quickLogin(auth, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('app_route')){
                 this.changeRoute(kwargs.app_route);
             }else{
@@ -218,7 +280,7 @@ export class AppManager {
             return true;
         }).catch(() => {
             if(kwargs.hasOwnProperty('app_route')){
-                this.changeRoute('login', 'home', {app_route: kwargs.app_route, app_token: this._app_token});
+                this.changeRoute('login', 'home', {next:{app_route: kwargs.app_route, app_token: this._app_token}});
             }else{
                 this.changeRoute('login', 'home');
             }
@@ -245,7 +307,7 @@ export class AppManager {
             return this._user.quickLogin().then(() => {
                 return true;
             }).catch(() => {
-                this.changeRoute('login', 'home', {app_route: current_app_route, app_token: this._app_token});
+                this.changeRoute('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
                 return false;
             });
         }
@@ -255,22 +317,60 @@ export class AppManager {
         return this.authGuardUser(current_app_route).then((auth: boolean) => {
             if(auth){
                 if(this._app_profile.initialized){
-                    return Promise.resolve(this.user_has_perm(['member']));
+                    if(this.user_has_perm(['member'])){
+                        return true;
+                    }else{
+                        this.changeRoute(this._route_access_denied);
+                        return false;
+                    }
                 }else{
-                    return this._loading_app_profile_member();
+                    this._loading_app_profile_member().then((auth) => {
+                        if(auth){
+                            return true;
+                        }else{
+                            this.changeRoute(this._route_access_denied);
+                            return false;
+                        }
+                    });
                 }
             }else{
                 return false;
             }
-        })
+        });
     }
 
     public user_has_perm(perm_token_list: Array<string>): boolean {
         return this._user.has_perm({
-          app_token: this._app_token,
-          app_profile_id: this._app_profile.app_profile_id,
-          perm_token_list: perm_token_list
+            app_token: this._app_token,
+            app_profile_id: this._app_profile.app_profile_id,
+            perm_token_list: perm_token_list
         });
+    }
+
+    private _get_source_login(kwargs: any): any {
+        let obj = {
+            source: {
+                app_name: Environment.getAppName(this._app_token),
+                detail: (this._device.app_site || this._device.app_mobile || {})
+            }
+        }
+
+        if(kwargs.hasOwnProperty('user_app_id')){
+            obj['source']['detail']['user_app_id'] = kwargs.user_app_id;
+        }
+
+        if(Tools.localStorageSuported){
+            let invite_string = localStorage.getItem('WelightInvite');
+            if (invite_string) {
+                let invite = JSON.parse(invite_string);
+                if (invite.hasOwnProperty('source') && ['donator', 'ong', 'company'].indexOf(invite['source']) >= 0) {
+                    kwargs.source.detail['invite'] = invite;
+                    obj['source']['detail']['invite'] = invite;
+                }
+            }
+        }
+
+        return obj;
     }
 
     private _loading_app_profile_member(): Promise<boolean> {

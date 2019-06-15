@@ -103,7 +103,7 @@ export class Empresa extends api.Tastypie.Model<Empresa> {
         let _self = this;
         return this._doador.createAccountDoadorEmpresa(nome, email, cpf_cnpj, kwargs).then(
             function(doador_response: Doador){
-                return Empresa.resource.objects.findOne({doador_id:doador_response.id}).then(
+                return Empresa.resource.objects.get(doador_response.user.current_user_app.app_profile_id).then(
                     function(empresa_resp: Empresa){
                         if(empresa_resp.id){
                             _self.setData(empresa_resp);

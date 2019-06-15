@@ -56,4 +56,22 @@ export class Environment {
 
         return url;
     }
+
+    public static getAppName(app_token:string): string {
+        let app_name = ''
+
+        if(app_token == 'home'){
+            app_name = 'we-site-home';
+        }else if(app_token == 'doador'){
+            app_name = 'we-site-doador';
+        }else if(app_token == 'ong'){
+            app_name = 'we-site-ong';
+        }else if(app_token == 'doador_empresa'){
+            app_name = 'we-site-empresa';
+        }else if(app_token == 'doador_fundo'){
+            app_name = 'we-site-funds';
+        }
+
+        return app_name;
+    }
 }

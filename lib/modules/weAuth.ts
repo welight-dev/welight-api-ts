@@ -310,7 +310,9 @@ export class User {
               ));
            }
 
-           if(kwargs){
+           if(data.hasOwnProperty('current_user_app')){
+              _self._current_user_app = _self.getUserAppById(data.current_user_app.id);
+           }else if(kwargs){
               if(kwargs.hasOwnProperty('source')){
                   if(kwargs.source.detail.hasOwnProperty('user_app_id')){
                       _self._current_user_app = _self.getUserAppById(kwargs.source.detail.user_app_id);
