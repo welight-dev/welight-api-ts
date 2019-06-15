@@ -256,8 +256,11 @@ export class AppManager {
         }
     ){
         Environment.set(setup.env);
+        this._auth_loading = false;
+        this._create_account_loading = false;
         this._app_token = setup.app_token;
         this._device = setup.device;
+        this._user = new User();
         this._app_profile = new AppProfile(setup.app_token);
         this._route = new AppRoute(this, setup.fnc_change_route, setup.route);
     }
