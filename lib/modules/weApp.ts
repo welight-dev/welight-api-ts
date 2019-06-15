@@ -149,7 +149,7 @@ export class AppRoute {
     private _fnc_change_route: any;
     private _uri: {
         home: string,
-        landing_page: string
+        landing_page: string,
         account_new: string,
         account_list: string,
         access_denied: string,
@@ -165,7 +165,7 @@ export class AppRoute {
             account_new: string,
             account_list: string,
             access_denied: string,
-            not_found: string,
+            not_found: string
     }){
         this._app_manager = app_manager;
         this._fnc_change_route = fnc_change_route;
@@ -174,7 +174,7 @@ export class AppRoute {
 
     public get uri(): {
         home: string,
-        landing_page: string
+        landing_page: string,
         account_new: string,
         account_list: string,
         access_denied: string,
@@ -247,7 +247,7 @@ export class AppManager {
             fnc_change_route: any,
             route: {
                 home: string,
-                landing_page: string
+                landing_page: string,
                 account_new: string,
                 account_list: string,
                 access_denied: string,
