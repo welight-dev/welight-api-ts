@@ -130,6 +130,12 @@ export class User {
     private _encrypt_key: string = 's7hsj2d12easd63ksye598sdhw312ed8';
     private _current_user_app: UserApp;
     private _plugin_navegador: utils.PluginNavegador;
+    private _status: {
+        apps: {
+            qtde_admin: number,
+            qtde_shared: number
+        }
+    }
 
     private _we_auth_user_create_account_resource: api.Tastypie.Resource<any>;
     private _we_auth_user_create_account_ong_resource: api.Tastypie.Resource<any>;
@@ -151,6 +157,8 @@ export class User {
         this._address = new UserAddress();
         this._apps = [];
         this._plugin_navegador = new utils.PluginNavegador();
+        this._status.apps.qtde_admin = 0;
+        this._status.apps.qtde_shared = 0;
 
         this._we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account');
         this._we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong');
@@ -218,6 +226,15 @@ export class User {
 
     public get plugin_navegador(): utils.PluginNavegador {
         return this._plugin_navegador;
+    }
+
+    public get status(): {
+        apps: {
+            qtde_admin: number,
+            qtde_shared: number
+        }
+    } {
+        return this._status;
     }
 
     public getUserAppAdmin(app_token: string): UserApp {
@@ -328,6 +345,12 @@ export class User {
                   userapp.admin,
                   userapp.permissions
               ));
+
+              if(userapp.admin){
+                  this._status.apps.qtde_admin += 1;
+              }else{
+                  this._status.apps.qtde_shared += 1;
+              }
            }
 
            if(!kwargs){

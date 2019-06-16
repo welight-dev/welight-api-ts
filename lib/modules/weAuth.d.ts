@@ -46,6 +46,7 @@ export declare class User {
     private _encrypt_key;
     private _current_user_app;
     private _plugin_navegador;
+    private _status;
     private _we_auth_user_create_account_resource;
     private _we_auth_user_create_account_ong_resource;
     private _we_auth_user_create_account_doador_empresa_resource;
@@ -67,6 +68,12 @@ export declare class User {
     readonly is_authenticated: any;
     current_user_app: UserApp;
     readonly plugin_navegador: utils.PluginNavegador;
+    readonly status: {
+        apps: {
+            qtde_admin: number;
+            qtde_shared: number;
+        };
+    };
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
     getUserAppByProfile(token: string, profile_id: number): UserApp;
