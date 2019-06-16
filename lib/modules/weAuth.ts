@@ -157,8 +157,12 @@ export class User {
         this._address = new UserAddress();
         this._apps = [];
         this._plugin_navegador = new utils.PluginNavegador();
-        this._status.apps.qtde_admin = 0;
-        this._status.apps.qtde_shared = 0;
+        this._status = {
+          apps: {
+              qtde_admin: 0,
+              qtde_shared: 0
+          }
+        };
 
         this._we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account');
         this._we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong');
