@@ -203,6 +203,10 @@ export class AppRoute {
             app_route = `/${app_route}`;
         }
 
+        if(!kwargs){
+            kwargs = {};
+        }
+
         if(kwargs.hasOwnProperty('next')){
             if(kwargs.next.app_route.startsWith("/")){
                 kwargs.next.app_route = kwargs.next.app_route.substring(1);
@@ -305,6 +309,9 @@ export class AppManager {
         }
 
         this._create_account_loading = true;
+        if(!kwargs){
+            kwargs = {};
+        }
         return this._user.createAccountDoadorFundo(name, email, activity_id, this._get_source_login(kwargs)).then(() => {
             return this._loading_app_profile_member().then((auth: boolean) => {
                 this._create_account_loading = false;
@@ -318,6 +325,9 @@ export class AppManager {
 
     public login(username: string, password: string, kwargs?:any): Promise<boolean> {
         this._auth_loading = true;
+        if(!kwargs){
+            kwargs = {};
+        }
         return this._user.login(username, password, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('next')){
                 this._auth_loading = false;
@@ -356,6 +366,9 @@ export class AppManager {
 
     public quickLogin(auth: {username: string, apikey: string}, kwargs?: any): Promise<boolean> {
         this._auth_loading = true;
+        if(!kwargs){
+            kwargs = {};
+        }
         return this._user.quickLogin(auth, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('app_route')){
                 this._auth_loading = false;
