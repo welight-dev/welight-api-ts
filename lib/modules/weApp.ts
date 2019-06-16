@@ -461,6 +461,14 @@ export class AppManager {
         });
     }
 
+    public get global_loading(): boolean {
+        return Tastypie.Working.status;
+    }
+
+    public set global_loading(p: boolean) {
+        Tastypie.Working.status = p;
+    }
+
     private _get_source_login(kwargs: any): any {
         let obj = {
             source: {
