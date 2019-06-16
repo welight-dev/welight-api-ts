@@ -330,14 +330,23 @@ export class User {
               ));
            }
 
+           if(!kwargs){
+              kwargs = {};
+           }
+
            if(data.hasOwnProperty('current_user_app')){
-              _self._current_user_app = _self.getUserAppById(data.current_user_app.id);
-           }else if(kwargs){
-              if(kwargs.hasOwnProperty('source')){
-                  if(kwargs.source.detail.hasOwnProperty('user_app_id')){
-                      _self._current_user_app = _self.getUserAppById(kwargs.source.detail.user_app_id);
+              if(!kwargs.hasOwnProperty('source')){
+                  kwargs['source'] = {
+                      detail: {}
                   }
               }
+              kwargs.source.detail['user_app_id'] = data.current_user_app.id;
+           }
+
+           if(kwargs.hasOwnProperty('source')){
+               if(kwargs.source.detail.hasOwnProperty('user_app_id')){
+                   _self._current_user_app = _self.getUserAppById(kwargs.source.detail.user_app_id);
+               }
            }
 
            _self._is_authenticated = true;
