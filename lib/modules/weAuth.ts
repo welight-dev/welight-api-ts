@@ -118,6 +118,44 @@ export class UserApp {
     }
 }
 
+export class UserBar {
+    private _app_admin: Array<UserApp>;
+    private _app_shared: Array<UserApp>;
+    private _app_available: Array<UserApp>;
+
+    constructor(){
+        this._app_admin = [];
+        this._app_shared = [];
+        this._app_available = [];
+        this._set_available();
+    }
+
+    private _set_available(): void {
+        this._app_available.push(
+            new UserApp(0, 'OMG', 'ong', 0, 'OMG', false, [])
+        );
+        this._app_available.push(
+            new UserApp(0, 'Company', 'doador_empresa', 0, 'Company', false, [])
+        );
+        this._app_available.push(
+            new UserApp(0, 'ORG Funds', 'doador_fundo', 0, 'ORG Funds', false, [])
+        );
+    }
+
+    public add_app(obj: UserApp): void {
+        if(obj.admin){
+          for(let i = 0; i < this._app_available.length; i++){
+             if(this._app_available[i].app_token === obj.app_token) {
+                this._app_available.splice(i, 1);
+             }
+          }
+          this._app_admin.push(obj);
+        }else{
+            this._app_shared.push(obj);
+        }
+    }
+}
+
 export class User {
     private _id: number;
     public name: string;
@@ -126,16 +164,11 @@ export class User {
     private _apps: Array<UserApp>;
     private _account: UserAccount;
     private _address: UserAddress;
-    private _is_authenticated: boolean;
-    private _encrypt_key: string = 's7hsj2d12easd63ksye598sdhw312ed8';
+    private _encrypt_key: string;
     private _current_user_app: UserApp;
     private _plugin_navegador: utils.PluginNavegador;
-    private _status: {
-        apps: {
-            qtde_admin: number,
-            qtde_shared: number
-        }
-    }
+    private _bar: UserBar;
+    private _is_authenticated: boolean;
 
     private _we_auth_user_create_account_resource: api.Tastypie.Resource<any>;
     private _we_auth_user_create_account_ong_resource: api.Tastypie.Resource<any>;
@@ -151,18 +184,15 @@ export class User {
     constructor(){
         this.name = ''
         this._email = ''
-        this._is_authenticated = false;
         this._auth = new Auth('','');
+        this._apps = [];
         this._account = new UserAccount();
         this._address = new UserAddress();
-        this._apps = [];
+        this._encrypt_key = 's7hsj2d12easd63ksye598sdhw312ed8';
+        this._current_user_app = null;
         this._plugin_navegador = new utils.PluginNavegador();
-        this._status = {
-          apps: {
-              qtde_admin: 0,
-              qtde_shared: 0
-          }
-        };
+        this._bar = new UserBar();
+        this._is_authenticated = false;
 
         this._we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account');
         this._we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong');
@@ -208,6 +238,10 @@ export class User {
         return this._apps;
     }
 
+    public get bar(): UserBar {
+        return this._bar;
+    }
+
     public get account(): UserAccount {
         return this._account;
     }
@@ -230,15 +264,6 @@ export class User {
 
     public get plugin_navegador(): utils.PluginNavegador {
         return this._plugin_navegador;
-    }
-
-    public get status(): {
-        apps: {
-            qtde_admin: number,
-            qtde_shared: number
-        }
-    } {
-        return this._status;
     }
 
     public getUserAppAdmin(app_token: string): UserApp {
@@ -337,10 +362,11 @@ export class User {
            _self._auth = new Auth(data.auth.username, data.auth.api_key);
            _self._account = new UserAccount(data);
            _self._address = new UserAddress(data);
-
            _self._apps = [];
+           _self._bar = new UserBar();
+
            for(let userapp of data.apps){
-              _self._apps.push(new UserApp(
+              let obj_userapp = new UserApp(
                   userapp.id,
                   userapp.app_name,
                   userapp.app_token,
@@ -348,13 +374,9 @@ export class User {
                   userapp.display_name,
                   userapp.admin,
                   userapp.permissions
-              ));
-
-              if(userapp.admin){
-                  this._status.apps.qtde_admin += 1;
-              }else{
-                  this._status.apps.qtde_shared += 1;
-              }
+              );
+              _self._apps.push(obj_userapp);
+              _self._bar.add_app(obj_userapp);
            }
 
            if(!kwargs){

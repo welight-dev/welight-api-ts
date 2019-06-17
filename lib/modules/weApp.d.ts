@@ -14,6 +14,7 @@ export declare class AppProfile {
     private _app_profile_id;
     private _initialized;
     constructor(app_token: string);
+    reset(): void;
     init(obj_filter: {
         id?: number;
         slug?: string;
@@ -79,14 +80,17 @@ export declare class AppRoute {
     constructor(app_manager: AppManager, fnc_change_route: any, uri: {
         home: string;
         landing_page: string;
+        account: string;
         account_new: string;
         account_list: string;
         access_denied: string;
         not_found: string;
     });
+    private _check_uri_slash;
     readonly uri: {
         home: string;
         landing_page: string;
+        account: string;
         account_new: string;
         account_list: string;
         access_denied: string;
@@ -112,12 +116,15 @@ export declare class AppManager {
         route: {
             home: string;
             landing_page: string;
+            account: string;
             account_new: string;
             account_list: string;
             access_denied: string;
             not_found: string;
         };
     });
+    private _get_source_login;
+    private _init_app_profile_member;
     readonly user: User;
     readonly profile: AppProfile;
     readonly app_token: string;
@@ -136,6 +143,4 @@ export declare class AppManager {
     authGuardMember(current_app_route: string): Promise<boolean>;
     user_has_perm(perm_token_list: Array<string>): boolean;
     global_loading: boolean;
-    private _get_source_login;
-    private _loading_app_profile_member;
 }

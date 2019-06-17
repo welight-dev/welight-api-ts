@@ -34,6 +34,14 @@ export declare class UserApp {
     readonly admin: boolean;
     has_perm(perm_token_list: Array<string>): boolean;
 }
+export declare class UserBar {
+    private _app_admin;
+    private _app_shared;
+    private _app_available;
+    constructor();
+    private _set_available;
+    add_app(obj: UserApp): void;
+}
 export declare class User {
     private _id;
     name: string;
@@ -42,11 +50,11 @@ export declare class User {
     private _apps;
     private _account;
     private _address;
-    private _is_authenticated;
     private _encrypt_key;
     private _current_user_app;
     private _plugin_navegador;
-    private _status;
+    private _bar;
+    private _is_authenticated;
     private _we_auth_user_create_account_resource;
     private _we_auth_user_create_account_ong_resource;
     private _we_auth_user_create_account_doador_empresa_resource;
@@ -63,17 +71,12 @@ export declare class User {
     readonly email: string;
     readonly auth: Auth;
     readonly apps: Array<UserApp>;
+    readonly bar: UserBar;
     readonly account: UserAccount;
     readonly address: UserAddress;
     readonly is_authenticated: any;
     current_user_app: UserApp;
     readonly plugin_navegador: utils.PluginNavegador;
-    readonly status: {
-        apps: {
-            qtde_admin: number;
-            qtde_shared: number;
-        };
-    };
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
     getUserAppByProfile(token: string, profile_id: number): UserApp;

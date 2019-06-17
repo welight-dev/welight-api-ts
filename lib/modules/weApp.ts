@@ -23,11 +23,15 @@ export class AppProfile {
     private _initialized: boolean;
 
     constructor(app_token: string){
+        this._app_token = app_token;
+        this.reset();
+    }
+
+    public reset(): void {
         this._doador = new Doador();
         this._empresa = new Empresa();
         this._org = new Org();
         this._ong = new Ong();
-        this._app_token = app_token;
         this._app_profile_id = null;
         this._initialized = false;
     }
@@ -150,6 +154,7 @@ export class AppRoute {
     private _uri: {
         home: string,
         landing_page: string,
+        account: string,
         account_new: string,
         account_list: string,
         access_denied: string,
@@ -160,48 +165,53 @@ export class AppRoute {
         app_manager: AppManager,
         fnc_change_route: any,
         uri:{
-            home:string,
-            landing_page: string,
-            account_new: string,
-            account_list: string,
-            access_denied: string,
-            not_found: string
-    }){
+          home: string,
+          landing_page: string,
+          account: string,
+          account_new: string,
+          account_list: string,
+          access_denied: string,
+          not_found: string
+        }
+    ){
         this._app_manager = app_manager;
         this._fnc_change_route = fnc_change_route;
         this._uri = uri;
+        for(let key in this._uri){
+            this._uri[key] = this._check_uri_slash(this._uri[key]);
+        }
+    }
+
+    private _check_uri_slash(uri: string): string {
+        if(!uri.startsWith("/")){
+            return `/${uri}`;
+        }
+        return uri;
     }
 
     public get uri(): {
         home: string,
         landing_page: string,
+        account: string,
         account_new: string,
         account_list: string,
         access_denied: string,
         not_found: string
-    }  {
+    } {
       return this._uri;
     }
 
     public concatDomainSite(app_token: string, uri?: string): string {
-        if(uri && !uri.startsWith("/")){
-            uri = `/${uri}`;
-        }
-        return Environment.getDomainSite(app_token, uri);
+        return Environment.getDomainSite(app_token, this._check_uri_slash(uri));
     }
 
     public concatDomainApi(uri?: string): string {
-        if(uri && !uri.startsWith("/")){
-            uri = `/${uri}`;
-        }
-        return Tastypie.Provider.getDefault().concatDomain(uri);
+        return Tastypie.Provider.getDefault().concatDomain(this._check_uri_slash(uri));
     }
 
     public change(app_route: string, app_token?: string, kwargs?: any): void {
 
-        if(!app_route.startsWith("/")){
-            app_route = `/${app_route}`;
-        }
+        app_route = this._check_uri_slash(app_route);
 
         if(!kwargs){
             kwargs = {};
@@ -258,6 +268,7 @@ export class AppManager {
             route: {
                 home: string,
                 landing_page: string,
+                account: string,
                 account_new: string,
                 account_list: string,
                 access_denied: string,
@@ -273,6 +284,46 @@ export class AppManager {
         this._user = new User();
         this._app_profile = new AppProfile(setup.app_token);
         this._route = new AppRoute(this, setup.fnc_change_route, setup.route);
+    }
+
+    private _get_source_login(kwargs: any): any {
+        let obj = {
+            source: {
+                app_name: Environment.getAppName(this._app_token),
+                detail: (this._device.app_site || this._device.app_mobile || {})
+            }
+        }
+
+        if(kwargs.hasOwnProperty('user_app_id')){
+            obj['source']['detail']['user_app_id'] = kwargs.user_app_id;
+        }
+
+        if(Tools.localStorageSuported){
+            let invite_string = localStorage.getItem('WelightInvite');
+            if (invite_string) {
+                let invite = JSON.parse(invite_string);
+                if (invite.hasOwnProperty('source') && ['donator', 'ong', 'company'].indexOf(invite['source']) >= 0) {
+                    kwargs.source.detail['invite'] = invite;
+                    obj['source']['detail']['invite'] = invite;
+                }
+            }
+        }
+
+        return obj;
+    }
+
+    private _init_app_profile_member(): Promise<boolean> {
+        if(!this._user.current_user_app){
+            return Promise.resolve(false);
+        }
+
+        if(this._user.current_user_app.app_token != this._app_token){
+            return Promise.resolve(false);
+        }
+
+        return this._app_profile.init({id: this._user.current_user_app.app_profile_id}).then((resp) => {
+            return resp.initialized;
+        }).catch(() => { return false;});
     }
 
     public get user(): User {
@@ -313,7 +364,7 @@ export class AppManager {
             kwargs = {};
         }
         return this._user.createAccountDoadorFundo(name, email, activity_id, this._get_source_login(kwargs)).then(() => {
-            return this._loading_app_profile_member().then((auth: boolean) => {
+            return this._init_app_profile_member().then((auth: boolean) => {
                 this._create_account_loading = false;
                 return auth;
             });
@@ -375,7 +426,7 @@ export class AppManager {
                 this._route.change(kwargs.app_route);
             }else{
                 this._auth_loading = false;
-                this._route.change('/');
+                this._route.change(this._route.uri.home);
             }
             return true;
         }).catch(() => {
@@ -436,7 +487,7 @@ export class AppManager {
                     }
                 }else{
                     this._auth_loading = true;
-                    this._loading_app_profile_member().then((auth: boolean) => {
+                    this._init_app_profile_member().then((auth: boolean) => {
                         if(auth){
                             this._auth_loading = false;
                             return true;
@@ -467,45 +518,5 @@ export class AppManager {
 
     public set global_loading(p: boolean) {
         Tastypie.Working.status = p;
-    }
-
-    private _get_source_login(kwargs: any): any {
-        let obj = {
-            source: {
-                app_name: Environment.getAppName(this._app_token),
-                detail: (this._device.app_site || this._device.app_mobile || {})
-            }
-        }
-
-        if(kwargs.hasOwnProperty('user_app_id')){
-            obj['source']['detail']['user_app_id'] = kwargs.user_app_id;
-        }
-
-        if(Tools.localStorageSuported){
-            let invite_string = localStorage.getItem('WelightInvite');
-            if (invite_string) {
-                let invite = JSON.parse(invite_string);
-                if (invite.hasOwnProperty('source') && ['donator', 'ong', 'company'].indexOf(invite['source']) >= 0) {
-                    kwargs.source.detail['invite'] = invite;
-                    obj['source']['detail']['invite'] = invite;
-                }
-            }
-        }
-
-        return obj;
-    }
-
-    private _loading_app_profile_member(): Promise<boolean> {
-        if(!this._user.current_user_app){
-            return Promise.resolve(false);
-        }
-
-        if(this._user.current_user_app.app_token != this._app_token){
-            return Promise.resolve(false);
-        }
-
-        return this._app_profile.init({id: this._user.current_user_app.app_profile_id}).then((resp) => {
-            return resp.initialized;
-        }).catch(() => { return false;});
     }
 }
