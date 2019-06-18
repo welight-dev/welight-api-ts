@@ -226,7 +226,7 @@ export class AppRoute {
         if(!app_token || (app_token == this._app_manager.app_token)){
             if(this._fnc_change_route){
                 if(kwargs.hasOwnProperty('next')){
-                    app_route = `${app_route}/?nextd=${kwargs.next.app_token}/next=${kwargs.next.app_route}`;
+                    app_route = `${app_route}/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
                 }
                 this._fnc_change_route(app_route);
             }
@@ -239,9 +239,9 @@ export class AppRoute {
                 }
             }else if(app_route == '/login' && app_token == 'home'){
                 if(kwargs.hasOwnProperty('next')){
-                    app_route = `/login/?nextd=${kwargs.next.app_token}/next=${kwargs.next.app_route}`;
+                    app_route = `/login/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
                 }else{
-                    app_route = `/login/?nextd=${this._app_manager.app_token}/next=`;
+                    app_route = `/login/?nextd=${this._app_manager.app_token}&next=`;
                 }
             }
             window.location.href = this.concatDomainSite(app_token, app_route);
