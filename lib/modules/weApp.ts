@@ -374,6 +374,12 @@ export class AppManager {
         });
     }
 
+    public logout(): void {
+        this._user.logout().then(() => {
+            this._route.change('/', 'home');
+        });
+    }
+
     public login(username: string, password: string, kwargs?:any): Promise<boolean> {
         this._auth_loading = true;
         if(!kwargs){

@@ -133,6 +133,7 @@ export declare class AppManager {
     readonly auth_loading: boolean;
     readonly create_account_loading: boolean;
     createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?: any): Promise<boolean>;
+    logout(): void;
     login(username: string, password: string, kwargs?: any): Promise<boolean>;
     quickLogin(auth: {
         username: string;
