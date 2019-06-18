@@ -154,6 +154,18 @@ export class UserBar {
             this._app_shared.push(obj);
         }
     }
+
+    public get app_admin(): Array<UserApp> {
+        return this._app_admin;
+    }
+
+    public get app_shared(): Array<UserApp> {
+        return this._app_shared;
+    }
+
+    public get app_available(): Array<UserApp> {
+        return this._app_available;
+    }
 }
 
 export class User {
@@ -182,18 +194,9 @@ export class User {
     private _we_auth_user_change_pass_resource: api.Tastypie.Resource<any>;
 
     constructor(){
-        this.name = ''
-        this._email = ''
-        this._auth = new Auth('','');
-        this._apps = [];
-        this._account = new UserAccount();
-        this._address = new UserAddress();
+        this.reset();
         this._encrypt_key = 's7hsj2d12easd63ksye598sdhw312ed8';
-        this._current_user_app = null;
         this._plugin_navegador = new utils.PluginNavegador();
-        this._bar = new UserBar();
-        this._is_authenticated = false;
-
         this._we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account');
         this._we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong');
         this._we_auth_user_create_account_doador_empresa_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-empresa');
@@ -212,6 +215,18 @@ export class User {
         });
     }
 
+    public reset(): void {
+        this.name = ''
+        this._email = ''
+        this._auth = new Auth('','');
+        this._account = new UserAccount();
+        this._address = new UserAddress();
+        this._current_user_app = null;
+        this._apps = [];
+        this._bar = new UserBar();
+        this._is_authenticated = false;
+    }
+
     public save(): Promise<User> {
         let _self = this;
         return _self._we_auth_user_profile_resource.objects.update(_self._id, {name: _self.name}).then(
@@ -220,6 +235,34 @@ export class User {
                 return _self;
             }
         )
+    }
+
+    public unselect_profile(): void {
+        this._current_user_app = null;
+        if(utils.Tools.localStorageSuported){
+            let weUser: string = localStorage.getItem('weUserX');
+            if(weUser){
+                let auth_user = JSON.parse(crypto.AES.decrypt(weUser, this._encrypt_key).toString(crypto.enc.Utf8));
+                let kwargs = auth_user.kwargs || {};
+
+                let removed = false;
+                if(kwargs.hasOwnProperty('source')){
+                    if(kwargs.source.detail.hasOwnProperty('user_app_id')){
+                        delete kwargs.source.detail['user_app_id'];
+                        removed = true;
+                    }
+                }
+
+                if(removed){
+                    auth_user.kwargs = kwargs;
+                    let encrypted_user = crypto.AES.encrypt(
+                        JSON.stringify(auth_user),
+                        this._encrypt_key
+                    ).toString();
+                    localStorage.setItem('weUserX', encrypted_user);
+                }
+            }
+        }
     }
 
     public get id(): number {
@@ -305,7 +348,7 @@ export class User {
       perm_token_list: Array<string>
     }): boolean {
 
-        let obj_userapp: UserApp;
+        let obj_userapp: UserApp = null;
 
         if(this._current_user_app.app_token == obj_perm.app_token
           && this._current_user_app.app_profile_id == obj_perm.app_profile_id){
@@ -409,11 +452,7 @@ export class User {
               localStorage.setItem('weUserX', encrypted_user);
             }
        }else{
-           _self.name = '';
-           _self._email = '';
-           _self._is_authenticated = false;
-           _self._auth = new Auth('','');
-           _self._apps = [];
+           _self.reset();
           if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
        }
     }
@@ -515,18 +554,18 @@ export class User {
     }
 
     private _quickLogin(username: string, apikey: string, kwargs?:any): Promise<User> {
-      api.Tastypie.Provider.setAuth('welight', username, apikey);
-      return this._we_auth_user_profile_resource.objects.findOne({kwargs:kwargs}).then((data: any) => {
-          this.setProfile(data, kwargs);
-          if(this._is_authenticated){
-              return this;
-          }else{
-              return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
-          }
-      }).catch(function(){
-          this._logout();
-          return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
-      });
+        api.Tastypie.Provider.setAuth('welight', username, apikey);
+        return this._we_auth_user_profile_resource.objects.findOne({kwargs:kwargs}).then((data: any) => {
+            this.setProfile(data, kwargs);
+            if(this._is_authenticated){
+                return this;
+            }else{
+                return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+            }
+        }).catch(function(){
+            this._logout();
+            return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+        });
     }
 
     public quickLogin(auth?:{username: string, apikey: string}, kwargs?:any): Promise<User> {
@@ -549,11 +588,7 @@ export class User {
 
     private _logout(): void {
         api.Tastypie.Provider.removeAuth('welight');
-        this.name = ''
-        this._email = ''
-        this._is_authenticated = false;
-        this._auth = new Auth('','');
-        this._apps = [];
+        this.reset();
         if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
         if(config.Environment.env == 'prod'){
           let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
@@ -561,12 +596,11 @@ export class User {
         }
     }
 
-    public logout(): Promise<any> {
-        if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
+    public logout(): Promise<User> {
         return this._we_auth_user_logout_resource.objects.findOne().then(() => {
             this._logout();
             return this;
-        }).catch(function(){
+        }).catch(() => {
             this._logout();
             return this;
         });

@@ -504,6 +504,11 @@ export class AppManager {
         });
     }
 
+    public unselect_profile(): void {
+        this._user.unselect_profile();
+        this._app_profile.reset();
+    }
+
     public user_has_perm(perm_token_list: Array<string>): boolean {
         return this._user.has_perm({
             app_token: this._app_token,

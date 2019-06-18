@@ -41,6 +41,9 @@ export declare class UserBar {
     constructor();
     private _set_available;
     add_app(obj: UserApp): void;
+    readonly app_admin: Array<UserApp>;
+    readonly app_shared: Array<UserApp>;
+    readonly app_available: Array<UserApp>;
 }
 export declare class User {
     private _id;
@@ -66,7 +69,9 @@ export declare class User {
     private _we_auth_user_reset_pass_execute_resource;
     private _we_auth_user_change_pass_resource;
     constructor();
+    reset(): void;
     save(): Promise<User>;
+    unselect_profile(): void;
     readonly id: number;
     readonly email: string;
     readonly auth: Auth;
@@ -98,7 +103,7 @@ export declare class User {
         apikey: string;
     }, kwargs?: any): Promise<User>;
     private _logout;
-    logout(): Promise<any>;
+    logout(): Promise<User>;
     reset_password_request(email: string, kwargs?: any): Promise<any>;
     reset_password_execute(token: string, password: string, kwargs?: any): Promise<User>;
     change_password(username: string, pass_old: string, pass_new: string, kwargs?: any): Promise<User>;
