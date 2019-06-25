@@ -3,13 +3,14 @@
 
 
 import { Tastypie } from "ts-resource-tastypie";
+import { Empresa } from "./doadorEmpresa";
 
-export interface Auth {
+export interface EcommerceAuth {
     username: string;
     apikey: string;
 }
 
-export interface Cliente {
+export interface EcommerceCliente {
     id?: number;
     nome: string;
     email: string;
@@ -17,7 +18,7 @@ export interface Cliente {
     dt_created?: string;
 }
 
-export interface Venda {
+export interface EcommerceVenda {
     id?: number;
     uid: string;
     moeda: string;
@@ -29,7 +30,7 @@ export interface Venda {
 }
 
 
-export interface Doacao {
+export interface EcommerceDoacao {
     doacao_porcent: number;
     doacao_total: number;
     porcentagem: boolean;
@@ -38,19 +39,41 @@ export interface Doacao {
     url_select_ong?: string;
 }
 
-export class EcommerceVenda extends Tastypie.Model<EcommerceVenda> {
+export interface EcommerceTestAbStatus {
+    porcentagem_a: number;
+    porcentagem_b: number;
+    dt_start: string;
+}
 
-    public static resource = new Tastypie.Resource<EcommerceVenda>('doador-empresa/ecommerce-venda', {model: EcommerceVenda});
+export class Venda extends Tastypie.Model<Venda> {
 
-    public auth: Auth;
-    public cliente: Cliente;
-    public venda: Venda;
-    public doacao: Doacao;
+    public static resource = new Tastypie.Resource<Venda>('doador-empresa/ecommerce-venda', {model: Venda});
+
+    public auth: EcommerceAuth;
+    public cliente: EcommerceCliente;
+    public venda: EcommerceVenda;
+    public doacao: EcommerceDoacao;
     public ongs: Array<number>;
     public test_ab: string;
     public plataforma: string;
 
     constructor(obj?:any){
-        super(EcommerceVenda.resource, obj);
+        super(Venda.resource, obj);
+    }
+}
+
+export class TesteAb extends Tastypie.Model<TesteAb> {
+
+    public static resource = new Tastypie.Resource<TesteAb>('doador-empresa/venda/current-teste-ab', {model: TesteAb});
+
+    public empresa_invite: string;
+    public ativo: boolean;
+    public porcentagem_a: number;
+    public porcentagem_b: number;
+    public current_teste_ab: string;
+    public current_status: EcommerceTestAbStatus;
+
+    constructor(obj?:any){
+        super(TesteAb.resource, obj);
     }
 }

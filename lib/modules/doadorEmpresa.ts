@@ -571,6 +571,10 @@ export class WidgetIconChoices extends api.Tastypie.Model<WidgetIconChoices> {
 }
 
 export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
+
+    public static resource = new api.Tastypie.Resource<EmpresaWidget>('doador-empresa/venda/widget-config', {model: EmpresaWidget});
+
+    public empresa: Empresa;
     public empresa_id: number;
     public titulo: string;
     public subtitulo: string;
@@ -649,7 +653,11 @@ export class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
     public dt_created: string;
 
     constructor(obj?:any, resource?:api.Tastypie.Resource<EmpresaWidget>){
-        super(resource, obj);
+        super(resource || EmpresaWidget.resource, obj);
+
+        if(obj){
+            if(obj.empresa) this.empresa = new Empresa(obj.empresa);
+        }
     }
 }
 

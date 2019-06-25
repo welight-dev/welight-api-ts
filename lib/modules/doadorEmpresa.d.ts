@@ -250,6 +250,8 @@ export declare class WidgetIconChoices extends api.Tastypie.Model<WidgetIconChoi
     constructor(obj?: any);
 }
 export declare class EmpresaWidget extends api.Tastypie.Model<EmpresaWidget> {
+    static resource: api.Tastypie.Resource<EmpresaWidget>;
+    empresa: Empresa;
     empresa_id: number;
     titulo: string;
     subtitulo: string;
