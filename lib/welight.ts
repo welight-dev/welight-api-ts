@@ -1,4 +1,4 @@
-// Type definitions for [~Welight Platform~] [~1.1.16~]
+// Type definitions for [~Welight Platform~] [~1.1.17~]
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
@@ -9,6 +9,7 @@ import * as WeApp from './modules/weApp';
 import * as WeNotify from './modules/weNotify';
 import * as Doador  from './modules/doador';
 import * as DoadorEmpresa from './modules/doadorEmpresa';
+import * as DoadorEmpresaEcommerce from './modules/doadorEmpresaEcommerce';
 import * as doadorEmpresaFatura from './modules/doadorEmpresaFatura';
 import * as DoadorEmpresaEvento from './modules/doadorEmpresaEvento';
 import * as Ong from './modules/ong';
@@ -24,6 +25,7 @@ export { WeApp };
 export { WeNotify };
 export { Doador };
 export { DoadorEmpresa };
+export { DoadorEmpresaEcommerce };
 export { doadorEmpresaFatura };
 export { DoadorEmpresaEvento };
 export { Ong };

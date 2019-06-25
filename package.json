@@ -1,6 +1,6 @@
 {
   "name": "@welight/welight-api-ts",
-  "version": "1.1.16",
+  "version": "1.1.17",
   "description": "TypeScript client for Welight platform",
   "main": "./lib/welight.js",
   "types": "./lib/welight.d.ts",
@@ -13,10 +13,17 @@
     "ts-resource-tastypie": "^1.0.45"
   },
   "devDependencies": {
-    "typescript": "^3.5.2"
+    "@babel/core": "^7.4.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "babel-loader": "^8.0.6",
+    "typescript": "^3.5.2",
+    "webpack": "^4.35.0",
+    "webpack-cli": "^3.3.5"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "babel": "babel --presets es2015 lib/welight.js -o build/main.bundle.js",
+    "webpack": "webpack"
   },
   "repository": {
     "type": "git",
