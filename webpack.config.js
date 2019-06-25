@@ -2,10 +2,10 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-   entry: './lib/welight.js',
+   entry: './lib/welight.ts',
    output: {
        path: path.resolve(__dirname, 'build'),
-       filename: 'welight.js'
+       filename: 'welight.min.js'
    },
    module: {
      rules: [
