@@ -5,7 +5,9 @@ module.exports = {
    entry: './lib/welight.ts',
    output: {
        path: path.resolve(__dirname, 'build'),
-       filename: 'welight.min.js'
+       filename: 'welight.min.js',
+       library: 'welight',
+       libraryTarget: 'var'
    },
    module: {
      rules: [
