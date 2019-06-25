@@ -5,7 +5,7 @@ module.exports = {
    entry: './lib/welight.js',
    output: {
        path: path.resolve(__dirname, 'build'),
-       filename: 'main.bundle.js'
+       filename: 'welight.js'
    },
    module: {
      rules: [
