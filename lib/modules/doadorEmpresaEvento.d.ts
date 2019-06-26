@@ -99,7 +99,8 @@ export declare class IngressoPublic extends api.Tastypie.Model<IngressoPublic> {
     valor: number;
     taxa: number;
     total: number;
-    doacao_taxa: number;
+    doacao_taxa_welight: number;
+    doacao_taxa_parceiro: number;
     doacao_total: number;
     slug: string;
     dt_updated: string;
