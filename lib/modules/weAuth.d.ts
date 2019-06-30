@@ -1,5 +1,5 @@
-import * as api from "ts-resource-tastypie";
-import * as utils from "./utils";
+import { Tastypie } from "ts-resource-tastypie";
+import { PluginNavegador, Address } from "./utils";
 export declare class Auth {
     private _username;
     private _api_key;
@@ -81,7 +81,7 @@ export declare class User {
     readonly address: UserAddress;
     readonly is_authenticated: any;
     current_user_app: UserApp;
-    readonly plugin_navegador: utils.PluginNavegador;
+    readonly plugin_navegador: PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
     getUserAppByProfile(token: string, profile_id: number): UserApp;
@@ -110,8 +110,8 @@ export declare class User {
     notificarPlugin(): void;
     instalarPluginNavegador(navegador: string): Promise<any>;
 }
-export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
-    static resource: api.Tastypie.Resource<UserAccount>;
+export declare class UserAccount extends Tastypie.Model<UserAccount> {
+    static resource: Tastypie.Resource<UserAccount>;
     user_id: number;
     foto: string;
     pais: string;
@@ -130,20 +130,9 @@ export declare class UserAccount extends api.Tastypie.Model<UserAccount> {
     changeFoto(event: any): Promise<UserAccount>;
     changeFotoBase64(dataBase64: any): Promise<UserAccount>;
 }
-export declare class UserAddress extends api.Tastypie.Model<UserAddress> {
-    static resource: api.Tastypie.Resource<UserAddress>;
+export declare class UserAddress extends Address {
+    static resource: Tastypie.Resource<UserAddress>;
     user_id: number;
-    region: string;
-    number: string;
-    street: string;
-    complement: string;
-    district: string;
-    postcode: string;
-    city: string;
-    state: string;
-    country: string;
-    dt_created: string;
-    dt_updated: string;
     constructor(obj?: any);
     save(): Promise<UserAddress>;
 }

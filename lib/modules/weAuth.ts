@@ -1,10 +1,11 @@
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
-import * as api from "ts-resource-tastypie";
-import * as utils from "./utils";
+import { Tastypie } from "ts-resource-tastypie";
+import { Environment } from './config';
+import { Tools, PluginNavegador, Address } from "./utils";
 import * as crypto from 'crypto-js';
-import * as config from './config';
+
 
 export class Auth {
     private _username: string;
@@ -178,35 +179,35 @@ export class User {
     private _address: UserAddress;
     private _encrypt_key: string;
     private _current_user_app: UserApp;
-    private _plugin_navegador: utils.PluginNavegador;
+    private _plugin_navegador: PluginNavegador;
     private _bar: UserBar;
     private _is_authenticated: boolean;
 
-    private _we_auth_user_create_account_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_create_account_ong_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_create_account_doador_empresa_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_create_account_doador_fundo_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_login_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_logout_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_profile_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_reset_pass_request_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_reset_pass_execute_resource: api.Tastypie.Resource<any>;
-    private _we_auth_user_change_pass_resource: api.Tastypie.Resource<any>;
+    private _we_auth_user_create_account_resource: Tastypie.Resource<any>;
+    private _we_auth_user_create_account_ong_resource: Tastypie.Resource<any>;
+    private _we_auth_user_create_account_doador_empresa_resource: Tastypie.Resource<any>;
+    private _we_auth_user_create_account_doador_fundo_resource: Tastypie.Resource<any>;
+    private _we_auth_user_login_resource: Tastypie.Resource<any>;
+    private _we_auth_user_logout_resource: Tastypie.Resource<any>;
+    private _we_auth_user_profile_resource: Tastypie.Resource<any>;
+    private _we_auth_user_reset_pass_request_resource: Tastypie.Resource<any>;
+    private _we_auth_user_reset_pass_execute_resource: Tastypie.Resource<any>;
+    private _we_auth_user_change_pass_resource: Tastypie.Resource<any>;
 
     constructor(){
         this.reset();
         this._encrypt_key = 's7hsj2d12easd63ksye598sdhw312ed8';
-        this._plugin_navegador = new utils.PluginNavegador();
-        this._we_auth_user_create_account_resource = new api.Tastypie.Resource('we-auth/user/create-account');
-        this._we_auth_user_create_account_ong_resource = new api.Tastypie.Resource('we-auth/user/create-account-ong');
-        this._we_auth_user_create_account_doador_empresa_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-empresa');
-        this._we_auth_user_create_account_doador_fundo_resource = new api.Tastypie.Resource('we-auth/user/create-account-doador-fundo');
-        this._we_auth_user_login_resource = new api.Tastypie.Resource('we-auth/user/login');
-        this._we_auth_user_logout_resource = new api.Tastypie.Resource('we-auth/user/logout');
-        this._we_auth_user_profile_resource = new api.Tastypie.Resource('we-auth/user/profile');
-        this._we_auth_user_reset_pass_request_resource = new api.Tastypie.Resource('we-auth/user/reset-password-request');
-        this._we_auth_user_reset_pass_execute_resource = new api.Tastypie.Resource('we-auth/user/reset-password-execute');
-        this._we_auth_user_change_pass_resource = new api.Tastypie.Resource('we-auth/user/change-password');
+        this._plugin_navegador = new PluginNavegador();
+        this._we_auth_user_create_account_resource = new Tastypie.Resource('we-auth/user/create-account');
+        this._we_auth_user_create_account_ong_resource = new Tastypie.Resource('we-auth/user/create-account-ong');
+        this._we_auth_user_create_account_doador_empresa_resource = new Tastypie.Resource('we-auth/user/create-account-doador-empresa');
+        this._we_auth_user_create_account_doador_fundo_resource = new Tastypie.Resource('we-auth/user/create-account-doador-fundo');
+        this._we_auth_user_login_resource = new Tastypie.Resource('we-auth/user/login');
+        this._we_auth_user_logout_resource = new Tastypie.Resource('we-auth/user/logout');
+        this._we_auth_user_profile_resource = new Tastypie.Resource('we-auth/user/profile');
+        this._we_auth_user_reset_pass_request_resource = new Tastypie.Resource('we-auth/user/reset-password-request');
+        this._we_auth_user_reset_pass_execute_resource = new Tastypie.Resource('we-auth/user/reset-password-execute');
+        this._we_auth_user_change_pass_resource = new Tastypie.Resource('we-auth/user/change-password');
 
         let _self = this;
         document.addEventListener("$wl_msg_checkSite", function(data){
@@ -239,7 +240,7 @@ export class User {
 
     public unselect_profile(): void {
         this._current_user_app = null;
-        if(utils.Tools.localStorageSuported){
+        if(Tools.localStorageSuported){
             let weUser: string = localStorage.getItem('weUserX');
             if(weUser){
                 let auth_user = JSON.parse(crypto.AES.decrypt(weUser, this._encrypt_key).toString(crypto.enc.Utf8));
@@ -305,7 +306,7 @@ export class User {
         this._current_user_app = userapp;
     }
 
-    public get plugin_navegador(): utils.PluginNavegador {
+    public get plugin_navegador(): PluginNavegador {
         return this._plugin_navegador;
     }
 
@@ -397,7 +398,7 @@ export class User {
          data.hasOwnProperty('apps') &&
          data.hasOwnProperty('account') &&
          data.hasOwnProperty('address')){
-           api.Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
+           Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
 
            _self._id = data.id;
            _self.name = data.name;
@@ -443,7 +444,7 @@ export class User {
 
            _self._is_authenticated = true;
            _self.notificarPlugin();
-           if(utils.Tools.localStorageSuported){
+           if(Tools.localStorageSuported){
                let encrypted_user = crypto.AES.encrypt(JSON.stringify({
                   username: data.auth.username,
                   apikey: data.auth.api_key,
@@ -453,7 +454,7 @@ export class User {
             }
        }else{
            _self.reset();
-          if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
+          if(Tools.localStorageSuported) localStorage.removeItem('weUserX');
        }
     }
 
@@ -468,7 +469,7 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
             }
         });
     }
@@ -485,7 +486,7 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][create_account_ong] Usuario não identificado");
             }
         });
     }
@@ -501,7 +502,7 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_empresa] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_empresa] Usuario não identificado");
             }
         });
     }
@@ -517,7 +518,7 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_fundo] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][create_account_doador_fundo] Usuario não identificado");
             }
         });
     }
@@ -532,7 +533,7 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][login] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][login] Usuario não identificado");
             }
         });
     }
@@ -548,23 +549,23 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][login_facebook] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][login_facebook] Usuario não identificado");
             }
         });
     }
 
     private _quickLogin(username: string, apikey: string, kwargs?:any): Promise<User> {
-        api.Tastypie.Provider.setAuth('welight', username, apikey);
+        Tastypie.Provider.setAuth('welight', username, apikey);
         return this._we_auth_user_profile_resource.objects.findOne({kwargs:kwargs}).then((data: any) => {
             this.setProfile(data, kwargs);
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
             }
         }).catch(function(){
             this._logout();
-            return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+            return Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
         });
     }
 
@@ -572,25 +573,25 @@ export class User {
         if(auth){
             return this._quickLogin(auth.username, auth.apikey, kwargs);
         }else{
-            if(utils.Tools.localStorageSuported){
+            if(Tools.localStorageSuported){
                 let weUser: string = localStorage.getItem('weUserX')
                 if(weUser){
                     let auth_user = JSON.parse(crypto.AES.decrypt(weUser, this._encrypt_key).toString(crypto.enc.Utf8));
                     return this._quickLogin(auth_user.username, auth_user.apikey, auth_user.kwargs);
                 }else{
-                    return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+                    return Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
                 }
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
             }
         }
     }
 
     private _logout(): void {
-        api.Tastypie.Provider.removeAuth('welight');
+        Tastypie.Provider.removeAuth('welight');
         this.reset();
-        if(utils.Tools.localStorageSuported) localStorage.removeItem('weUserX');
-        if(config.Environment.env == 'prod'){
+        if(Tools.localStorageSuported) localStorage.removeItem('weUserX');
+        if(Environment.env == 'prod'){
           let wl_msg_event = new CustomEvent('$wl_msg_sendUserProfile', { 'detail': {} });
           document.dispatchEvent(wl_msg_event);
         }
@@ -623,7 +624,7 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][reset_password_execute] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][reset_password_execute] Usuario não identificado");
             }
         });
     }
@@ -639,13 +640,13 @@ export class User {
             if(this._is_authenticated){
                 return this;
             }else{
-                return api.Tastypie.Tools.generate_exception("[WeAuth][change_password] Usuario não identificado");
+                return Tastypie.Tools.generate_exception("[WeAuth][change_password] Usuario não identificado");
             }
         });
     }
 
     public notificarPlugin(): void{
-        if(config.Environment.env == 'prod' && this._is_authenticated){
+        if(Environment.env == 'prod' && this._is_authenticated){
             let _self = this;
             let wl_msg_profile = {
                 user: {username: _self._auth.username, api_key: _self._auth.api_key}
@@ -682,9 +683,9 @@ export class User {
     }
 }
 
-export class UserAccount extends api.Tastypie.Model<UserAccount> {
+export class UserAccount extends Tastypie.Model<UserAccount> {
 
-    public static resource = new api.Tastypie.Resource<UserAccount>('we-auth/user/profile', {model: UserAccount});
+    public static resource = new Tastypie.Resource<UserAccount>('we-auth/user/profile', {model: UserAccount});
 
     public user_id: number;
     public foto: string;
@@ -752,22 +753,10 @@ export class UserAccount extends api.Tastypie.Model<UserAccount> {
     }
 }
 
-export class UserAddress extends api.Tastypie.Model<UserAddress> {
+export class UserAddress extends Address {
 
-    public static resource = new api.Tastypie.Resource<UserAddress>('we-auth/user/profile', {model: UserAddress});
-
+    public static resource = new Tastypie.Resource<UserAddress>('we-auth/user/profile', {model: UserAddress});
     public user_id: number;
-    public region: string;
-    public number: string;
-    public street: string;
-    public complement: string;
-    public district: string;
-    public postcode: string;
-    public city: string;
-    public state: string;
-    public country: string;
-    public dt_created: string;
-    public dt_updated: string;
 
     constructor(obj?:any){
         super(UserAddress.resource);
