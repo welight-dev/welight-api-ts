@@ -175,7 +175,7 @@ export class Address extends Tastypie.Model<Address> {
                     let result = component.types.find((_obj: string) => _obj === type);
 
                     if(result){
-                        obj_address[type] = result;
+                        obj_address[type] = component.long_name;
                         break;
                     }
                 }
