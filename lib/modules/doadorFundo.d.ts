@@ -1,5 +1,6 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { Doador } from "./doador";
+import { Address } from "./utils";
 export declare class Org extends Tastypie.Model<Org> {
     static resource: Tastypie.Resource<Org>;
     activity: OrgActivity;
@@ -26,20 +27,9 @@ export declare class OrgActivity extends Tastypie.Model<OrgActivity> {
     dt_updated: string;
     constructor(obj?: any);
 }
-export declare class OrgAddress extends Tastypie.Model<OrgAddress> {
+export declare class OrgAddress extends Address {
     static resource: Tastypie.Resource<OrgAddress>;
     org_id: number;
-    region: string;
-    number: string;
-    street: string;
-    complement: string;
-    district: string;
-    postcode: string;
-    city: string;
-    state: string;
-    country: string;
-    dt_created: string;
-    dt_updated: string;
     constructor(obj?: any);
 }
 export declare class OrgAdm extends Tastypie.Model<OrgAdm> {

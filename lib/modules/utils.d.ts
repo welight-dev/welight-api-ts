@@ -1,9 +1,9 @@
-import * as api from "ts-resource-tastypie";
+import { Tastypie } from "ts-resource-tastypie";
 export declare class Tools {
     static readonly localStorageSuported: boolean;
 }
-export declare class Banco extends api.Tastypie.Model<Banco> {
-    static resource: api.Tastypie.Resource<Banco>;
+export declare class Banco extends Tastypie.Model<Banco> {
+    static resource: Tastypie.Resource<Banco>;
     codigo: string;
     nome: string;
     sigla: string;
@@ -41,4 +41,26 @@ export declare class StyleUi {
     width: string;
     extra: any;
     constructor(obj?: any);
+}
+export declare class Address extends Tastypie.Model<Address> {
+    region: string;
+    number: string;
+    street: string;
+    complement: string;
+    district: string;
+    city: string;
+    state: string;
+    country: string;
+    postal_code: string;
+    geocode: string;
+    place_id: string;
+    dt_created: string;
+    dt_updated: string;
+    private _geocode;
+    constructor(resource: Tastypie.Resource<Address>, obj?: any);
+    search(obj: {
+        address?: string;
+        latlng?: string;
+    }): Promise<Address>;
+    private _set_geocode_result;
 }

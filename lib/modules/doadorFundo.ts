@@ -3,6 +3,7 @@
 
 import { Tastypie } from "ts-resource-tastypie";
 import { Doador } from "./doador"
+import { Address } from "./utils";
 
 export class Org extends Tastypie.Model<Org> {
     public static resource = new Tastypie.Resource<Org>('doador-fundo/profile', {model: Org});
@@ -85,21 +86,10 @@ export class OrgActivity extends Tastypie.Model<OrgActivity> {
     }
 }
 
-export class OrgAddress extends Tastypie.Model<OrgAddress> {
-    public static resource = new Tastypie.Resource<OrgAddress>('doador-fundo/address', {model: OrgAddress});
+export class OrgAddress extends Address {
 
+    public static resource = new Tastypie.Resource<OrgAddress>('doador-fundo/address', {model: OrgAddress});
     public org_id: number;
-    public region: string;
-    public number: string;
-    public street: string;
-    public complement: string;
-    public district: string;
-    public postcode: string;
-    public city: string;
-    public state: string;
-    public country: string;
-    public dt_created: string;
-    public dt_updated: string;
 
     constructor(obj?:any){
         super(OrgAddress.resource, obj);

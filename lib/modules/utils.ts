@@ -1,7 +1,8 @@
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
-import * as api from "ts-resource-tastypie";
+import { Tastypie } from "ts-resource-tastypie";
+import { Environment } from "./config";
 declare const InstallTrigger: any;
 declare const chrome: any;
 
@@ -18,9 +19,9 @@ export class Tools {
     }
 }
 
-export class Banco extends api.Tastypie.Model<Banco> {
+export class Banco extends Tastypie.Model<Banco> {
 
-    public static resource = new api.Tastypie.Resource<Banco>('utils/banco', {model: Banco});
+    public static resource = new Tastypie.Resource<Banco>('utils/banco', {model: Banco});
 
     public codigo: string;
     public nome: string;
@@ -111,13 +112,86 @@ export class StyleUi {
     constructor(obj?:any){
         if(obj){
             let _self = this;
-            let properties: Array<string> = api.Tastypie.Tools.getProperties(obj);
+            let properties: Array<string> = Tastypie.Tools.getProperties(obj);
             for(let propertie of properties){
                 try {
                     _self[propertie] = obj[propertie];
                 }
                 catch (e) {}
             }
+        }
+    }
+}
+
+export class Address extends Tastypie.Model<Address> {
+
+    public region: string;
+    public number: string;
+    public street: string;
+    public complement: string;
+    public district: string;
+    public city: string;
+    public state: string;
+    public country: string;
+    public postal_code: string;
+    public geocode: string;
+    public place_id: string;
+    public dt_created: string;
+    public dt_updated: string;
+
+    private _geocode: Tastypie.Resource<any>;
+
+    constructor(resource: Tastypie.Resource<Address>, obj?: any) {
+        super(resource, obj);
+
+        this._geocode = new Tastypie.Resource<any>('geocode/json', {
+            defaults: {key: Environment.getGoogleApiKey('geocode')},
+            provider: "google-maps"
+        });
+    }
+
+    public search(obj:{address?: string, latlng?: string}): Promise<Address> {
+        return this._geocode.objects.findOne(obj).then((resp) => {
+            this._set_geocode_result(resp);
+            return this;
+        });
+    }
+
+    private _set_geocode_result(data: any) {
+        if(data.status == "OK"){
+            const add_temp: any = data.results[0];
+
+            this.region = add_temp.formatted_address;
+            this.place_id = add_temp.place_id;
+
+            let obj_address = {
+                street_number: '',
+                route: '',
+                locality: '',
+                administrative_area_level_2: '',
+                administrative_area_level_1: '',
+                country: '',
+                postal_code: ''
+            };
+
+            for(let type in obj_address){
+                for(let component of add_temp.address_components){
+                    let result = component.types.find((_obj: string) => _obj === type);
+
+                    if(result){
+                        obj_address[type] = result;
+                        break;
+                    }
+                }
+            }
+
+            this.number = obj_address.street_number;
+            this.street = obj_address.route;
+            this.district = obj_address.locality;
+            this.city = obj_address.administrative_area_level_2;
+            this.state = obj_address.administrative_area_level_1;
+            this.country = obj_address.country;
+            this.postal_code = obj_address.postal_code;
         }
     }
 }

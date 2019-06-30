@@ -6,6 +6,7 @@ import { Tastypie } from "ts-resource-tastypie";
 export class Environment {
 
     public static env: string = 'local';
+    public static plataform: string = 'browser';
 
     public static types: any = {
         local: 'http://127.0.0.1:8001/api/v2/',
@@ -13,13 +14,28 @@ export class Environment {
         prod: 'https://api.welight.co/api/v2/'
     }
 
-    public static set(env: string): void {
+    public static google_api_key: any = {
+        geocode_browser: 'AIzaSyDC5ldxPavD3L12nEwMG2K-uD9cf35D4Oc',
+        geocode_app_android: '',
+        geocode_app_ios: ''
+    }
+
+    public static set(env: string, plataform?: string): void {
         if(Environment.types.hasOwnProperty(env)){
             Environment.env = env;
             Tastypie.Provider.add(
-                new Tastypie.Provider({name:'welight', url:Environment.types[env]})
+                new Tastypie.Provider({name:'welight', url:Environment.types[env]}),
+                new Tastypie.Provider({name:'google-maps', url:"https://maps.googleapis.com/maps/api/"})
             );
             Tastypie.Provider.setDefault('welight');
+        }
+
+        if(plataform){
+            if(plataform == "browser" ||
+               plataform == "app_android" ||
+               plataform == "app_ios"){
+                  Environment.plataform = plataform;
+               }
         }
     }
 
@@ -73,5 +89,22 @@ export class Environment {
         }
 
         return app_name;
+    }
+
+    public static getGoogleApiKey(service: string): string {
+        if(service == 'geocode'){
+            if(Environment.plataform == 'browser'){
+                return Environment.google_api_key.geocode_browser;
+            }
+            else if(Environment.plataform == 'app_android'){
+                return Environment.google_api_key.geocode_app_android;
+            }
+            else if(Environment.plataform == 'app_ios'){
+                return Environment.google_api_key.geocode_app_ios;
+            }
+            else {
+                return '';
+            }
+        }
     }
 }
