@@ -57,10 +57,12 @@ export declare class Address extends Tastypie.Model<Address> {
     dt_created: string;
     dt_updated: string;
     private _geocode;
+    private _searching;
     constructor(resource: Tastypie.Resource<Address>, obj?: any);
+    private _set_geocode_result;
     search(obj: {
         address?: string;
         latlng?: string;
     }): Promise<Address>;
-    private _set_geocode_result;
+    readonly searching: boolean;
 }

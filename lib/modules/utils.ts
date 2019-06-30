@@ -140,6 +140,7 @@ export class Address extends Tastypie.Model<Address> {
     public dt_updated: string;
 
     private _geocode: Tastypie.Resource<any>;
+    private _searching: boolean;
 
     constructor(resource: Tastypie.Resource<Address>, obj?: any) {
         super(resource, obj);
@@ -148,13 +149,8 @@ export class Address extends Tastypie.Model<Address> {
             defaults: {key: Environment.getGoogleApiKey('geocode')},
             provider: "google-maps"
         });
-    }
 
-    public search(obj:{address?: string, latlng?: string}): Promise<Address> {
-        return this._geocode.objects.findOne(obj).then((resp) => {
-            this._set_geocode_result(resp);
-            return this;
-        });
+        this._searching = false;
     }
 
     private _set_geocode_result(data: any) {
@@ -193,5 +189,21 @@ export class Address extends Tastypie.Model<Address> {
             this.country = obj_address.country;
             this.postal_code = obj_address.postal_code;
         }
+    }
+
+    public search(obj:{address?: string, latlng?: string}): Promise<Address> {
+        this._searching = true;
+        return this._geocode.objects.findOne(obj).then((resp) => {
+            this._set_geocode_result(resp);
+            this._searching = false;
+            return this;
+        }).catch((error) => {
+            this._searching = false;
+            return this;
+        });
+    }
+
+    public get searching(): boolean {
+        return this._searching;
     }
 }
