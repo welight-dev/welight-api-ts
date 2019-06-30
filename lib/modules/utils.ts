@@ -193,7 +193,7 @@ export class Address extends Tastypie.Model<Address> {
 
     public search(obj:{address?: string, latlng?: string}): Promise<Address> {
         this._searching = true;
-        return this._geocode.objects.findOne(obj).then((resp) => {
+        return this._geocode.objects.findOne(obj, true).then((resp) => {
             this._set_geocode_result(resp);
             this._searching = false;
             return this;
