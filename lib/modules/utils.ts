@@ -153,53 +153,64 @@ export class Address extends Tastypie.Model<Address> {
         this._searching = false;
     }
 
-    private _set_geocode_result(data: any) {
+    private _get_geocode_result(data: any): Array<Address> {
+        let address_list:Array<Address> = [];
+
         if(data.status == "OK"){
-            const add_temp: any = data.results[0];
 
-            this.region = add_temp.formatted_address;
-            this.place_id = add_temp.place_id;
+            for(let add_temp of data.results){
 
-            let obj_address = {
-                street_number: '',
-                route: '',
-                locality: '',
-                administrative_area_level_2: '',
-                administrative_area_level_1: '',
-                country: '',
-                postal_code: ''
-            };
+                let obj_address = {
+                    street_number: '',
+                    route: '',
+                    locality: '',
+                    administrative_area_level_2: '',
+                    administrative_area_level_1: '',
+                    country: '',
+                    postal_code: ''
+                };
 
-            for(let type in obj_address){
-                for(let component of add_temp.address_components){
-                    let result = component.types.find((_obj: string) => _obj === type);
+                for(let type in obj_address){
+                    for(let component of add_temp.address_components){
+                        let result = component.types.find((_obj: string) => _obj === type);
 
-                    if(result){
-                        obj_address[type] = component.long_name;
-                        break;
+                        if(result){
+                            obj_address[type] = component.long_name;
+                            break;
+                        }
                     }
                 }
+
+                address_list.push(new Address(this.resource, {
+                    region: add_temp.formatted_address,
+                    place_id: add_temp.place_id,
+                    number: obj_address.street_number,
+                    street: obj_address.route,
+                    district: obj_address.locality,
+                    city: obj_address.administrative_area_level_2,
+                    state: obj_address.administrative_area_level_1,
+                    country: obj_address.country,
+                    postal_code: obj_address.postal_code
+                }));
             }
 
-            this.number = obj_address.street_number;
-            this.street = obj_address.route;
-            this.district = obj_address.locality;
-            this.city = obj_address.administrative_area_level_2;
-            this.state = obj_address.administrative_area_level_1;
-            this.country = obj_address.country;
-            this.postal_code = obj_address.postal_code;
+            if(address_list.length === 1){
+                this.setData(address_list[0]);
+            }
         }
+
+        return address_list;
     }
 
-    public search(obj:{address?: string, latlng?: string}): Promise<Address> {
+    public search(obj:{address?: string, latlng?: string}): Promise<Array<Address>> {
         this._searching = true;
         return this._geocode.objects.findOne(obj, true).then((resp) => {
-            this._set_geocode_result(resp);
+            let geocode_result = this._get_geocode_result(resp);
             this._searching = false;
-            return this;
-        }).catch((error) => {
+            return geocode_result;
+        }).catch(() => {
             this._searching = false;
-            return this;
+            return [];
         });
     }
 
