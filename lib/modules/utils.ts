@@ -132,7 +132,9 @@ export class Address extends Tastypie.Model<Address> {
     public district: string;
     public city: string;
     public state: string;
+    public state_code: string;
     public country: string;
+    public country_code: string;
     public postal_code: string;
     public geocode: string;
     public place_id: string;
@@ -161,13 +163,13 @@ export class Address extends Tastypie.Model<Address> {
             for(let add_temp of data.results){
 
                 let obj_address = {
-                    street_number: '',
-                    route: '',
-                    locality: '',
-                    administrative_area_level_2: '',
-                    administrative_area_level_1: '',
-                    country: '',
-                    postal_code: ''
+                    street_number: {},
+                    route: {},
+                    locality: {},
+                    administrative_area_level_2: {},
+                    administrative_area_level_1: {},
+                    country: {},
+                    postal_code: {}
                 };
 
                 for(let type in obj_address){
@@ -175,7 +177,7 @@ export class Address extends Tastypie.Model<Address> {
                         let result = component.types.find((_obj: string) => _obj === type);
 
                         if(result){
-                            obj_address[type] = component.long_name;
+                            obj_address[type] = component;
                             break;
                         }
                     }
@@ -184,13 +186,15 @@ export class Address extends Tastypie.Model<Address> {
                 address_list.push(new Address(this.resource, {
                     region: add_temp.formatted_address,
                     place_id: add_temp.place_id,
-                    number: obj_address.street_number,
-                    street: obj_address.route,
-                    district: obj_address.locality,
-                    city: obj_address.administrative_area_level_2,
-                    state: obj_address.administrative_area_level_1,
-                    country: obj_address.country,
-                    postal_code: obj_address.postal_code
+                    number: obj_address.street_number['long_name'],
+                    street: obj_address.route['long_name'],
+                    district: obj_address.locality['long_name'],
+                    city: obj_address.administrative_area_level_2['long_name'],
+                    state: obj_address.administrative_area_level_1['long_name'],
+                    state_code: obj_address.administrative_area_level_1['short_name'],
+                    country: obj_address.country['long_name'],
+                    country_code: obj_address.country['short_name'],
+                    postal_code: obj_address.postal_code['long_name']
                 }));
             }
 
