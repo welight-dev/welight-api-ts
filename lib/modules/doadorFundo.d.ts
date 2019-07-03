@@ -15,8 +15,10 @@ export declare class Org extends Tastypie.Model<Org> {
     dt_created: string;
     dt_updated: string;
     private _adm;
+    private _activity;
     constructor(obj?: any);
-    readonly adm: Tastypie.Resource<OrgAdm>;
+    readonly rs_adm: Tastypie.Resource<OrgAdm>;
+    readonly rs_activity: Tastypie.Resource<OrgActivity>;
     send_invite_adm(name: string, email: string): Promise<OrgAdm>;
     getAddress(): Promise<OrgAddress>;
 }

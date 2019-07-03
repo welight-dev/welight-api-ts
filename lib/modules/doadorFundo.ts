@@ -21,6 +21,7 @@ export class Org extends Tastypie.Model<Org> {
     public dt_updated: string;
 
     private _adm: Tastypie.Resource<OrgAdm>;
+    private _activity : Tastypie.Resource<OrgActivity>;
 
     constructor(obj?:any){
         super(Org.resource, obj);
@@ -34,11 +35,20 @@ export class Org extends Tastypie.Model<Org> {
                     {model: OrgAdm, defaults: {org_id: obj.id}}
                 );
             }
+
+            this._activity = new Tastypie.Resource<OrgActivity>(
+                OrgActivity.resource.endpoint,
+                {model: OrgActivity, defaults: {org_id: obj.id || 0}}
+            );
         }
     }
 
-    public get adm(): Tastypie.Resource<OrgAdm> {
+    public get rs_adm(): Tastypie.Resource<OrgAdm> {
         return this._adm;
+    }
+
+    public get rs_activity(): Tastypie.Resource<OrgActivity> {
+        return this._activity;
     }
 
     public send_invite_adm(name: string, email: string): Promise<OrgAdm> {
