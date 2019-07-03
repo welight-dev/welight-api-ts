@@ -354,16 +354,17 @@ export class AppManager {
         return this._create_account_loading;
     }
 
-    public createAccountDoadorFundo(name: string, email: string, activity_id: number, kwargs?: any): Promise<boolean> {
+    public createAccountDoadorFundo(obj: Org): Promise<boolean> {
         if(this._app_token != 'doador_fundo'){
             return Promise.resolve(false);
         }
 
         this._create_account_loading = true;
-        if(!kwargs){
-            kwargs = {};
-        }
-        return this._user.createAccountDoadorFundo(name, email, activity_id, this._get_source_login(kwargs)).then(() => {
+
+        let kwargs = {};
+        kwargs['data'] = obj.getData();
+
+        return this._user.createAccountDoadorFundo(obj.name, obj.email, obj.activity_id, this._get_source_login(kwargs)).then(() => {
             return this._init_app_profile_member().then((auth: boolean) => {
                 this._create_account_loading = false;
                 return auth;
@@ -493,7 +494,7 @@ export class AppManager {
                     }
                 }else{
                     this._auth_loading = true;
-                    this._init_app_profile_member().then((auth: boolean) => {
+                    return this._init_app_profile_member().then((auth: boolean) => {
                         if(auth){
                             this._auth_loading = false;
                             return true;
