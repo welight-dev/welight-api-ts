@@ -9,6 +9,7 @@ export class Org extends Tastypie.Model<Org> {
     public static resource = new Tastypie.Resource<Org>('doador-fundo/profile', {model: Org});
 
     public activity: OrgActivity;
+    public activity_id: number;
     public name: string;
     public email: string;
     public registry: string;

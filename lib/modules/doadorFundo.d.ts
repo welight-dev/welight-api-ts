@@ -4,6 +4,7 @@ import { Address } from "./utils";
 export declare class Org extends Tastypie.Model<Org> {
     static resource: Tastypie.Resource<Org>;
     activity: OrgActivity;
+    activity_id: number;
     name: string;
     email: string;
     registry: string;
