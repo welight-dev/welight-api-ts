@@ -26,17 +26,21 @@ export class Org extends Tastypie.Model<Org> {
     constructor(obj?:any){
         super(Org.resource, obj);
 
-        if(obj){
-            if(obj.activity) this.activity = new OrgActivity(obj.activity);
-
-            if(obj.id){
-                this._adm = new Tastypie.Resource<OrgAdm>(
-                    OrgAdm.resource.endpoint,
-                    {model: OrgAdm, defaults: {org_id: obj.id}}
-                );
-            }
-        }else{
+        if(!obj){
             obj = {};
+        }
+
+        if(obj.activity){
+            this.activity = new OrgActivity(obj.activity);
+        }else{
+            this.activity = new OrgActivity();
+        }
+
+        if(obj.id){
+            this._adm = new Tastypie.Resource<OrgAdm>(
+                OrgAdm.resource.endpoint,
+                {model: OrgAdm, defaults: {org_id: obj.id}}
+            );
         }
 
         this._activity = new Tastypie.Resource<OrgActivity>(
