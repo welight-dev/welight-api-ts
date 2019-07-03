@@ -35,12 +35,14 @@ export class Org extends Tastypie.Model<Org> {
                     {model: OrgAdm, defaults: {org_id: obj.id}}
                 );
             }
-
-            this._activity = new Tastypie.Resource<OrgActivity>(
-                OrgActivity.resource.endpoint,
-                {model: OrgActivity, defaults: {org_id: obj.id || 0}}
-            );
+        }else{
+            obj = {};
         }
+
+        this._activity = new Tastypie.Resource<OrgActivity>(
+            OrgActivity.resource.endpoint,
+            {model: OrgActivity, defaults: {org_id: obj.id || 0}}
+        );
     }
 
     public get rs_adm(): Tastypie.Resource<OrgAdm> {
