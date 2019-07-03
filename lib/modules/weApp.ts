@@ -287,15 +287,18 @@ export class AppManager {
     }
 
     private _get_source_login(kwargs: any): any {
-        let obj = {
-            source: {
-                app_name: Environment.getAppName(this._app_token),
-                detail: (this._device.app_site || this._device.app_mobile || {})
-            }
+        if(!kwargs){
+            kwargs = {};
+        }
+
+        kwargs['source'] = {
+            app_name: Environment.getAppName(this._app_token),
+            detail: (this._device.app_site || this._device.app_mobile || {})
         }
 
         if(kwargs.hasOwnProperty('user_app_id')){
-            obj['source']['detail']['user_app_id'] = kwargs.user_app_id;
+            kwargs['source']['detail']['user_app_id'] = kwargs.user_app_id;
+            delete kwargs["user_app_id"];
         }
 
         if(Tools.localStorageSuported){
@@ -304,12 +307,11 @@ export class AppManager {
                 let invite = JSON.parse(invite_string);
                 if (invite.hasOwnProperty('source') && ['donator', 'ong', 'company'].indexOf(invite['source']) >= 0) {
                     kwargs.source.detail['invite'] = invite;
-                    obj['source']['detail']['invite'] = invite;
                 }
             }
         }
 
-        return obj;
+        return kwargs;
     }
 
     private _init_app_profile_member(): Promise<boolean> {
