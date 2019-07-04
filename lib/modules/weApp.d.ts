@@ -108,6 +108,8 @@ export declare class AppManager {
     private _route;
     private _auth_loading;
     private _create_account_loading;
+    private _auth_guard_user_checked;
+    private _auth_guard_member_checked;
     constructor(setup: {
         env: string;
         app_token: string;
@@ -132,6 +134,8 @@ export declare class AppManager {
     readonly route: AppRoute;
     readonly auth_loading: boolean;
     readonly create_account_loading: boolean;
+    readonly auth_guard_user_checked: boolean;
+    readonly auth_guard_member_checked: boolean;
     createAccountDoadorFundo(obj: Org): Promise<boolean>;
     logout(): void;
     login(username: string, password: string, kwargs?: any): Promise<boolean>;

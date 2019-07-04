@@ -258,6 +258,8 @@ export class AppManager {
     private _route: AppRoute;
     private _auth_loading: boolean;
     private _create_account_loading: boolean;
+    private _auth_guard_user_checked: boolean;
+    private _auth_guard_member_checked: boolean;
 
     constructor(
         setup: {
@@ -284,6 +286,8 @@ export class AppManager {
         this._user = new User();
         this._app_profile = new AppProfile(setup.app_token);
         this._route = new AppRoute(this, setup.fnc_change_route, setup.route);
+        this._auth_guard_user_checked = false;
+        this._auth_guard_member_checked = false;
     }
 
     private _get_source_login(kwargs: any): any {
@@ -354,6 +358,14 @@ export class AppManager {
 
     public get create_account_loading(): boolean {
         return this._create_account_loading;
+    }
+
+    public get auth_guard_user_checked(): boolean {
+        return this._auth_guard_user_checked;
+    }
+
+    public get auth_guard_member_checked(): boolean {
+        return this._auth_guard_member_checked;
     }
 
     public createAccountDoadorFundo(obj: Org): Promise<boolean> {
@@ -467,13 +479,16 @@ export class AppManager {
 
     public authGuardUser(current_app_route: string): Promise<boolean> {
         if(this._user.is_authenticated){
+            this._auth_guard_user_checked = true;
             return Promise.resolve(true);
         }else{
             this._auth_loading = true;
             return this._user.quickLogin().then(() => {
+                this._auth_guard_user_checked = true;
                 this._auth_loading = false;
                 return true;
             }).catch(() => {
+                this._auth_guard_user_checked = false;
                 this._auth_loading = false;
                 this._route.change('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
                 return false;
@@ -487,9 +502,11 @@ export class AppManager {
                 this._auth_loading = true;
                 if(this._app_profile.initialized){
                     if(this.user_has_perm(['member'])){
+                        this._auth_guard_member_checked = true;
                         this._auth_loading = false;
                         return true;
                     }else{
+                        this._auth_guard_member_checked = false;
                         this._auth_loading = false;
                         this._route.change(this._route.uri.access_denied);
                         return false;
@@ -498,9 +515,11 @@ export class AppManager {
                     this._auth_loading = true;
                     return this._init_app_profile_member().then((auth: boolean) => {
                         if(auth){
+                            this._auth_guard_member_checked = true;
                             this._auth_loading = false;
                             return true;
                         }else{
+                            this._auth_guard_member_checked = false;
                             this._auth_loading = false;
                             this._route.change(this._route.uri.access_denied);
                             return false;
@@ -508,6 +527,7 @@ export class AppManager {
                     });
                 }
             }else{
+                this._auth_guard_member_checked = false;
                 return false;
             }
         });

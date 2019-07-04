@@ -8,7 +8,6 @@ import { Address } from "./utils";
 export class Org extends Tastypie.Model<Org> {
     public static resource = new Tastypie.Resource<Org>('doador-fundo/profile', {model: Org});
 
-    public activity: OrgActivity;
     public activity_id: number;
     public name: string;
     public email: string;
@@ -22,7 +21,8 @@ export class Org extends Tastypie.Model<Org> {
     public dt_updated: string;
 
     private _adm: Tastypie.Resource<OrgAdm>;
-    private _activity : Tastypie.Resource<OrgActivity>;
+    private _rs_activity : Tastypie.Resource<OrgActivity>;
+    private _activity: OrgActivity;
 
     constructor(obj?:any){
         super(Org.resource, obj);
@@ -32,9 +32,9 @@ export class Org extends Tastypie.Model<Org> {
         }
 
         if(obj.activity){
-            this.activity = new OrgActivity(obj.activity);
+            this._activity = new OrgActivity(obj.activity);
         }else{
-            this.activity = new OrgActivity();
+            this._activity = new OrgActivity();
         }
 
         if(obj.id){
@@ -44,7 +44,7 @@ export class Org extends Tastypie.Model<Org> {
             );
         }
 
-        this._activity = new Tastypie.Resource<OrgActivity>(
+        this._rs_activity = new Tastypie.Resource<OrgActivity>(
             OrgActivity.resource.endpoint,
             {model: OrgActivity, defaults: {org_id: obj.id || 0}}
         );
@@ -55,6 +55,10 @@ export class Org extends Tastypie.Model<Org> {
     }
 
     public get rs_activity(): Tastypie.Resource<OrgActivity> {
+        return this._rs_activity;
+    }
+
+    public get activity(): OrgActivity {
         return this._activity;
     }
 

@@ -3,7 +3,6 @@ import { Doador } from "./doador";
 import { Address } from "./utils";
 export declare class Org extends Tastypie.Model<Org> {
     static resource: Tastypie.Resource<Org>;
-    activity: OrgActivity;
     activity_id: number;
     name: string;
     email: string;
@@ -16,10 +15,12 @@ export declare class Org extends Tastypie.Model<Org> {
     dt_created: string;
     dt_updated: string;
     private _adm;
+    private _rs_activity;
     private _activity;
     constructor(obj?: any);
     readonly rs_adm: Tastypie.Resource<OrgAdm>;
     readonly rs_activity: Tastypie.Resource<OrgActivity>;
+    readonly activity: OrgActivity;
     send_invite_adm(name: string, email: string): Promise<OrgAdm>;
     getAddress(): Promise<OrgAddress>;
 }
