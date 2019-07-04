@@ -20,7 +20,7 @@ export declare class Org extends Tastypie.Model<Org> {
     constructor(obj?: any);
     readonly rs_adm: Tastypie.Resource<OrgAdm>;
     readonly rs_activity: Tastypie.Resource<OrgActivity>;
-    readonly activity: OrgActivity;
+    readonly md_activity: OrgActivity;
     send_invite_adm(name: string, email: string): Promise<OrgAdm>;
     getAddress(): Promise<OrgAddress>;
 }

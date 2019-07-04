@@ -58,7 +58,7 @@ export class Org extends Tastypie.Model<Org> {
         return this._rs_activity;
     }
 
-    public get activity(): OrgActivity {
+    public get md_activity(): OrgActivity {
         return this._activity;
     }
 
