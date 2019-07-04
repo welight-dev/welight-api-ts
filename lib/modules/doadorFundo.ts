@@ -125,6 +125,7 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
     public parent_id: number;
     public doador: Doador;
     public status: string;
+    public status_display: string;
     public invite_name: string;
     public invite_email: string;
     public dt_created: string;
