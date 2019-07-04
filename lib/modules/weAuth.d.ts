@@ -123,6 +123,7 @@ export declare class UserAccount extends Tastypie.Model<UserAccount> {
     estado_civil: string;
     range_idade: string;
     dt_nascimento: string;
+    phone_mobile: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

@@ -703,6 +703,7 @@ export class UserAccount extends Tastypie.Model<UserAccount> {
     public range_idade: string;
 
     public dt_nascimento: string;
+    public phone_mobile: string;
     public dt_updated: string;
     public dt_created: string;
 
