@@ -490,7 +490,9 @@ export class AppManager {
             }).catch(() => {
                 this._auth_guard_user_checked = false;
                 this._auth_loading = false;
-                this._route.change('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
+                this._user.logout().then(() => {
+                    this._route.change('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
+                });
                 return false;
             });
         }

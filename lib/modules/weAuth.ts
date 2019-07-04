@@ -427,12 +427,13 @@ export class User {
               kwargs = {};
            }
 
+           if(!kwargs.hasOwnProperty('source')){
+               kwargs['source'] = {
+                   detail: {}
+               }
+           }
+
            if(data.hasOwnProperty('current_user_app')){
-              if(!kwargs.hasOwnProperty('source')){
-                  kwargs['source'] = {
-                      detail: {}
-                  }
-              }
               kwargs.source.detail['user_app_id'] = data.current_user_app.id;
            }
 
@@ -445,10 +446,10 @@ export class User {
            _self._is_authenticated = true;
            _self.notificarPlugin();
            if(Tools.localStorageSuported){
-               let encrypted_user = crypto.AES.encrypt(JSON.stringify({
+              let encrypted_user = crypto.AES.encrypt(JSON.stringify({
                   username: data.auth.username,
                   apikey: data.auth.api_key,
-                  kwargs: kwargs
+                  kwargs: kwargs.source
               }), _self._encrypt_key).toString();
               localStorage.setItem('weUserX', encrypted_user);
             }
