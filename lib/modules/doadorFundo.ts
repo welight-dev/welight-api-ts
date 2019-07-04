@@ -62,9 +62,9 @@ export class Org extends Tastypie.Model<Org> {
         return this._activity;
     }
 
-    public send_invite_adm(name: string, email: string): Promise<OrgAdm> {
+    public send_invite_adm(name: string, email: string, passw: string): Promise<OrgAdm> {
         if(this.id){
-            return OrgAdm.add({org_id: this.id, name: name, email: email}).then(resp_adm =>{
+            return OrgAdm.add({org_id: this.id, name: name, email: email, passw: passw}).then(resp_adm =>{
                 if(this._adm.page.initialized){
                     return this._adm.page.refresh().then(() => {
                         return resp_adm;
@@ -138,7 +138,7 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
         }
     }
 
-    public static add(obj: {name: string, email: string, org_id: number}): Promise<OrgAdm> {
+    public static add(obj: {name: string, email: string, org_id: number, passw: string}): Promise<OrgAdm> {
         return OrgAdm.resource_add.objects.create(obj);
     }
 }
