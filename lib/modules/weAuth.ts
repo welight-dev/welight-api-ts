@@ -449,7 +449,7 @@ export class User {
               let encrypted_user = crypto.AES.encrypt(JSON.stringify({
                   username: data.auth.username,
                   apikey: data.auth.api_key,
-                  kwargs: kwargs.source
+                  kwargs: {source: kwargs.source}
               }), _self._encrypt_key).toString();
               localStorage.setItem('weUserX', encrypted_user);
             }
