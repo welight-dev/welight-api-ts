@@ -143,3 +143,35 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
         return OrgAdm.resource_add.objects.create(obj);
     }
 }
+
+
+export class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
+    public static resource = new Tastypie.Resource<OrgCategoryFund>('doador-fundo/category-fund', {model: OrgCategoryFund});
+
+    public name: string;
+    public org_id: number;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(OrgCategoryFund.resource, obj);
+    }
+}
+
+
+export class OrgFund extends Tastypie.Model<OrgFund> {
+    public static resource = new Tastypie.Resource<OrgFund>('doador-fundo/fund', {model: OrgFund});
+
+    public name: string;
+    public logo: string;
+    public slug: string;
+    public description: string;
+    public country: string;
+    public currency: string;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(OrgFund.resource, obj);
+    }
+}
