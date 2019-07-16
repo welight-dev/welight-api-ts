@@ -175,6 +175,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     public dt_updated: string;
 
     private _rs_balance: Tastypie.Resource<OrgFundBalance>;
+    private _rs_member: Tastypie.Resource<OrgFundMember>;
 
     constructor(obj?:any){
         super(OrgFund.resource, obj);
@@ -184,11 +185,19 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
                 OrgFundBalance.resource.endpoint,
                 {model: OrgFundBalance, defaults: {org_fund_id: obj.id}}
             );
+            this._rs_member = new Tastypie.Resource<OrgFundMember>(
+                OrgFundMember.resource.endpoint,
+                {model: OrgFundMember, defaults: {org_fund_id: obj.id}}
+            );
         }
     }
 
     public get rs_balance(): Tastypie.Resource<OrgFundBalance> {
         return this._rs_balance;
+    }
+
+    public get rs_member(): Tastypie.Resource<OrgFundMember> {
+        return this._rs_member;
     }
 
     public add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance> {
@@ -213,6 +222,29 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
             return Promise.reject('Fund not found.');
         }
     }
+
+    public send_invite_member(name: string, email: string, passw: string): Promise<OrgFundMember> {
+        if(this.id){
+            return OrgFundMember.add({
+                org_fund_id: this.id,
+                name: name,
+                email: email,
+                passw: passw
+            }).then(resp_member => {
+                if(this._rs_member.page.initialized){
+                    return this._rs_member.page.refresh().then(() => {
+                        return resp_member;
+                    }).catch(() => {
+                        return resp_member;
+                    });
+                }else{
+                    return resp_member;
+                }
+            });
+        }else{
+            return Promise.reject('Fund not found.');
+        }
+    }
 }
 
 export class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
@@ -228,12 +260,27 @@ export class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
 
 export class OrgFundMember extends Tastypie.Model<OrgFundMember> {
     public static resource = new Tastypie.Resource<OrgFundMember>('doador-fundo/fund-member', {model: OrgFundMember});
+    public static resource_add = new Tastypie.Resource<OrgFundMember>('doador-fundo/fund-member/add', {model: OrgFundMember});
 
     public org_fund_id: number;
+    public doador: Doador;
+    public status: string;
     public status_display: string;
+    public invite_name: string;
+    public invite_email: string;
+    public dt_created: string;
+    public dt_updated: string;
 
     constructor(obj?:any){
         super(OrgFundMember.resource, obj);
+
+        if(obj){
+            if(obj.doador) this.doador = new Doador(obj.doador);
+        }
+    }
+
+    public static add(obj: {name: string, email: string, org_fund_id: number, passw: string}): Promise<OrgFundMember> {
+        return OrgFundMember.resource_add.objects.create(obj);
     }
 }
 
@@ -316,5 +363,19 @@ export class OrgFundBalanceCreditCustom {
             this.user_email = obj.user_email;
             this.dt_created = obj.dt_created;
         }
+    }
+}
+
+export class OrgAuthGroup extends Tastypie.Model<OrgAuthGroup> {
+    public static resource = new Tastypie.Resource<OrgAuthGroup>('doador-fundo/auth-group', {model: OrgAuthGroup});
+
+    public org_id: number;
+    public name: string;
+    public permissions: Array<string>;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(OrgAuthGroup.resource, obj);
     }
 }

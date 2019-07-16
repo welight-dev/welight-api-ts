@@ -56,3 +56,106 @@ export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
         passw: string;
     }): Promise<OrgAdm>;
 }
+export declare class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
+    static resource: Tastypie.Resource<OrgCategoryFund>;
+    name: string;
+    org_id: number;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+}
+export declare class OrgFund extends Tastypie.Model<OrgFund> {
+    static resource: Tastypie.Resource<OrgFund>;
+    org_id: number;
+    name: string;
+    logo: string;
+    slug: string;
+    description: string;
+    country: string;
+    currency: string;
+    initial_credit: number;
+    private: boolean;
+    dt_created: string;
+    dt_updated: string;
+    private _rs_balance;
+    private _rs_member;
+    constructor(obj?: any);
+    readonly rs_balance: Tastypie.Resource<OrgFundBalance>;
+    readonly rs_member: Tastypie.Resource<OrgFundMember>;
+    add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance>;
+    send_invite_member(name: string, email: string, passw: string): Promise<OrgFundMember>;
+}
+export declare class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
+    static resource: Tastypie.Resource<OrgFundCategory>;
+    org_fund_id: number;
+    category_id: number;
+    constructor(obj?: any);
+}
+export declare class OrgFundMember extends Tastypie.Model<OrgFundMember> {
+    static resource: Tastypie.Resource<OrgFundMember>;
+    static resource_add: Tastypie.Resource<OrgFundMember>;
+    org_fund_id: number;
+    doador: Doador;
+    status: string;
+    status_display: string;
+    invite_name: string;
+    invite_email: string;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+    static add(obj: {
+        name: string;
+        email: string;
+        org_fund_id: number;
+        passw: string;
+    }): Promise<OrgFundMember>;
+}
+export declare class OrgFundBalanceSource extends Tastypie.Model<OrgFundBalanceSource> {
+    static resource: Tastypie.Resource<OrgFundBalanceSource>;
+    name: string;
+    token: string;
+    group: string;
+    source_id: number;
+    org_id: number;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+}
+export declare class OrgFundBalance extends Tastypie.Model<OrgFundBalance> {
+    static resource: Tastypie.Resource<OrgFundBalance>;
+    static resource_add: Tastypie.Resource<OrgFundBalance>;
+    org_fund_id: number;
+    source_id: number;
+    credit: boolean;
+    amount: number;
+    status: string;
+    dt_created: string;
+    dt_updated: string;
+    private _md_source;
+    private _md_credit_custom;
+    constructor(obj?: any);
+    static add_credit(obj: {
+        org_fund_id: number;
+        source_id: number;
+        amount: number;
+        passw: string;
+    }): Promise<OrgFundBalance>;
+    readonly md_source: OrgFundBalanceSource;
+    readonly md_credit_custom: OrgFundBalanceCreditCustom;
+}
+export declare class OrgFundBalanceCreditCustom {
+    user_id: number;
+    user_name: string;
+    user_email: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OrgAuthGroup extends Tastypie.Model<OrgAuthGroup> {
+    static resource: Tastypie.Resource<OrgAuthGroup>;
+    org_id: number;
+    name: string;
+    permissions: Array<string>;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+}

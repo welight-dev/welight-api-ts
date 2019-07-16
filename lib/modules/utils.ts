@@ -223,3 +223,26 @@ export class Address extends Tastypie.Model<Address> {
         return this._searching;
     }
 }
+
+
+export class Country extends Tastypie.Model<Country> {
+    public static resource = new Tastypie.Resource<Country>('utils/l10n/country', {model: Country});
+
+    public name: string;
+    public code: string;
+
+    constructor(obj?:any){
+        super(Country.resource, obj);
+    }
+}
+
+export class Currency extends Tastypie.Model<Currency> {
+    public static resource = new Tastypie.Resource<Currency>('utils/l10n/currency', {model: Currency});
+
+    public name: string;
+    public code: string;
+
+    constructor(obj?:any){
+        super(Currency.resource, obj);
+    }
+}

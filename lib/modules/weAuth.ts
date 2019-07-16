@@ -25,6 +25,27 @@ export class Auth {
     }
 }
 
+export class App extends Tastypie.Model<App> {
+    public static resource = new Tastypie.Resource<App>('we-auth/app', {model: App});
+
+    public name: string;
+    public token: string;
+    public permissions: Array<AppPermission>;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(App.resource, obj);
+
+        this.permissions = [];
+        if(obj && obj.permissions){
+            for(let perm of obj.permissions){
+                this.permissions.push(new AppPermission(perm));
+            }
+        }
+    }
+}
+
 export class AppPermission {
     private _name: string;
     private _token: string;

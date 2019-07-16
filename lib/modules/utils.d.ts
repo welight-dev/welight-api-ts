@@ -68,3 +68,15 @@ export declare class Address extends Tastypie.Model<Address> {
     }): Promise<Array<Address>>;
     readonly searching: boolean;
 }
+export declare class Country extends Tastypie.Model<Country> {
+    static resource: Tastypie.Resource<Country>;
+    name: string;
+    code: string;
+    constructor(obj?: any);
+}
+export declare class Currency extends Tastypie.Model<Currency> {
+    static resource: Tastypie.Resource<Currency>;
+    name: string;
+    code: string;
+    constructor(obj?: any);
+}

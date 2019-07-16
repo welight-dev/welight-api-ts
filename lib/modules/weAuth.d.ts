@@ -7,6 +7,15 @@ export declare class Auth {
     readonly username: string;
     readonly api_key: string;
 }
+export declare class App extends Tastypie.Model<App> {
+    static resource: Tastypie.Resource<App>;
+    name: string;
+    token: string;
+    permissions: Array<AppPermission>;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+}
 export declare class AppPermission {
     private _name;
     private _token;

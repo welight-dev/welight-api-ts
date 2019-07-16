@@ -223,7 +223,7 @@ export class AppRoute {
             }
         }
 
-        if(!app_token || (app_token == this._app_manager.app_token)){
+        if((!app_token || (app_token == this._app_manager.app_token)) && !kwargs.hasOwnProperty('user_app_id')){
             if(this._fnc_change_route){
                 if(kwargs.hasOwnProperty('next')){
                     app_route = `${app_route}/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
@@ -239,9 +239,17 @@ export class AppRoute {
                 }
             }else if(app_route == '/login' && app_token == 'home'){
                 if(kwargs.hasOwnProperty('next')){
-                    app_route = `/login/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
+                    if(kwargs.hasOwnProperty('user_app_id')){
+                        app_route = `/login/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}&nextp=${kwargs.user_app_id}`;
+                    }else{
+                        app_route = `/login/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
+                    }
                 }else{
-                    app_route = `/login/?nextd=${this._app_manager.app_token}&next=`;
+                    if(kwargs.hasOwnProperty('user_app_id')){
+                        app_route = `/login/?nextd=${this._app_manager.app_token}&nextp=${kwargs.user_app_id}`;
+                    }else{
+                        app_route = `/login/?nextd=${this._app_manager.app_token}`;
+                    }
                 }
             }
             window.location.href = this.concatDomainSite(app_token, app_route);
@@ -538,6 +546,10 @@ export class AppManager {
     public unselect_profile(): void {
         this._user.unselect_profile();
         this._app_profile.reset();
+    }
+
+    public select_profile(app_token: string, app_profile_id: number, app_route?:string): void {
+        this._route.change(app_route || '/', app_token, {app_profile_id: app_profile_id});
     }
 
     public user_has_perm(perm_token_list: Array<string>): boolean {
