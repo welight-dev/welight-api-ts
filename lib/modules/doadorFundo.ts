@@ -162,16 +162,159 @@ export class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
 export class OrgFund extends Tastypie.Model<OrgFund> {
     public static resource = new Tastypie.Resource<OrgFund>('doador-fundo/fund', {model: OrgFund});
 
+    public org_id: number;
     public name: string;
     public logo: string;
     public slug: string;
     public description: string;
     public country: string;
     public currency: string;
+    public initial_credit: number;
+    public private: boolean;
+    public dt_created: string;
+    public dt_updated: string;
+
+    private _rs_balance: Tastypie.Resource<OrgFundBalance>;
+
+    constructor(obj?:any){
+        super(OrgFund.resource, obj);
+
+        if(obj && obj.id){
+            this._rs_balance = new Tastypie.Resource<OrgFundBalance>(
+                OrgFundBalance.resource.endpoint,
+                {model: OrgFundBalance, defaults: {org_fund_id: obj.id}}
+            );
+        }
+    }
+
+    public get rs_balance(): Tastypie.Resource<OrgFundBalance> {
+        return this._rs_balance;
+    }
+
+    public add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance> {
+        if(this.id){
+            return OrgFundBalance.add_credit({
+                org_fund_id: this.id,
+                source_id: source_id,
+                amount: amount,
+                passw: passw
+            }).then(resp_balance => {
+                if(this._rs_balance.page.initialized){
+                    return this._rs_balance.page.refresh().then(() => {
+                        return resp_balance;
+                    }).catch(() => {
+                        return resp_balance;
+                    });
+                }else{
+                    return resp_balance;
+                }
+            });
+        }else{
+            return Promise.reject('Fund not found.');
+        }
+    }
+}
+
+export class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
+    public static resource = new Tastypie.Resource<OrgFundCategory>('doador-fundo/fund-category', {model: OrgFundCategory});
+
+    public org_fund_id: number;
+    public category_id: number;
+
+    constructor(obj?:any){
+        super(OrgFundCategory.resource, obj);
+    }
+}
+
+export class OrgFundMember extends Tastypie.Model<OrgFundMember> {
+    public static resource = new Tastypie.Resource<OrgFundMember>('doador-fundo/fund-member', {model: OrgFundMember});
+
+    public org_fund_id: number;
+    public status_display: string;
+
+    constructor(obj?:any){
+        super(OrgFundMember.resource, obj);
+    }
+}
+
+export class OrgFundBalanceSource extends Tastypie.Model<OrgFundBalanceSource> {
+    public static resource = new Tastypie.Resource<OrgFundBalanceSource>('doador-fundo/balance-source', {model: OrgFundBalanceSource});
+
+    public name: string;
+    public token: string;
+    public group: string;
+    public source_id: number;
+    public org_id: number;
     public dt_created: string;
     public dt_updated: string;
 
     constructor(obj?:any){
-        super(OrgFund.resource, obj);
+        super(OrgFundBalanceSource.resource, obj);
+    }
+}
+
+export class OrgFundBalance extends Tastypie.Model<OrgFundBalance> {
+    public static resource = new Tastypie.Resource<OrgFundBalance>(
+      'doador-fundo/balance', {model: OrgFundBalance}
+    );
+
+    public static resource_add = new Tastypie.Resource<OrgFundBalance>(
+      'doador-fundo/balance/add-credit', {model: OrgFundBalance}
+    );
+
+    public org_fund_id: number;
+    public source_id: number;
+    public credit: boolean;
+    public amount: number;
+    public status: string;
+    public dt_created: string;
+    public dt_updated: string;
+
+    private _md_source: OrgFundBalanceSource;
+    private _md_credit_custom: OrgFundBalanceCreditCustom;
+
+    constructor(obj?:any){
+        super(OrgFundBalance.resource, obj);
+
+        if(obj){
+            if(obj.source)
+                this._md_source = new OrgFundBalanceSource(obj.source);
+            if(obj.credit_custom)
+                this._md_credit_custom = new OrgFundBalanceCreditCustom(obj.credit_custom);
+        }
+    }
+
+    public static add_credit(obj: {
+        org_fund_id: number,
+        source_id: number,
+        amount: number,
+        passw: string
+    }): Promise<OrgFundBalance> {
+        return OrgFundBalance.resource_add.objects.create(obj);
+    }
+
+    public get md_source(): OrgFundBalanceSource {
+        return this._md_source;
+    }
+
+    public get md_credit_custom(): OrgFundBalanceCreditCustom {
+        return this._md_credit_custom;
+    }
+}
+
+export class OrgFundBalanceCreditCustom {
+
+    public user_id: number;
+    public user_name: string;
+    public user_email: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        if(obj){
+            this.user_id = obj.user_id;
+            this.user_name = obj.user_name;
+            this.user_email = obj.user_email;
+            this.dt_created = obj.dt_created;
+        }
     }
 }
