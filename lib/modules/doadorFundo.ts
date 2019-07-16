@@ -158,6 +158,12 @@ export class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
     }
 }
 
+export interface OrgFundSummary {
+    current_balance: number,
+    qty_projects_pending: number,
+    qty_projects_accepted: number,
+    qty_giving_stream: number
+}
 
 export class OrgFund extends Tastypie.Model<OrgFund> {
     public static resource = new Tastypie.Resource<OrgFund>('doador-fundo/fund', {model: OrgFund});
@@ -171,6 +177,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     public currency: string;
     public initial_credit: number;
     public private: boolean;
+    public summary: OrgFundSummary;
     public dt_created: string;
     public dt_updated: string;
 
@@ -189,6 +196,15 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
                 OrgFundMember.resource.endpoint,
                 {model: OrgFundMember, defaults: {org_fund_id: obj.id}}
             );
+        }
+
+        if(!this.summary){
+            this.summary = {
+                current_balance: 0.00,
+                qty_projects_pending: 0,
+                qty_projects_accepted: 0,
+                qty_giving_stream: 0
+            }
         }
     }
 

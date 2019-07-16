@@ -64,6 +64,12 @@ export declare class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
     dt_updated: string;
     constructor(obj?: any);
 }
+export interface OrgFundSummary {
+    current_balance: number;
+    qty_projects_pending: number;
+    qty_projects_accepted: number;
+    qty_giving_stream: number;
+}
 export declare class OrgFund extends Tastypie.Model<OrgFund> {
     static resource: Tastypie.Resource<OrgFund>;
     org_id: number;
@@ -75,6 +81,7 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     currency: string;
     initial_credit: number;
     private: boolean;
+    summary: OrgFundSummary;
     dt_created: string;
     dt_updated: string;
     private _rs_balance;
