@@ -51,6 +51,27 @@ export class Campanha extends Tastypie.Model<Campanha> {
     public get rs_ong(): Tastypie.Resource<CampanhaOng> {
         return this._rs_ong;
     }
+
+    public gerar_fatura(
+        metodo_pgto: string,
+        valor_doacao: number,
+        recorrente: boolean,
+        anonimo: boolean,
+        ongs: Array<number>,
+        cpf?: string
+      ): Promise<DoacaoFatura> {
+        if(this.id){
+            return DoacaoFatura.gerar_fatura({
+                campanha_id: this.id,
+                metodo_pgto: metodo_pgto,
+                valor_doacao: valor_doacao,
+                recorrente: recorrente,
+                anonimo: anonimo,
+                ongs: ongs,
+                cpf:cpf
+            });
+        }
+    }
 }
 
 export class CampanhaOng extends Tastypie.Model<CampanhaOng> {
@@ -123,6 +144,10 @@ export class CampanhaDoacao extends Tastypie.Model<CampanhaDoacao> {
 }
 
 export class DoacaoFatura {
+
+    public static rs_fatura_add = new Tastypie.Resource<DoacaoFatura>('doador-empresa-campanha/campanha/gerar-fatura', {model: DoacaoFatura});
+    public static rs_fatura_check = new Tastypie.Resource<DoacaoFatura>('doador-empresa-campanha/campanha/check-fatura', {model: DoacaoFatura});
+
     public id: number;
     public token: string;
     public nome: string;
@@ -171,6 +196,23 @@ export class DoacaoFatura {
 
     public get md_ongs(): Array<Ong> {
         return this._md_ongs;
+    }
+
+    public static gerar_fatura(obj: {
+        campanha_id: number,
+        metodo_pgto: string,
+        valor_doacao: number,
+        recorrente: boolean,
+        anonimo: boolean,
+        ongs: Array<number>,
+        cpf?: string
+      }
+    ): Promise<DoacaoFatura> {
+        return DoacaoFatura.rs_fatura_add.objects.create(obj);
+    }
+
+    public static check_fatura(token: string): Promise<DoacaoFatura> {
+        return DoacaoFatura.rs_fatura_check.objects.findOne({token:token});
     }
 }
 

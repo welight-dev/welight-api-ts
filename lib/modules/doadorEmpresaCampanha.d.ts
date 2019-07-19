@@ -24,6 +24,7 @@ export declare class Campanha extends Tastypie.Model<Campanha> {
     constructor(obj?: any);
     readonly md_empresa: Empresa;
     readonly rs_ong: Tastypie.Resource<CampanhaOng>;
+    gerar_fatura(metodo_pgto: string, valor_doacao: number, recorrente: boolean, anonimo: boolean, ongs: Array<number>, cpf?: string): Promise<DoacaoFatura>;
 }
 export declare class CampanhaOng extends Tastypie.Model<CampanhaOng> {
     static resource: Tastypie.Resource<CampanhaOng>;
@@ -55,6 +56,8 @@ export declare class CampanhaDoacao extends Tastypie.Model<CampanhaDoacao> {
     readonly md_doador: Doador;
 }
 export declare class DoacaoFatura {
+    static rs_fatura_add: Tastypie.Resource<DoacaoFatura>;
+    static rs_fatura_check: Tastypie.Resource<DoacaoFatura>;
     id: number;
     token: string;
     nome: string;
@@ -73,6 +76,16 @@ export declare class DoacaoFatura {
     readonly md_campanha_doacao: CampanhaDoacao;
     readonly md_pagamento: DoacaoFaturaPagamento;
     readonly md_ongs: Array<Ong>;
+    static gerar_fatura(obj: {
+        campanha_id: number;
+        metodo_pgto: string;
+        valor_doacao: number;
+        recorrente: boolean;
+        anonimo: boolean;
+        ongs: Array<number>;
+        cpf?: string;
+    }): Promise<DoacaoFatura>;
+    static check_fatura(token: string): Promise<DoacaoFatura>;
 }
 export declare class DoacaoFaturaPagamento {
     id: number;
