@@ -17,6 +17,16 @@ export class Tools {
               return false;
           }
     }
+
+    public static setData(obj_from: any, obj_to: any): void {
+        let properties: Array<string> = Tastypie.Tools.getProperties(obj_from);
+        for(let propertie of properties){
+            try {
+                obj_to[propertie] = obj_from[propertie];
+            }
+            catch (e) {}
+        }
+    }
 }
 
 export class Banco extends Tastypie.Model<Banco> {

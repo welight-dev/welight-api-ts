@@ -1,6 +1,7 @@
 import { Tastypie } from "ts-resource-tastypie";
 export declare class Tools {
     static readonly localStorageSuported: boolean;
+    static setData(obj_from: any, obj_to: any): void;
 }
 export declare class Banco extends Tastypie.Model<Banco> {
     static resource: Tastypie.Resource<Banco>;
