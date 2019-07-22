@@ -97,7 +97,7 @@ export declare class AppRoute {
         not_found: string;
     };
     concatDomainSite(app_token: string, uri?: string): string;
-    concatDomainApi(uri?: string): string;
+    concatDomainApi(uri: string): string;
     change(app_route: string, app_token?: string, kwargs?: any): void;
 }
 export declare class AppManager {

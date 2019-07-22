@@ -81,3 +81,12 @@ export declare class Currency extends Tastypie.Model<Currency> {
     code: string;
     constructor(obj?: any);
 }
+export declare class CheckBoxManager {
+    private _list;
+    onNgModel: any;
+    constructor();
+    reset(): void;
+    check(p: Array<number>, checked: boolean): void;
+    onCheck(): void;
+    readonly checked: Array<number>;
+}

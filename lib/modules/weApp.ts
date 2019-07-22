@@ -205,7 +205,11 @@ export class AppRoute {
         return Environment.getDomainSite(app_token, this._check_uri_slash(uri));
     }
 
-    public concatDomainApi(uri?: string): string {
+    public concatDomainApi(uri: string): string {
+        if(!uri){
+            return "";
+        }
+
         return Tastypie.Provider.getDefault().concatDomain(this._check_uri_slash(uri));
     }
 

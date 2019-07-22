@@ -256,3 +256,36 @@ export class Currency extends Tastypie.Model<Currency> {
         super(Currency.resource, obj);
     }
 }
+
+export class CheckBoxManager {
+    private _list: Array<number>;
+    public onNgModel: any;
+
+    constructor(){
+        this.reset();
+    }
+
+    public reset(): void {
+        this._list = [];
+        this.onNgModel = {};
+    }
+
+    public check(p:Array<number>, checked: boolean): void {
+        this.reset();
+        for(let id of p){
+            this.onNgModel[id] = checked;
+        }
+        this.onCheck();
+    }
+
+    public onCheck(): void {
+        this._list = [];
+        for(let id in this.onNgModel){
+            if(this.onNgModel[id]) this._list.push(+id);
+        }
+    }
+
+    public get checked(): Array<number> {
+        return this._list;
+    }
+}
