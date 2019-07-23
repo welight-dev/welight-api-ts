@@ -70,6 +70,7 @@ export class UserApp {
     private _app_token: string;
     private _app_profile_id: number;
     private _display_name: string;
+    private _avatar: string;
     private _admin: boolean;
     private _permissions: Array<AppPermission>;
 
@@ -79,6 +80,7 @@ export class UserApp {
       app_token: string,
       app_profile_id: number,
       display_name: string,
+      avatar: string,
       admin: boolean,
       permissions: Array<any>
     ){
@@ -87,6 +89,7 @@ export class UserApp {
         this._app_token = app_token;
         this._app_profile_id = app_profile_id;
         this._display_name = display_name;
+        this._avatar = avatar;
         this._admin = admin;
         this._permissions = [];
 
@@ -113,6 +116,10 @@ export class UserApp {
 
     public get display_name(): string {
         return this._display_name;
+    }
+
+    public get avatar(): string {
+        return this._avatar;
     }
 
     public get admin(): boolean {
@@ -154,13 +161,13 @@ export class UserBar {
 
     private _set_available(): void {
         this._app_available.push(
-            new UserApp(0, 'OMG', 'ong', 0, 'OMG', false, [])
+            new UserApp(0, 'NGO', 'ong', 0, 'NGO', '', false, [])
         );
         this._app_available.push(
-            new UserApp(0, 'Company', 'doador_empresa', 0, 'Company', false, [])
+            new UserApp(0, 'Company', 'doador_empresa', 0, 'Company', '', false, [])
         );
         this._app_available.push(
-            new UserApp(0, 'ORG Funds', 'doador_fundo', 0, 'ORG Funds', false, [])
+            new UserApp(0, 'ORG Funds', 'doador_fundo', 0, 'ORG Funds', '', false, [])
         );
     }
 
@@ -437,6 +444,7 @@ export class User {
                   userapp.app_token,
                   userapp.app_profile_id,
                   userapp.display_name,
+                  userapp.avatar,
                   userapp.admin,
                   userapp.permissions
               );

@@ -32,14 +32,16 @@ export declare class UserApp {
     private _app_token;
     private _app_profile_id;
     private _display_name;
+    private _avatar;
     private _admin;
     private _permissions;
-    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, admin: boolean, permissions: Array<any>);
+    constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, avatar: string, admin: boolean, permissions: Array<any>);
     readonly id: number;
     readonly app_name: string;
     readonly app_token: string;
     readonly app_profile_id: number;
     readonly display_name: string;
+    readonly avatar: string;
     readonly admin: boolean;
     has_perm(perm_token_list: Array<string>): boolean;
 }
