@@ -162,6 +162,7 @@ export interface OrgFundSummary {
     current_balance: number,
     qty_projects_pending: number,
     qty_projects_accepted: number,
+    qty_projects_total: number,
     qty_giving_stream: number
 }
 
@@ -203,6 +204,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
                 current_balance: 0.00,
                 qty_projects_pending: 0,
                 qty_projects_accepted: 0,
+                qty_projects_total: 0,
                 qty_giving_stream: 0
             }
         }
