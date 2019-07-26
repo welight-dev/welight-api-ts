@@ -552,8 +552,8 @@ export class AppManager {
         this._app_profile.reset();
     }
 
-    public select_profile(app_token: string, app_profile_id: number, app_route?:string): void {
-        this._route.change(app_route || '/', app_token, {app_profile_id: app_profile_id});
+    public select_profile(app_token: string, user_app_id: number, app_route?:string): void {
+        this._route.change(app_route || '/', app_token, {user_app_id: user_app_id});
     }
 
     public user_has_perm(perm_token_list: Array<string>): boolean {

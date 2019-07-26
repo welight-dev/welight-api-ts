@@ -52,6 +52,7 @@ export declare class UserBar {
     constructor();
     private _set_available;
     add_app(obj: UserApp): void;
+    remove_app(obj: UserApp): void;
     readonly app_admin: Array<UserApp>;
     readonly app_shared: Array<UserApp>;
     readonly app_available: Array<UserApp>;

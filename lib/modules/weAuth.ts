@@ -184,6 +184,22 @@ export class UserBar {
         }
     }
 
+    public remove_app(obj: UserApp): void {
+        if(obj.admin){
+            for(let i = 0; i < this._app_admin.length; i++){
+               if(this._app_admin[i].id === obj.id) {
+                  this._app_admin.splice(i, 1);
+               }
+            }
+        }else{
+            for(let i = 0; i < this._app_shared.length; i++){
+               if(this._app_shared[i].id === obj.id) {
+                  this._app_shared.splice(i, 1);
+               }
+            }
+        }
+    }
+
     public get app_admin(): Array<UserApp> {
         return this._app_admin;
     }
@@ -426,18 +442,18 @@ export class User {
          data.hasOwnProperty('apps') &&
          data.hasOwnProperty('account') &&
          data.hasOwnProperty('address')){
-           Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
+            Tastypie.Provider.setAuth('welight', data.auth.username, data.auth.api_key);
 
-           _self._id = data.id;
-           _self.name = data.name;
-           _self._email = data.email;
-           _self._auth = new Auth(data.auth.username, data.auth.api_key);
-           _self._account = new UserAccount(data);
-           _self._address = new UserAddress(data);
-           _self._apps = [];
-           _self._bar = new UserBar();
+            _self._id = data.id;
+            _self.name = data.name;
+            _self._email = data.email;
+            _self._auth = new Auth(data.auth.username, data.auth.api_key);
+            _self._account = new UserAccount(data);
+            _self._address = new UserAddress(data);
+            _self._apps = [];
+            _self._bar = new UserBar();
 
-           for(let userapp of data.apps){
+            for(let userapp of data.apps){
               let obj_userapp = new UserApp(
                   userapp.id,
                   userapp.app_name,
@@ -450,31 +466,35 @@ export class User {
               );
               _self._apps.push(obj_userapp);
               _self._bar.add_app(obj_userapp);
-           }
+            }
 
-           if(!kwargs){
+            if(!kwargs){
               kwargs = {};
-           }
+            }
 
-           if(!kwargs.hasOwnProperty('source')){
+            if(!kwargs.hasOwnProperty('source')){
                kwargs['source'] = {
                    detail: {}
                }
-           }
+            }
 
-           if(data.hasOwnProperty('current_user_app')){
+            if(data.hasOwnProperty('current_user_app')){
               kwargs.source.detail['user_app_id'] = data.current_user_app.id;
-           }
+            }
 
-           if(kwargs.hasOwnProperty('source')){
+            if(kwargs.hasOwnProperty('source')){
                if(kwargs.source.detail.hasOwnProperty('user_app_id')){
                    _self._current_user_app = _self.getUserAppById(kwargs.source.detail.user_app_id);
                }
-           }
+            }
 
-           _self._is_authenticated = true;
-           _self.notificarPlugin();
-           if(Tools.localStorageSuported){
+            if(_self._current_user_app){
+                _self._bar.remove_app(_self._current_user_app);
+            }
+
+            _self._is_authenticated = true;
+            _self.notificarPlugin();
+            if(Tools.localStorageSuported){
               let encrypted_user = crypto.AES.encrypt(JSON.stringify({
                   username: data.auth.username,
                   apikey: data.auth.api_key,

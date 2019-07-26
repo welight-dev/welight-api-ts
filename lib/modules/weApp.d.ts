@@ -147,7 +147,7 @@ export declare class AppManager {
     authGuardUser(current_app_route: string): Promise<boolean>;
     authGuardMember(current_app_route: string): Promise<boolean>;
     unselect_profile(): void;
-    select_profile(app_token: string, app_profile_id: number, app_route?: string): void;
+    select_profile(app_token: string, user_app_id: number, app_route?: string): void;
     user_has_perm(perm_token_list: Array<string>): boolean;
     global_loading: boolean;
 }
