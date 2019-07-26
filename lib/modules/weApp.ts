@@ -510,12 +510,15 @@ export class AppManager {
         }
     }
 
-    public authGuardMember(current_app_route: string): Promise<boolean> {
+    public authGuardMember(current_app_route: string, permissions?: Array<string>): Promise<boolean> {
         return this.authGuardUser(current_app_route).then((auth: boolean) => {
             if(auth){
                 this._auth_loading = true;
+                if(!permissions){
+                    permissions = ['member'];
+                }
                 if(this._app_profile.initialized){
-                    if(this.user_has_perm(['member'])){
+                    if(this.user_has_perm(permissions)){
                         this._auth_guard_member_checked = true;
                         this._auth_loading = false;
                         return true;
