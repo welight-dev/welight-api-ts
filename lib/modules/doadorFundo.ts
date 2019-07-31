@@ -21,6 +21,7 @@ export class Org extends Tastypie.Model<Org> {
     public dt_updated: string;
 
     private _adm: Tastypie.Resource<OrgAdm>;
+    private _rs_category_fund: Tastypie.Resource<OrgCategoryFund>;
     private _rs_activity : Tastypie.Resource<OrgActivity>;
     private _activity: OrgActivity;
 
@@ -48,10 +49,19 @@ export class Org extends Tastypie.Model<Org> {
             OrgActivity.resource.endpoint,
             {model: OrgActivity, defaults: {org_id: obj.id || 0}}
         );
+
+        this._rs_category_fund = new Tastypie.Resource<OrgCategoryFund>(
+            OrgCategoryFund.resource.endpoint,
+            {model: OrgCategoryFund, defaults: {org_id: obj.id || 0}}
+        );
     }
 
     public get rs_adm(): Tastypie.Resource<OrgAdm> {
         return this._adm;
+    }
+
+    public get rs_category_fund(): Tastypie.Resource<OrgCategoryFund> {
+        return this._rs_category_fund;
     }
 
     public get rs_activity(): Tastypie.Resource<OrgActivity> {
@@ -184,6 +194,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     private _rs_balance: Tastypie.Resource<OrgFundBalance>;
     private _rs_member: Tastypie.Resource<OrgFundMember>;
+    private _rs_category: Tastypie.Resource<OrgFundCategory>;
 
     constructor(obj?:any){
         super(OrgFund.resource, obj);
@@ -196,6 +207,10 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
             this._rs_member = new Tastypie.Resource<OrgFundMember>(
                 OrgFundMember.resource.endpoint,
                 {model: OrgFundMember, defaults: {org_fund_id: obj.id}}
+            );
+            this._rs_category = new Tastypie.Resource<OrgFundCategory>(
+                OrgFundCategory.resource.endpoint,
+                {model: OrgFundCategory, defaults: {org_fund_id: obj.id}}
             );
         }
 
@@ -216,6 +231,10 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     public get rs_member(): Tastypie.Resource<OrgFundMember> {
         return this._rs_member;
+    }
+
+    public get rs_category(): Tastypie.Resource<OrgFundCategory> {
+        return this._rs_category;
     }
 
     public add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance> {
