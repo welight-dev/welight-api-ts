@@ -489,7 +489,7 @@ export class AppManager {
         }
     }
 
-    public authGuardUser(current_app_route: string): Promise<boolean> {
+    public authGuardUser(current_app_route: string, on_error_route?: {app_route: string, app_token: string}): Promise<boolean> {
         if(this._user.is_authenticated){
             this._auth_guard_user_checked = true;
             return Promise.resolve(true);
@@ -500,22 +500,38 @@ export class AppManager {
                 this._auth_loading = false;
                 return true;
             }).catch(() => {
+                if(!on_error_route){
+                    on_error_route = {
+                        app_route: 'login',
+                        app_token: 'home'
+                    }
+                }
                 this._auth_guard_user_checked = false;
                 this._auth_loading = false;
                 this._user.logout().then(() => {
-                    this._route.change('login', 'home', {next:{app_route: current_app_route, app_token: this._app_token}});
+                    this._route.change(
+                      on_error_route.app_route,
+                      on_error_route.app_token,
+                      {next:{app_route: current_app_route, app_token: this._app_token}}
+                    );
                 });
                 return false;
             });
         }
     }
 
-    public authGuardMember(current_app_route: string, permissions?: Array<string>): Promise<boolean> {
+    public authGuardMember(current_app_route: string, permissions?: Array<string>, on_error_route?: {app_route: string, app_token: string}): Promise<boolean> {
         return this.authGuardUser(current_app_route).then((auth: boolean) => {
             if(auth){
                 this._auth_loading = true;
                 if(!permissions){
                     permissions = ['member'];
+                }
+                if(!on_error_route){
+                    on_error_route = {
+                        app_route: this._route.uri.access_denied,
+                        app_token: this._app_token
+                    }
                 }
                 if(this._app_profile.initialized){
                     if(this.user_has_perm(permissions)){
@@ -525,7 +541,7 @@ export class AppManager {
                     }else{
                         this._auth_guard_member_checked = false;
                         this._auth_loading = false;
-                        this._route.change(this._route.uri.access_denied);
+                        this._route.change(on_error_route.app_route, on_error_route.app_token);
                         return false;
                     }
                 }else{
@@ -538,7 +554,7 @@ export class AppManager {
                         }else{
                             this._auth_guard_member_checked = false;
                             this._auth_loading = false;
-                            this._route.change(this._route.uri.access_denied);
+                            this._route.change(on_error_route.app_route, on_error_route.app_token);
                             return false;
                         }
                     });
