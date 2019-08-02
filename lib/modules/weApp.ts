@@ -4,7 +4,7 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { Environment } from "./config";
 import { Tools } from "./utils";
-import { User } from "./weAuth";
+import { User, UserApp } from "./weAuth";
 import { Doador } from "./doador";
 import { Empresa } from "./doadorEmpresa";
 import { Org } from "./doadorFundo";
@@ -577,6 +577,22 @@ export class AppManager {
 
     public select_profile(app_token: string, user_app_id: number, app_route?:string): void {
         this._route.change(app_route || '/', app_token, {user_app_id: user_app_id});
+    }
+
+    public list_profile(): Array<UserApp> {
+        return this.user.apps.filter((userapp) => {
+            return userapp.app_token === this._app_token
+        });
+    }
+
+    public check_list_profile(app_route?:string): Array<UserApp> {
+        let profiles = this.list_profile();
+
+        if(profiles.length === 1){
+            this.select_profile(profiles[0].app_token, profiles[0].id, app_route);
+        }
+
+        return profiles;
     }
 
     public user_has_perm(perm_token_list: Array<string>): boolean {

@@ -1,5 +1,5 @@
 import { Tastypie } from "ts-resource-tastypie";
-import { User } from "./weAuth";
+import { User, UserApp } from "./weAuth";
 import { Doador } from "./doador";
 import { Empresa } from "./doadorEmpresa";
 import { Org } from "./doadorFundo";
@@ -154,6 +154,8 @@ export declare class AppManager {
     }): Promise<boolean>;
     unselect_profile(): void;
     select_profile(app_token: string, user_app_id: number, app_route?: string): void;
+    list_profile(): Array<UserApp>;
+    check_list_profile(app_route?: string): Array<UserApp>;
     user_has_perm(perm_token_list: Array<string>): boolean;
     global_loading: boolean;
 }
