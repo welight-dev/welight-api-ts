@@ -241,18 +241,18 @@ export class AppRoute {
                 }else{
                     app_route = `/quick-login/${this._app_manager.user.auth.username}/${this._app_manager.user.auth.api_key}?next=${app_route.substring(1)}`;
                 }
-            }else if(app_route == '/login' && app_token == 'home'){
+            }else if((app_route == '/login' || app_route == '/cadastro-usuario') && app_token == 'home'){
                 if(kwargs.hasOwnProperty('next')){
                     if(kwargs.hasOwnProperty('user_app_id')){
-                        app_route = `/login/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}&nextp=${kwargs.user_app_id}`;
+                        app_route = `${app_route}/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}&nextp=${kwargs.user_app_id}`;
                     }else{
-                        app_route = `/login/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
+                        app_route = `${app_route}/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
                     }
                 }else{
                     if(kwargs.hasOwnProperty('user_app_id')){
-                        app_route = `/login/?nextd=${this._app_manager.app_token}&nextp=${kwargs.user_app_id}`;
+                        app_route = `${app_route}/?nextd=${this._app_manager.app_token}&nextp=${kwargs.user_app_id}`;
                     }else{
-                        app_route = `/login/?nextd=${this._app_manager.app_token}`;
+                        app_route = `${app_route}/?nextd=${this._app_manager.app_token}`;
                     }
                 }
             }
