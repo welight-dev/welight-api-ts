@@ -545,7 +545,6 @@ export class AppManager {
                         return false;
                     }
                 }else{
-                    this._auth_loading = true;
                     return this._init_app_profile_member().then((auth: boolean) => {
                         if(auth){
                             this._auth_guard_member_checked = true;
@@ -554,7 +553,11 @@ export class AppManager {
                         }else{
                             this._auth_guard_member_checked = false;
                             this._auth_loading = false;
-                            this._route.change(on_error_route.app_route, on_error_route.app_token);
+                            this._route.change(
+                                this._route.uri.account_list,
+                                this._app_token,
+                                {next:{app_route: current_app_route, app_token: this._app_token}}
+                            );
                             return false;
                         }
                     });
