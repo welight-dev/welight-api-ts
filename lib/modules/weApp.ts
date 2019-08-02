@@ -229,10 +229,11 @@ export class AppRoute {
 
         if((!app_token || (app_token == this._app_manager.app_token)) && !kwargs.hasOwnProperty('user_app_id')){
             if(this._fnc_change_route){
+                let qparams = {};
                 if(kwargs.hasOwnProperty('next')){
-                    app_route = `${app_route}/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}`;
+                    qparams = {queryParams: { nextd: kwargs.next.app_token, next:kwargs.next.app_route}}
                 }
-                this._fnc_change_route(app_route);
+                this._fnc_change_route(app_route, qparams);
             }
         }else{
             if(this._app_manager.user.is_authenticated && app_token != 'home'){
