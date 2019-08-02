@@ -588,7 +588,10 @@ export class AppManager {
     public check_list_profile(app_route?:string): Array<UserApp> {
         let profiles = this.list_profile();
 
-        if(profiles.length === 1){
+        if(profiles.length === 0){
+            this._route.change(this._route.uri.account_new);
+        }
+        else if(profiles.length === 1){
             this.select_profile(profiles[0].app_token, profiles[0].id, app_route);
         }
 
