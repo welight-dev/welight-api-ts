@@ -189,6 +189,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     public initial_credit: number;
     public private: boolean;
     public summary: OrgFundSummary;
+    public categories: Array<number>;
     public dt_created: string;
     public dt_updated: string;
 
