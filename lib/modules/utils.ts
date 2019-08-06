@@ -289,3 +289,64 @@ export class CheckBoxManager {
         return this._list;
     }
 }
+
+export interface StepItem{
+    name:string;
+    icon:string;
+    url:string;
+    completed:boolean;
+    token:string;
+    extra_indent:boolean;
+    submenu:boolean;
+}
+
+export class StepProgressService {
+
+    public menu_title: string;
+    private _menu_itens: Array<StepItem>;
+    private _menu_itens_tmp: Array<StepItem>;
+    private _params: any;
+
+    constructor(){
+        this.menu_title = "Menu";
+        this._menu_itens = [];
+        this._menu_itens_tmp = [];
+        this._params = null;
+    }
+
+    private _set_menu_itens(): void {
+        if(!this._params){
+            this._menu_itens = this._menu_itens_tmp;
+        }else{
+            let itens = [];
+            for(let i=0; i<this._menu_itens_tmp.length; i++){
+                let url = this._menu_itens_tmp[i].url;
+                for(let param in this._params){
+                    url = url.replace(`:${param}`, this._params[param]);
+                }
+                let new_item = Object.assign({}, this._menu_itens_tmp[i]);
+                new_item.url = url;
+                itens.push(new_item);
+            }
+            this._menu_itens = itens;
+        }
+    }
+
+    public get menu_itens(): Array<StepItem> {
+        return this._menu_itens;
+    }
+
+    public set menu_itens(p: Array<StepItem>){
+        this._menu_itens_tmp = p;
+        this._set_menu_itens();
+    }
+
+    public getMenu(token: string): StepItem {
+        return this._menu_itens.find((item) => item.token === token)
+    }
+
+    public setParams(p: any): void {
+        this._params = p;
+        this._set_menu_itens();
+    }
+}

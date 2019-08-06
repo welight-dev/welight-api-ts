@@ -75,6 +75,7 @@ export interface OrgFundSummary {
 }
 export declare class OrgFund extends Tastypie.Model<OrgFund> {
     static resource: Tastypie.Resource<OrgFund>;
+    static resource_check_step: Tastypie.Resource<any>;
     org_id: number;
     name: string;
     logo: string;
@@ -97,6 +98,7 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     readonly rs_category: Tastypie.Resource<OrgFundCategory>;
     add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance>;
     send_invite_member(name: string, email: string, passw: string): Promise<OrgFundMember>;
+    check_step(): Promise<any>;
 }
 export declare class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
     static resource: Tastypie.Resource<OrgFundCategory>;

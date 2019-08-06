@@ -90,3 +90,23 @@ export declare class CheckBoxManager {
     onCheck(): void;
     readonly checked: Array<number>;
 }
+export interface StepItem {
+    name: string;
+    icon: string;
+    url: string;
+    completed: boolean;
+    token: string;
+    extra_indent: boolean;
+    submenu: boolean;
+}
+export declare class StepProgressService {
+    menu_title: string;
+    private _menu_itens;
+    private _menu_itens_tmp;
+    private _params;
+    constructor();
+    private _set_menu_itens;
+    menu_itens: Array<StepItem>;
+    getMenu(token: string): StepItem;
+    setParams(p: any): void;
+}

@@ -178,6 +178,7 @@ export interface OrgFundSummary {
 
 export class OrgFund extends Tastypie.Model<OrgFund> {
     public static resource = new Tastypie.Resource<OrgFund>('doador-fundo/fund', {model: OrgFund});
+    public static resource_check_step = new Tastypie.Resource<any>('doador-fundo/fund/<id>/check-step');
 
     public org_id: number;
     public name: string;
@@ -279,6 +280,14 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
                     return resp_member;
                 }
             });
+        }else{
+            return Promise.reject('Fund not found.');
+        }
+    }
+
+    public check_step(): Promise<any> {
+        if(this.id){
+            return OrgFund.resource_check_step.objects.get(this.id);
         }else{
             return Promise.reject('Fund not found.');
         }
