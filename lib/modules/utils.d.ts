@@ -99,14 +99,11 @@ export interface StepItem {
     extra_indent: boolean;
     submenu: boolean;
 }
-export declare class StepProgressService {
-    menu_title: string;
-    private _menu_itens;
-    private _menu_itens_tmp;
-    private _params;
-    constructor();
-    private _set_menu_itens;
-    menu_itens: Array<StepItem>;
-    getMenu(token: string): StepItem;
-    setParams(p: any): void;
+export declare class StepMenuService {
+    title: string;
+    itens: Array<StepItem>;
+    current: StepItem;
+    constructor(title: string, itens: Array<StepItem>);
+    setCurrent(token: string): void;
+    setParams(check_params: any, url_params: any): void;
 }

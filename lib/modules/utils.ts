@@ -300,53 +300,30 @@ export interface StepItem{
     submenu:boolean;
 }
 
-export class StepProgressService {
+export class StepMenuService {
 
-    public menu_title: string;
-    private _menu_itens: Array<StepItem>;
-    private _menu_itens_tmp: Array<StepItem>;
-    private _params: any;
+    public title: string;
+    public itens: Array<StepItem>;
+    public current: StepItem;
 
-    constructor(){
-        this.menu_title = "Menu";
-        this._menu_itens = [];
-        this._menu_itens_tmp = [];
-        this._params = null;
+    constructor(title: string, itens: Array<StepItem>){
+        this.title = title;
+        this.itens = itens;
+        this.current = null;
     }
 
-    private _set_menu_itens(): void {
-        if(!this._params){
-            this._menu_itens = this._menu_itens_tmp;
-        }else{
-            let itens = [];
-            for(let i=0; i<this._menu_itens_tmp.length; i++){
-                let url = this._menu_itens_tmp[i].url;
-                for(let param in this._params){
-                    url = url.replace(`:${param}`, this._params[param]);
-                }
-                let new_item = Object.assign({}, this._menu_itens_tmp[i]);
-                new_item.url = url;
-                itens.push(new_item);
+    public setCurrent(token: string): void {
+        this.current = this.itens.find((item) => item.token === token);
+    }
+
+    public setParams(check_params:any, url_params: any): void {
+        for(let i=0; i<this.itens.length; i++){
+            let url = this.itens[i].url;
+            for(let param in url_params){
+                url = url.replace(`:${param}`, url_params[param]);
             }
-            this._menu_itens = itens;
+            this.itens[i].url = url || "/";
+            this.itens[i].completed = check_params[this.itens[i].token] || false;
         }
-    }
-
-    public get menu_itens(): Array<StepItem> {
-        return this._menu_itens;
-    }
-
-    public set menu_itens(p: Array<StepItem>){
-        this._menu_itens_tmp = p;
-        this._set_menu_itens();
-    }
-
-    public getMenu(token: string): StepItem {
-        return this._menu_itens.find((item) => item.token === token)
-    }
-
-    public setParams(p: any): void {
-        this._params = p;
-        this._set_menu_itens();
     }
 }
