@@ -200,7 +200,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     constructor(obj?:any){
         super(OrgFund.resource, obj);
-        this._init();
+        this._init(obj);
     }
 
     public save(): Promise<OrgFund> {
