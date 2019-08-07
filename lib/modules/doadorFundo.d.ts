@@ -93,6 +93,8 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     private _rs_member;
     private _rs_category;
     constructor(obj?: any);
+    save(): Promise<OrgFund>;
+    private _init;
     readonly rs_balance: Tastypie.Resource<OrgFundBalance>;
     readonly rs_member: Tastypie.Resource<OrgFundMember>;
     readonly rs_category: Tastypie.Resource<OrgFundCategory>;

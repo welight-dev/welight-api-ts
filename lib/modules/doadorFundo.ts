@@ -200,7 +200,17 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     constructor(obj?:any){
         super(OrgFund.resource, obj);
+        this._init();
+    }
 
+    public save(): Promise<OrgFund> {
+        return super.save().then((obj) => {
+            this._init(obj);
+            return this;
+        })
+    }
+
+    private _init(obj?:any): void {
         if(obj && obj.id){
             this._rs_balance = new Tastypie.Resource<OrgFundBalance>(
                 OrgFundBalance.resource.endpoint,
