@@ -191,6 +191,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     public private: boolean;
     public summary: OrgFundSummary;
     public categories: Array<OrgCategoryFund>;
+    public categories_id: Array<number>;
     public dt_created: string;
     public dt_updated: string;
 
@@ -212,6 +213,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     private _init(obj?:any): void {
         this.categories = [];
+        this.categories_id = [];
 
         if(!this.summary){
             this.summary = {
