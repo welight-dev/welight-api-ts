@@ -213,7 +213,10 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     private _init(obj?:any): void {
         this.categories = [];
-        this.categories_id = [];
+
+        if(!this.categories_id){
+            this.categories_id = [];
+        }
 
         if(!this.summary){
             this.summary = {
