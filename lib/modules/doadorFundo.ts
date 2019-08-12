@@ -190,7 +190,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     public initial_credit: number;
     public private: boolean;
     public summary: OrgFundSummary;
-    public categories: Array<number>;
+    public categories: Array<OrgCategoryFund>;
     public dt_created: string;
     public dt_updated: string;
 
@@ -211,20 +211,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     }
 
     private _init(obj?:any): void {
-        if(obj && obj.id){
-            this._rs_balance = new Tastypie.Resource<OrgFundBalance>(
-                OrgFundBalance.resource.endpoint,
-                {model: OrgFundBalance, defaults: {org_fund_id: obj.id}}
-            );
-            this._rs_member = new Tastypie.Resource<OrgFundMember>(
-                OrgFundMember.resource.endpoint,
-                {model: OrgFundMember, defaults: {org_fund_id: obj.id}}
-            );
-            this._rs_category = new Tastypie.Resource<OrgFundCategory>(
-                OrgFundCategory.resource.endpoint,
-                {model: OrgFundCategory, defaults: {org_fund_id: obj.id}}
-            );
-        }
+        this.categories = [];
 
         if(!this.summary){
             this.summary = {
@@ -233,6 +220,29 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
                 qty_projects_accepted: 0,
                 qty_projects_total: 0,
                 qty_giving_stream: 0
+            }
+        }
+
+        if(obj){
+            if(obj.id){
+                this._rs_balance = new Tastypie.Resource<OrgFundBalance>(
+                    OrgFundBalance.resource.endpoint,
+                    {model: OrgFundBalance, defaults: {org_fund_id: obj.id}}
+                );
+                this._rs_member = new Tastypie.Resource<OrgFundMember>(
+                    OrgFundMember.resource.endpoint,
+                    {model: OrgFundMember, defaults: {org_fund_id: obj.id}}
+                );
+                this._rs_category = new Tastypie.Resource<OrgFundCategory>(
+                    OrgFundCategory.resource.endpoint,
+                    {model: OrgFundCategory, defaults: {org_fund_id: obj.id}}
+                );
+            }
+
+            if(obj.categories){
+                for(let cat of obj.categories){
+                    this.categories.push(new OrgCategoryFund(cat));
+                }
             }
         }
     }
