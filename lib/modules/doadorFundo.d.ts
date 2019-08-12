@@ -86,10 +86,10 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     initial_credit: number;
     private: boolean;
     summary: OrgFundSummary;
-    categories: Array<OrgCategoryFund>;
     categories_id: Array<number>;
     dt_created: string;
     dt_updated: string;
+    private _categories;
     private _rs_balance;
     private _rs_member;
     private _rs_category;
@@ -99,6 +99,7 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     readonly rs_balance: Tastypie.Resource<OrgFundBalance>;
     readonly rs_member: Tastypie.Resource<OrgFundMember>;
     readonly rs_category: Tastypie.Resource<OrgFundCategory>;
+    readonly categories: Array<OrgCategoryFund>;
     add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance>;
     send_invite_member(name: string, email: string, passw: string): Promise<OrgFundMember>;
     check_step(): Promise<any>;

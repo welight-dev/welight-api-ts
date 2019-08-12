@@ -190,11 +190,11 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     public initial_credit: number;
     public private: boolean;
     public summary: OrgFundSummary;
-    public categories: Array<OrgCategoryFund>;
     public categories_id: Array<number>;
     public dt_created: string;
     public dt_updated: string;
 
+    private _categories: Array<OrgCategoryFund>;
     private _rs_balance: Tastypie.Resource<OrgFundBalance>;
     private _rs_member: Tastypie.Resource<OrgFundMember>;
     private _rs_category: Tastypie.Resource<OrgFundCategory>;
@@ -212,7 +212,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
     }
 
     private _init(obj?:any): void {
-        this.categories = [];
+        this._categories = [];
 
         if(!this.categories_id){
             this.categories_id = [];
@@ -246,7 +246,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
             if(obj.categories){
                 for(let cat of obj.categories){
-                    this.categories.push(new OrgCategoryFund(cat));
+                    this._categories.push(new OrgCategoryFund(cat));
                 }
             }
         }
@@ -262,6 +262,10 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
 
     public get rs_category(): Tastypie.Resource<OrgFundCategory> {
         return this._rs_category;
+    }
+
+    public get categories(): Array<OrgCategoryFund> {
+        return this._categories;
     }
 
     public add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance> {
