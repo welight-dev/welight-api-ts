@@ -83,6 +83,10 @@ export class Org extends Tastypie.Model<Org> {
         return this._rs_fund_balance_source;
     }
 
+    public get rs_auth_group(): Tastypie.Resource<OrgAuthGroup> {
+        return this._rs_auth_group;
+    }
+
     public get rs_category_fund(): Tastypie.Resource<OrgCategoryFund> {
         return this._rs_category_fund;
     }

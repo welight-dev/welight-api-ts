@@ -25,6 +25,7 @@ export declare class Org extends Tastypie.Model<Org> {
     readonly rs_adm: Tastypie.Resource<OrgAdm>;
     readonly rs_fund: Tastypie.Resource<OrgFund>;
     readonly rs_fund_balance_source: Tastypie.Resource<OrgFundBalanceSource>;
+    readonly rs_auth_group: Tastypie.Resource<OrgAuthGroup>;
     readonly rs_category_fund: Tastypie.Resource<OrgCategoryFund>;
     readonly rs_activity: Tastypie.Resource<OrgActivity>;
     readonly md_activity: OrgActivity;
