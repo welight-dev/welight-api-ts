@@ -17,12 +17,15 @@ export declare class App extends Tastypie.Model<App> {
     constructor(obj?: any);
 }
 export declare class AppPermission {
+    private _id;
     private _name;
     private _token;
     constructor(obj?: {
+        id: number;
         name: string;
         token: string;
     });
+    readonly id: number;
     readonly name: string;
     readonly token: string;
 }

@@ -47,12 +47,18 @@ export class App extends Tastypie.Model<App> {
 }
 
 export class AppPermission {
+    private _id: number;
     private _name: string;
     private _token: string;
 
-    constructor(obj?: {name: string, token: string}){
+    constructor(obj?: {id: number, name: string, token: string}){
+        this._id = obj.id;
         this._name = obj.name;
         this._token = obj.token;
+    }
+
+    public get id(): number {
+        return this._id;
     }
 
     public get name(): string {
