@@ -17,9 +17,13 @@ export declare class Org extends Tastypie.Model<Org> {
     private _adm;
     private _rs_category_fund;
     private _rs_activity;
+    private _rs_fund;
+    private _rs_fund_balance_source;
     private _activity;
     constructor(obj?: any);
     readonly rs_adm: Tastypie.Resource<OrgAdm>;
+    readonly rs_fund: Tastypie.Resource<OrgFund>;
+    readonly rs_fund_balance_source: Tastypie.Resource<OrgFundBalanceSource>;
     readonly rs_category_fund: Tastypie.Resource<OrgCategoryFund>;
     readonly rs_activity: Tastypie.Resource<OrgActivity>;
     readonly md_activity: OrgActivity;

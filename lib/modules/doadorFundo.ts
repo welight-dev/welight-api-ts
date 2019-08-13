@@ -23,6 +23,8 @@ export class Org extends Tastypie.Model<Org> {
     private _adm: Tastypie.Resource<OrgAdm>;
     private _rs_category_fund: Tastypie.Resource<OrgCategoryFund>;
     private _rs_activity : Tastypie.Resource<OrgActivity>;
+    private _rs_fund: Tastypie.Resource<OrgFund>;
+    private _rs_fund_balance_source: Tastypie.Resource<OrgFundBalanceSource>;
     private _activity: OrgActivity;
 
     constructor(obj?:any){
@@ -43,6 +45,14 @@ export class Org extends Tastypie.Model<Org> {
                 OrgAdm.resource.endpoint,
                 {model: OrgAdm, defaults: {org_id: obj.id}}
             );
+            this._rs_fund = new Tastypie.Resource<OrgFund>(
+                OrgFund.resource.endpoint,
+                {model: OrgFund, defaults: {org_id: obj.id}}
+            );
+            this._rs_fund_balance_source = new Tastypie.Resource<OrgFundBalanceSource>(
+                OrgFundBalanceSource.resource.endpoint,
+                {model: OrgFundBalanceSource, defaults: {org_id: obj.id}}
+            );
         }
 
         this._rs_activity = new Tastypie.Resource<OrgActivity>(
@@ -58,6 +68,14 @@ export class Org extends Tastypie.Model<Org> {
 
     public get rs_adm(): Tastypie.Resource<OrgAdm> {
         return this._adm;
+    }
+
+    public get rs_fund(): Tastypie.Resource<OrgFund> {
+        return this._rs_fund;
+    }
+
+    public get rs_fund_balance_source(): Tastypie.Resource<OrgFundBalanceSource> {
+        return this._rs_fund_balance_source;
     }
 
     public get rs_category_fund(): Tastypie.Resource<OrgCategoryFund> {
