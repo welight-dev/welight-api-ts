@@ -25,6 +25,7 @@ export class Org extends Tastypie.Model<Org> {
     private _rs_activity : Tastypie.Resource<OrgActivity>;
     private _rs_fund: Tastypie.Resource<OrgFund>;
     private _rs_fund_balance_source: Tastypie.Resource<OrgFundBalanceSource>;
+    private _rs_auth_group: Tastypie.Resource<OrgAuthGroup>;
     private _activity: OrgActivity;
 
     constructor(obj?:any){
@@ -52,6 +53,10 @@ export class Org extends Tastypie.Model<Org> {
             this._rs_fund_balance_source = new Tastypie.Resource<OrgFundBalanceSource>(
                 OrgFundBalanceSource.resource.endpoint,
                 {model: OrgFundBalanceSource, defaults: {org_id: obj.id}}
+            );
+            this._rs_auth_group = new Tastypie.Resource<OrgAuthGroup>(
+                OrgAuthGroup.resource.endpoint,
+                {model: OrgAuthGroup, defaults: {org_id: obj.id}}
             );
         }
 
@@ -296,6 +301,7 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
             }).then(resp_balance => {
                 if(this._rs_balance.page.initialized){
                     return this._rs_balance.page.refresh().then(() => {
+                        this.refresh();
                         return resp_balance;
                     }).catch(() => {
                         return resp_balance;
@@ -309,12 +315,13 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
         }
     }
 
-    public send_invite_member(name: string, email: string, passw: string): Promise<OrgFundMember> {
+    public send_invite_member(name: string, email: string, auth_group_list: Array<number>, passw: string): Promise<OrgFundMember> {
         if(this.id){
             return OrgFundMember.add({
                 org_fund_id: this.id,
                 name: name,
                 email: email,
+                auth_group_list: auth_group_list,
                 passw: passw
             }).then(resp_member => {
                 if(this._rs_member.page.initialized){
@@ -373,7 +380,7 @@ export class OrgFundMember extends Tastypie.Model<OrgFundMember> {
         }
     }
 
-    public static add(obj: {name: string, email: string, org_fund_id: number, passw: string}): Promise<OrgFundMember> {
+    public static add(obj: {name: string, email: string, org_fund_id: number, auth_group_list: Array<number>, passw: string}): Promise<OrgFundMember> {
         return OrgFundMember.resource_add.objects.create(obj);
     }
 }

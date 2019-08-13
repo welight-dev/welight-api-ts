@@ -19,6 +19,7 @@ export declare class Org extends Tastypie.Model<Org> {
     private _rs_activity;
     private _rs_fund;
     private _rs_fund_balance_source;
+    private _rs_auth_group;
     private _activity;
     constructor(obj?: any);
     readonly rs_adm: Tastypie.Resource<OrgAdm>;
@@ -105,7 +106,7 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     readonly rs_category: Tastypie.Resource<OrgFundCategory>;
     readonly categories: Array<OrgCategoryFund>;
     add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance>;
-    send_invite_member(name: string, email: string, passw: string): Promise<OrgFundMember>;
+    send_invite_member(name: string, email: string, auth_group_list: Array<number>, passw: string): Promise<OrgFundMember>;
     check_step(): Promise<any>;
 }
 export declare class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
@@ -130,6 +131,7 @@ export declare class OrgFundMember extends Tastypie.Model<OrgFundMember> {
         name: string;
         email: string;
         org_fund_id: number;
+        auth_group_list: Array<number>;
         passw: string;
     }): Promise<OrgFundMember>;
 }
