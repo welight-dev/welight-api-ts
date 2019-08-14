@@ -154,6 +154,27 @@ export class OrgAddress extends Address {
     }
 }
 
+
+export class OrgAdmInvited extends Tastypie.Model<OrgAdmInvited> {
+
+    public static resource = new Tastypie.Resource<OrgAdmInvited>('doador-fundo/adm/accept', {model: OrgAdmInvited});
+    public org: Org;
+    public moderator: OrgAdm;
+    public invited: OrgAdm;
+    public has_user: boolean;
+
+    constructor(obj?:any){
+        super(OrgAdmInvited.resource, obj);
+
+        if(obj){
+            if(obj.org) this.org = new Org(obj.org);
+            if(obj.moderator) this.moderator = new OrgAdm(obj.moderator);
+            if(obj.invited) this.invited = new OrgAdm(obj.invited);
+        }
+    }
+}
+
+
 export class OrgAdm extends Tastypie.Model<OrgAdm> {
     public static resource = new Tastypie.Resource<OrgAdm>('doador-fundo/adm', {model: OrgAdm});
     public static resource_add = new Tastypie.Resource<OrgAdm>('doador-fundo/adm/add', {model: OrgAdm});
@@ -177,6 +198,10 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
     }
 
     public static add(obj: {name: string, email: string, org_id: number, passw: string}): Promise<OrgAdm> {
+        return OrgAdm.resource_add.objects.create(obj);
+    }
+
+    public static accept(obj: {name: string, email: string, org_id: number, passw: string}): Promise<any> {
         return OrgAdm.resource_add.objects.create(obj);
     }
 }

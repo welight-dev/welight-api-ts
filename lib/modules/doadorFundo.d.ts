@@ -44,6 +44,14 @@ export declare class OrgAddress extends Address {
     org_id: number;
     constructor(obj?: any);
 }
+export declare class OrgAdmInvited extends Tastypie.Model<OrgAdmInvited> {
+    static resource: Tastypie.Resource<OrgAdmInvited>;
+    org: Org;
+    moderator: OrgAdm;
+    invited: OrgAdm;
+    has_user: boolean;
+    constructor(obj?: any);
+}
 export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
     static resource: Tastypie.Resource<OrgAdm>;
     static resource_add: Tastypie.Resource<OrgAdm>;
@@ -63,6 +71,12 @@ export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
         org_id: number;
         passw: string;
     }): Promise<OrgAdm>;
+    static accept(obj: {
+        name: string;
+        email: string;
+        org_id: number;
+        passw: string;
+    }): Promise<any>;
 }
 export declare class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
     static resource: Tastypie.Resource<OrgCategoryFund>;
