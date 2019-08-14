@@ -127,6 +127,7 @@ export declare class OrgFundMember extends Tastypie.Model<OrgFundMember> {
     invite_email: string;
     dt_created: string;
     dt_updated: string;
+    permissions: Array<OrgAuthGroup>;
     constructor(obj?: any);
     static add(obj: {
         name: string;
