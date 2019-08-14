@@ -375,12 +375,20 @@ export class OrgFundMember extends Tastypie.Model<OrgFundMember> {
     public invite_email: string;
     public dt_created: string;
     public dt_updated: string;
+    public permissions: Array<OrgAuthGroup>;
 
     constructor(obj?:any){
         super(OrgFundMember.resource, obj);
+        this.permissions = [];
 
         if(obj){
             if(obj.doador) this.doador = new Doador(obj.doador);
+
+            if(obj.permissions){
+                for(let perm of obj.permissions){
+                    this.permissions.push(new OrgAuthGroup(perm));
+                }
+            }
         }
     }
 
