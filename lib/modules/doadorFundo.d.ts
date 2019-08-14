@@ -50,6 +50,9 @@ export declare class OrgAdmInvited extends Tastypie.Model<OrgAdmInvited> {
     moderator: OrgAdm;
     invited: OrgAdm;
     has_user: boolean;
+    username: string;
+    apikey: string;
+    user_app_id: number;
     constructor(obj?: any);
 }
 export declare class OrgAdm extends Tastypie.Model<OrgAdm> {

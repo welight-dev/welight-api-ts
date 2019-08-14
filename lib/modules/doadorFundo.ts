@@ -162,6 +162,9 @@ export class OrgAdmInvited extends Tastypie.Model<OrgAdmInvited> {
     public moderator: OrgAdm;
     public invited: OrgAdm;
     public has_user: boolean;
+    public username: string;
+    public apikey: string;
+    public user_app_id: number;
 
     constructor(obj?:any){
         super(OrgAdmInvited.resource, obj);
