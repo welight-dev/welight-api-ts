@@ -55,6 +55,12 @@ export declare class OrgAdmInvited extends Tastypie.Model<OrgAdmInvited> {
     user_app_id: number;
     constructor(obj?: any);
 }
+export declare class OrgAdmVote extends Tastypie.Model<OrgAdmVote> {
+    static resource: Tastypie.Resource<OrgAdmVote>;
+    invited: OrgAdm;
+    status: string;
+    constructor(obj?: any);
+}
 export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
     static resource: Tastypie.Resource<OrgAdm>;
     static resource_add: Tastypie.Resource<OrgAdm>;

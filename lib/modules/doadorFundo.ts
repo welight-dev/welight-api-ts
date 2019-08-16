@@ -178,6 +178,22 @@ export class OrgAdmInvited extends Tastypie.Model<OrgAdmInvited> {
 }
 
 
+export class OrgAdmVote extends Tastypie.Model<OrgAdmVote> {
+
+    public static resource = new Tastypie.Resource<OrgAdmVote>('doador-fundo/adm/vote', {model: OrgAdmVote});
+    public invited: OrgAdm;
+    public status: string;
+
+    constructor(obj?:any){
+        super(OrgAdmVote.resource, obj);
+
+        if(obj){
+            if(obj.invited) this.invited = new OrgAdm(obj.invited);
+        }
+    }
+}
+
+
 export class OrgAdm extends Tastypie.Model<OrgAdm> {
     public static resource = new Tastypie.Resource<OrgAdm>('doador-fundo/adm', {model: OrgAdm});
     public static resource_add = new Tastypie.Resource<OrgAdm>('doador-fundo/adm/add', {model: OrgAdm});
