@@ -351,13 +351,24 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
             }).then(resp_balance => {
                 if(this._rs_balance.page.initialized){
                     return this._rs_balance.page.refresh().then(() => {
-                        this.refresh();
+                        return this.refresh().then(() => {
+                            return resp_balance;
+                        }).catch(() => {
+                            return resp_balance;
+                        });
+                    }).catch(() => {
+                        return this.refresh().then(() => {
+                            return resp_balance;
+                        }).catch(() => {
+                            return resp_balance;
+                        });
+                    });
+                }else{
+                    return this.refresh().then(() => {
                         return resp_balance;
                     }).catch(() => {
                         return resp_balance;
                     });
-                }else{
-                    return resp_balance;
                 }
             });
         }else{
