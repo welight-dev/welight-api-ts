@@ -200,6 +200,7 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
 
     public org_id: number;
     public parent_id: number;
+    public parent: OrgAdm;
     public doador: Doador;
     public status: string;
     public status_display: string;
@@ -213,6 +214,7 @@ export class OrgAdm extends Tastypie.Model<OrgAdm> {
 
         if(obj){
             if(obj.doador) this.doador = new Doador(obj.doador);
+            if(obj.parent) this.parent = new OrgAdm(obj.parent);
         }
     }
 

@@ -66,6 +66,7 @@ export declare class OrgAdm extends Tastypie.Model<OrgAdm> {
     static resource_add: Tastypie.Resource<OrgAdm>;
     org_id: number;
     parent_id: number;
+    parent: OrgAdm;
     doador: Doador;
     status: string;
     status_display: string;
