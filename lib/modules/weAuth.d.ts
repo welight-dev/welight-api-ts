@@ -124,6 +124,7 @@ export declare class User {
     change_password(username: string, pass_old: string, pass_new: string, kwargs?: any): Promise<User>;
     notificarPlugin(): void;
     instalarPluginNavegador(navegador: string): Promise<any>;
+    change_language(code: string): Promise<User>;
 }
 export declare class UserAccount extends Tastypie.Model<UserAccount> {
     static resource: Tastypie.Resource<UserAccount>;

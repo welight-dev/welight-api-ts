@@ -737,6 +737,16 @@ export class User {
             }
         });
     }
+
+    public change_language(code: string): Promise<User> {
+        return UserAccount.resource.objects.update(this.id, {account: {idioma: code}}).then(() => {
+            this._account.idioma = code;
+            return this;
+        }).catch(() => {
+            this._account.idioma = code;
+            return this;
+        });
+    }
 }
 
 export class UserAccount extends Tastypie.Model<UserAccount> {
