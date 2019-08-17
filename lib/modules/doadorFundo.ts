@@ -425,7 +425,7 @@ export class OrgFundMemberInvited extends Tastypie.Model<OrgFundMemberInvited> {
     public static resource = new Tastypie.Resource<OrgFundMemberInvited>('doador-fundo/fund-member/accept', {model: OrgFundMemberInvited});
     public org: Org;
     public fund: OrgFund;
-    public moderator: OrgAdm;
+    public moderator: {name:string, email:string};
     public invited: OrgFundMember;
     public has_user: boolean;
     public username: string;
@@ -438,7 +438,6 @@ export class OrgFundMemberInvited extends Tastypie.Model<OrgFundMemberInvited> {
         if(obj){
             if(obj.org) this.org = new Org(obj.org);
             if(obj.fund) this.fund = new OrgFund(obj.fund);
-            if(obj.moderator) this.moderator = new OrgAdm(obj.moderator);
             if(obj.invited) this.invited = new OrgFundMember(obj.invited);
         }
     }

@@ -144,7 +144,10 @@ export declare class OrgFundMemberInvited extends Tastypie.Model<OrgFundMemberIn
     static resource: Tastypie.Resource<OrgFundMemberInvited>;
     org: Org;
     fund: OrgFund;
-    moderator: OrgAdm;
+    moderator: {
+        name: string;
+        email: string;
+    };
     invited: OrgFundMember;
     has_user: boolean;
     username: string;
