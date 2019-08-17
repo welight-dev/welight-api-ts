@@ -420,6 +420,30 @@ export class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
     }
 }
 
+export class OrgFundMemberInvited extends Tastypie.Model<OrgFundMemberInvited> {
+
+    public static resource = new Tastypie.Resource<OrgFundMemberInvited>('doador-fundo/fund-member/accept', {model: OrgFundMemberInvited});
+    public org: Org;
+    public fund: OrgFund;
+    public moderator: OrgAdm;
+    public invited: OrgFundMember;
+    public has_user: boolean;
+    public username: string;
+    public apikey: string;
+    public user_app_id: number;
+
+    constructor(obj?:any){
+        super(OrgFundMemberInvited.resource, obj);
+
+        if(obj){
+            if(obj.org) this.org = new Org(obj.org);
+            if(obj.fund) this.fund = new OrgFund(obj.fund);
+            if(obj.moderator) this.moderator = new OrgAdm(obj.moderator);
+            if(obj.invited) this.invited = new OrgFundMember(obj.invited);
+        }
+    }
+}
+
 export class OrgFundMember extends Tastypie.Model<OrgFundMember> {
     public static resource = new Tastypie.Resource<OrgFundMember>('doador-fundo/fund-member', {model: OrgFundMember});
     public static resource_add = new Tastypie.Resource<OrgFundMember>('doador-fundo/fund-member/add', {model: OrgFundMember});

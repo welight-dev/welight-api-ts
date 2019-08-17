@@ -140,6 +140,18 @@ export declare class OrgFundCategory extends Tastypie.Model<OrgFundCategory> {
     category_id: number;
     constructor(obj?: any);
 }
+export declare class OrgFundMemberInvited extends Tastypie.Model<OrgFundMemberInvited> {
+    static resource: Tastypie.Resource<OrgFundMemberInvited>;
+    org: Org;
+    fund: OrgFund;
+    moderator: OrgAdm;
+    invited: OrgFundMember;
+    has_user: boolean;
+    username: string;
+    apikey: string;
+    user_app_id: number;
+    constructor(obj?: any);
+}
 export declare class OrgFundMember extends Tastypie.Model<OrgFundMember> {
     static resource: Tastypie.Resource<OrgFundMember>;
     static resource_add: Tastypie.Resource<OrgFundMember>;
