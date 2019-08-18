@@ -402,11 +402,19 @@ export class AppManager {
         });
     }
 
-    public logout(): void {
-        this._user.logout().then(() => {
-            this._route.change('/', 'home');
+    public logout(redirect?:boolean): Promise<boolean> {
+        this._auth_guard_user_checked = false;
+        this.unselect_profile();
+        return this._user.logout().then(() => {
+            if(redirect){
+              this._route.change('/', 'home');
+            }
+            return true;
         }).catch(() => {
-            this._route.change('/', 'home');
+            if(redirect){
+              this._route.change('/', 'home');
+            }
+            return true;
         });
     }
 
@@ -573,6 +581,7 @@ export class AppManager {
     }
 
     public unselect_profile(): void {
+        this._auth_guard_member_checked = false;
         this._user.unselect_profile();
         this._app_profile.reset();
     }

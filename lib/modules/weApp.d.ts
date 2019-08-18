@@ -137,7 +137,7 @@ export declare class AppManager {
     readonly auth_guard_user_checked: boolean;
     readonly auth_guard_member_checked: boolean;
     createAccountDoadorFundo(obj: Org): Promise<boolean>;
-    logout(): void;
+    logout(redirect?: boolean): Promise<boolean>;
     login(username: string, password: string, kwargs?: any): Promise<boolean>;
     quickLogin(auth: {
         username: string;
