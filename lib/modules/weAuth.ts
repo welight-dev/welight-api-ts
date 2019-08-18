@@ -619,7 +619,7 @@ export class User {
             }else{
                 return Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
             }
-        }).catch(function(){
+        }).catch(() => {
             this._logout();
             return Tastypie.Tools.generate_exception("[WeAuth][quick_login] Usuario não identificado");
         });

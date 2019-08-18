@@ -405,6 +405,8 @@ export class AppManager {
     public logout(): void {
         this._user.logout().then(() => {
             this._route.change('/', 'home');
+        }).catch(() => {
+            this._route.change('/', 'home');
         });
     }
 
