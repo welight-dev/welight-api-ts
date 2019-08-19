@@ -519,14 +519,21 @@ export class AppManager {
                 }
                 this._auth_guard_user_checked = false;
                 this._auth_loading = false;
-                this._user.logout().then(() => {
+                return this.logout(false).then(() => {
                     this._route.change(
-                      on_error_route.app_route,
-                      on_error_route.app_token,
-                      {next:{app_route: current_app_route, app_token: this._app_token}}
+                        on_error_route.app_route,
+                        on_error_route.app_token,
+                        {next:{app_route: current_app_route, app_token: this._app_token}}
                     );
+                    return false;
+                }).catch(() => {
+                    this._route.change(
+                        on_error_route.app_route,
+                        on_error_route.app_token,
+                        {next:{app_route: current_app_route, app_token: this._app_token}}
+                    );
+                    return false;
                 });
-                return false;
             });
         }
     }
