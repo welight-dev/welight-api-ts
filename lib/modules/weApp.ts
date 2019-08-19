@@ -565,9 +565,16 @@ export class AppManager {
                 }else{
                     return this._init_app_profile_member().then((auth: boolean) => {
                         if(auth){
-                            this._auth_guard_member_checked = true;
-                            this._auth_loading = false;
-                            return true;
+                            if(this.user_has_perm(permissions)){
+                                this._auth_guard_member_checked = true;
+                                this._auth_loading = false;
+                                return true;
+                            }else{
+                                this._auth_guard_member_checked = false;
+                                this._auth_loading = false;
+                                this._route.change(on_error_route.app_route, on_error_route.app_token);
+                                return false;
+                            }
                         }else{
                             this._auth_guard_member_checked = false;
                             this._auth_loading = false;

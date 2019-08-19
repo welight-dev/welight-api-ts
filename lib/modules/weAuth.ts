@@ -139,7 +139,7 @@ export class UserApp {
             let resp_return: boolean = false;
             for(let token of perm_token_list){
                 for(let perm of this._permissions){
-                    if(perm.name == token){
+                    if(perm.token == token){
                         resp_return = true;
                         break;
                     }
