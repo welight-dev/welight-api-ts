@@ -601,6 +601,9 @@ export class AppManager {
     }
 
     public select_profile(app_token: string, user_app_id: number, app_route?:string): void {
+        if(app_token === this._app_token){
+            this.unselect_profile();
+        }
         this._route.change(app_route || '/', app_token, {user_app_id: user_app_id});
     }
 
