@@ -2,6 +2,7 @@ import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgFundMember } from "./doadorFundo";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
+    org_fund_id: number;
     name: string;
     slug: string;
     description: string;
@@ -23,8 +24,8 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
 }
-export declare class OrgGsCategory extends Tastypie.Model<OrgFundGs> {
-    static resource: Tastypie.Resource<OrgFundGs>;
+export declare class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
+    static resource: Tastypie.Resource<OrgGsCategory>;
     org_id: number;
     name: string;
     slug: string;

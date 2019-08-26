@@ -7,6 +7,7 @@ import { OrgFund, OrgFundMember } from "./doadorFundo";
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo-gs/gs', {model: OrgFundGs});
 
+    public org_fund_id: number;
     public name: string;
     public slug: string;
     public description: string;
@@ -41,6 +42,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _init(obj?: any): void {
         this.categories = [];
 
+        if(!this.categories_id){
+            this.categories_id = [];
+        }
+
         if(obj){
             if(obj.org_fund) this.org_fund = new OrgFund(obj.org_fund);
             if(obj.product) this.product = new OrgGsProduct(obj.product);
@@ -53,8 +58,8 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     }
 }
 
-export class OrgGsCategory extends Tastypie.Model<OrgFundGs> {
-    public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo-gs/category', {model: OrgFundGs});
+export class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
+    public static resource = new Tastypie.Resource<OrgGsCategory>('doador-fundo-gs/category', {model: OrgGsCategory});
 
     public org_id: number;
     public name: string;
@@ -62,7 +67,7 @@ export class OrgGsCategory extends Tastypie.Model<OrgFundGs> {
     public dt_created: string;
 
     constructor(obj?:any){
-        super(OrgFundGs.resource, obj);
+        super(OrgGsCategory.resource, obj);
     }
 }
 
