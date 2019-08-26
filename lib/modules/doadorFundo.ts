@@ -277,9 +277,9 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
         this._init(obj);
     }
 
-    public save(): Promise<OrgFund> {
-        return super.save().then((obj) => {
-            this._init(obj);
+    public save(obj?:any): Promise<OrgFund> {
+        return super.save(obj).then((response) => {
+            this._init(response);
             return this;
         })
     }
