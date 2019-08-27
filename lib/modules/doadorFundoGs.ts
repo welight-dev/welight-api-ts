@@ -25,8 +25,9 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
     public org_fund: OrgFund;
     public product: OrgGsProduct;
-    public categories: Array<OrgGsCategory>;
     public categories_id: Array<number>;
+
+    private _categories: Array<OrgGsCategory>;
 
     constructor(obj?:any){
         super(OrgFundGs.resource, obj);
@@ -41,21 +42,28 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     }
 
     private _init(obj?: any): void {
-        this.categories = [];
+        this._categories = [];
 
         if(!this.categories_id){
             this.categories_id = [];
         }
+
+        this.org_fund = new OrgFund();
+        this.product = new OrgGsProduct();
 
         if(obj){
             if(obj.org_fund) this.org_fund = new OrgFund(obj.org_fund);
             if(obj.product) this.product = new OrgGsProduct(obj.product);
             if(obj.categories){
               for(let category of obj.categories){
-                  this.categories.push(new OrgGsCategory(category));
+                  this._categories.push(new OrgGsCategory(category));
               }
             }
         }
+    }
+
+    public get categories(): Array<OrgGsCategory> {
+        return this._categories;
     }
 
     public check_step(): Promise<any> {

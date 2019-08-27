@@ -19,11 +19,12 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     dt_updated: string;
     org_fund: OrgFund;
     product: OrgGsProduct;
-    categories: Array<OrgGsCategory>;
     categories_id: Array<number>;
+    private _categories;
     constructor(obj?: any);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
+    readonly categories: Array<OrgGsCategory>;
     check_step(): Promise<any>;
 }
 export declare class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
