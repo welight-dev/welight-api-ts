@@ -6,6 +6,7 @@ import { OrgFund, OrgFundMember } from "./doadorFundo";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo-gs/gs', {model: OrgFundGs});
+    public static resource_add_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/add-member');
     public static resource_check_step = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/check-step');
 
     public org_fund_id: number;
@@ -76,6 +77,22 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
     public get categories(): Array<OrgGsCategory> {
         return this._categories;
+    }
+
+    public add_member(fund_members_id: Array<number>): Promise<any> {
+        if(this.id){
+            return OrgFundGs.resource_add_member.objects.create({gs_id:this.id, fund_members_id:fund_members_id}).then((data) => {
+                if(this._rs_member.page.initialized){
+                    return this._rs_member.page.refresh().then(() => {
+                        return data;
+                    });
+                }else{
+                    return data;
+                }
+            })
+        }else{
+            return Promise.reject('Giving stream not found');
+        }
     }
 
     public check_step(): Promise<any> {
