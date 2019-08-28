@@ -27,6 +27,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public product: OrgGsProduct;
     public categories_id: Array<number>;
 
+    private _rs_member: Tastypie.Resource<OfgsMember>;
     private _categories: Array<OrgGsCategory>;
 
     constructor(obj?:any){
@@ -59,7 +60,18 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                   this._categories.push(new OrgGsCategory(category));
               }
             }
+
+            if(obj.id){
+                this._rs_member = new Tastypie.Resource<OfgsMember>(
+                    OfgsMember.resource.endpoint,
+                    {model: OfgsMember, defaults: {gs_id: obj.id}}
+                );
+            }
         }
+    }
+
+    public get rs_member(): Tastypie.Resource<OfgsMember> {
+        return this._rs_member;
     }
 
     public get categories(): Array<OrgGsCategory> {

@@ -20,10 +20,12 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     org_fund: OrgFund;
     product: OrgGsProduct;
     categories_id: Array<number>;
+    private _rs_member;
     private _categories;
     constructor(obj?: any);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
+    readonly rs_member: Tastypie.Resource<OfgsMember>;
     readonly categories: Array<OrgGsCategory>;
     check_step(): Promise<any>;
 }
