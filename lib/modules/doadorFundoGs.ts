@@ -2,11 +2,13 @@
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
 import { Tastypie } from "ts-resource-tastypie";
-import { OrgFund, OrgFundMember } from "./doadorFundo";
+import { OrgFund, OrgAuthGroup } from "./doadorFundo";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo-gs/gs', {model: OrgFundGs});
+    public static resource_get_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/get-member');
     public static resource_add_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/add-member');
+    public static resource_delete_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/delete-member');
     public static resource_check_step = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/check-step');
 
     public org_fund_id: number;
@@ -27,8 +29,6 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public org_fund: OrgFund;
     public product: OrgGsProduct;
     public categories_id: Array<number>;
-
-    private _rs_member: Tastypie.Resource<OfgsMember>;
     private _categories: Array<OrgGsCategory>;
 
     constructor(obj?:any){
@@ -61,35 +61,38 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                   this._categories.push(new OrgGsCategory(category));
               }
             }
-
-            if(obj.id){
-                this._rs_member = new Tastypie.Resource<OfgsMember>(
-                    OfgsMember.resource.endpoint,
-                    {model: OfgsMember, defaults: {gs_id: obj.id}}
-                );
-            }
         }
-    }
-
-    public get rs_member(): Tastypie.Resource<OfgsMember> {
-        return this._rs_member;
     }
 
     public get categories(): Array<OrgGsCategory> {
         return this._categories;
     }
 
-    public add_member(fund_members_id: Array<number>): Promise<any> {
+    public get_member(): Promise<OrgGsMember> {
         if(this.id){
-            return OrgFundGs.resource_add_member.objects.create({gs_id:this.id, fund_members_id:fund_members_id}).then((data) => {
-                if(this._rs_member.page.initialized){
-                    return this._rs_member.page.refresh().then(() => {
-                        return data;
-                    });
-                }else{
-                    return data;
-                }
-            })
+            return OrgFundGs.resource_get_member.objects.get(this.id).then((data) => {
+                return new OrgGsMember(data);
+            });
+        }else{
+            return Promise.reject('Giving stream not found');
+        }
+    }
+
+    public add_member(tokens_member: Array<string>, passw: string): Promise<OrgGsMember> {
+        if(this.id){
+            return OrgFundGs.resource_add_member.objects.create({gs_id:this.id, tokens_member:tokens_member, passw:passw}).then((data) => {
+                return new OrgGsMember(data);
+            });
+        }else{
+            return Promise.reject('Giving stream not found');
+        }
+    }
+
+    public delete_member(token: string, passw: string): Promise<OrgGsMember> {
+        if(this.id){
+            return OrgFundGs.resource_delete_member.objects.delete(this.id, {token:token, passw:passw}).then((data) => {
+                return new OrgGsMember(data);
+            });
         }else{
             return Promise.reject('Giving stream not found');
         }
@@ -131,18 +134,42 @@ export class OrgGsProduct extends Tastypie.Model<OrgGsProduct> {
     }
 }
 
-export class OfgsMember extends Tastypie.Model<OfgsMember> {
-    public static resource = new Tastypie.Resource<OfgsMember>('doador-fundo-gs/member', {model: OfgsMember});
-
-    public gs_id: number;
-    public member: OrgFundMember;
-    public dt_created: string;
+export class OrgMember {
+    public id: number;
+    public name: string;
+    public auth_group: Array<OrgAuthGroup>;
+    public auth_group_display: string;
+    public admin: boolean;
+    public token: string;
 
     constructor(obj?:any){
-        super(OfgsMember.resource, obj);
+        this.auth_group = [];
+        if(obj && obj.auth_group){
+            for(let group of obj.auth_group){
+                this.auth_group.push(new OrgAuthGroup(group));
+            }
+        }
+    }
+}
 
-        if(obj && obj.member){
-            this.member = new OrgFundMember(obj.member);
+export class OrgGsMember {
+    public added_members: Array<OrgMember>;
+    public avaliable_members: Array<OrgMember>;
+
+    constructor(obj?:any){
+        this.added_members = [];
+        this.avaliable_members = [];
+        if(obj){
+            if(obj.added_members){
+              for(let member of obj.added_members){
+                  this.added_members.push(new OrgMember(member));
+              }
+            }
+            if(obj.avaliable_members){
+              for(let member of obj.avaliable_members){
+                  this.avaliable_members.push(new OrgMember(member));
+              }
+            }
         }
     }
 }
