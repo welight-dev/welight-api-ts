@@ -144,9 +144,17 @@ export class OrgMember {
 
     constructor(obj?:any){
         this.auth_group = [];
-        if(obj && obj.auth_group){
-            for(let group of obj.auth_group){
-                this.auth_group.push(new OrgAuthGroup(group));
+        if(obj){
+            this.id = obj.id;
+            this.name = obj.name;
+            this.auth_group_display = obj.auth_group_display;
+            this.admin = obj.admin;
+            this.token = obj.token;
+
+            if(obj.auth_group){
+                for(let group of obj.auth_group){
+                    this.auth_group.push(new OrgAuthGroup(group));
+                }
             }
         }
     }
