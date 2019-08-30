@@ -21,6 +21,7 @@ export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     public max_invested: number;
     public set_winners: boolean;
     public qty_winners: number;
+    public order: number;
     public dt_created: string;
     public dt_updated: string;
 
