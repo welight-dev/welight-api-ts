@@ -10,8 +10,10 @@ export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     public total_amount: number;
     public qty_disbursement: number;
     public dt_application_start: string;
+    public set_application_end: boolean;
     public dt_application_end: string;
     public dt_evaluation_start: string;
+    public set_evaluation_end: boolean;
     public dt_evaluation_end: string;
     public dt_implementation_start: string;
     public dt_implementation_end: string;
