@@ -1,5 +1,6 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgAuthGroup } from "./doadorFundo";
+import { OrgFundGsRound } from "./doadorFundoGsRound";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -24,9 +25,11 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     product: OrgGsProduct;
     categories_id: Array<number>;
     private _categories;
+    private _rs_round;
     constructor(obj?: any);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
+    readonly rs_round: Tastypie.Resource<OrgFundGsRound>;
     readonly categories: Array<OrgGsCategory>;
     get_member(): Promise<OrgGsMember>;
     add_member(tokens_member: Array<string>, passw: string): Promise<OrgGsMember>;

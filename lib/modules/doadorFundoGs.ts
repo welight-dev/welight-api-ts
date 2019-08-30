@@ -3,6 +3,7 @@
 
 import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgAuthGroup } from "./doadorFundo";
+import { OrgFundGsRound } from "./doadorFundoGsRound";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo-gs/gs', {model: OrgFundGs});
@@ -30,6 +31,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public product: OrgGsProduct;
     public categories_id: Array<number>;
     private _categories: Array<OrgGsCategory>;
+    private _rs_round: Tastypie.Resource<OrgFundGsRound>;
 
     constructor(obj?:any){
         super(OrgFundGs.resource, obj);
@@ -61,7 +63,18 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                   this._categories.push(new OrgGsCategory(category));
               }
             }
+
+            if(obj.id){
+                this._rs_round = new Tastypie.Resource<OrgFundGsRound>(
+                    OrgFundGsRound.resource.endpoint,
+                    {model: OrgFundGsRound, defaults: {gs_id: obj.id}}
+                );
+            }
         }
+    }
+
+    public get rs_round(): Tastypie.Resource<OrgFundGsRound> {
+        return this._rs_round;
     }
 
     public get categories(): Array<OrgGsCategory> {
