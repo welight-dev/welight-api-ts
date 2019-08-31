@@ -19,6 +19,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public logo: string;
     public credit_type: string;
     public currency: string;
+    public currency_quote: number;
     public budget_limit: number;
     public contact_email: string;
     public verified: boolean;
