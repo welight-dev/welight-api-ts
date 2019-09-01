@@ -5,6 +5,7 @@ import { Tastypie } from "ts-resource-tastypie";
 
 export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     public static resource = new Tastypie.Resource<OrgFundGsRound>('doador-fundo-gs-round/round', {model: OrgFundGsRound});
+    public static resource_add_round = new Tastypie.Resource<any>('doador-fundo-gs-round/add-round');
 
     public gs_id: number;
     public total_amount: number;

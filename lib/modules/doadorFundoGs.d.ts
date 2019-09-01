@@ -35,6 +35,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     get_member(): Promise<OrgGsMember>;
     add_member(tokens_member: Array<string>, passw: string): Promise<OrgGsMember>;
     delete_member(token: string, passw: string): Promise<OrgGsMember>;
+    add_round(rounds: Array<OrgFundGsRound>): Promise<any>;
     check_step(): Promise<any>;
 }
 export declare class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {

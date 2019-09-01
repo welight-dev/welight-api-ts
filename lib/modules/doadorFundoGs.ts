@@ -112,6 +112,21 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
         }
     }
 
+    public add_round(rounds: Array<OrgFundGsRound>): Promise<any> {
+        if(this.id){
+            let params = [];
+            for(let round of rounds){
+                round.gs_id = this.id;
+                params.push(round.getData());
+            }
+            return OrgFundGsRound.resource_add_round.objects.create(params).then((data) => {
+                return data;
+            });
+        }else{
+            return Promise.reject('Giving stream not found');
+        }
+    }
+
     public check_step(): Promise<any> {
         if(this.id){
             return OrgFundGs.resource_check_step.objects.get(this.id);
