@@ -119,7 +119,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                 round.gs_id = this.id;
                 params.push(round.getData());
             }
-            return OrgFundGsRound.resource_add_round.objects.create(params).then((data) => {
+            return OrgFundGsRound.resource_add_round.objects.create({gs_id: this.id, rounds: params}).then((data) => {
                 let rounds: Array<OrgFundGsRound> = [];
                 for(let round of data){
                     rounds.push(new OrgFundGsRound(round));
