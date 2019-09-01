@@ -112,7 +112,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
         }
     }
 
-    public add_round(rounds: Array<OrgFundGsRound>): Promise<any> {
+    public add_round(rounds: Array<OrgFundGsRound>): Promise<Array<OrgFundGsRound>> {
         if(this.id){
             let params = [];
             for(let round of rounds){
@@ -120,7 +120,19 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                 params.push(round.getData());
             }
             return OrgFundGsRound.resource_add_round.objects.create(params).then((data) => {
-                return data;
+                let rounds: Array<OrgFundGsRound> = [];
+                for(let round of data){
+                    rounds.push(new OrgFundGsRound(round));
+                }
+                if(this._rs_round.page.initialized){
+                    return this._rs_round.page.refresh().then(() => {
+                        return rounds;
+                    }).catch(() => {
+                        return rounds;
+                    });
+                }else{
+                    return rounds;
+                }
             });
         }else{
             return Promise.reject('Giving stream not found');
