@@ -4,13 +4,14 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgAuthGroup } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
+import { GsForm } from "./doadorFundoGsForm";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
-    public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo-gs/gs', {model: OrgFundGs});
-    public static resource_get_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/get-member');
-    public static resource_add_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/add-member');
-    public static resource_delete_member = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/delete-member');
-    public static resource_check_step = new Tastypie.Resource<any>('doador-fundo-gs/gs/<id>/check-step');
+    public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
+    public static resource_get_member = new Tastypie.Resource<any>('doador-fundo/gs/<id>/get-member');
+    public static resource_add_member = new Tastypie.Resource<any>('doador-fundo/gs/add-member');
+    public static resource_delete_member = new Tastypie.Resource<any>('doador-fundo/gs/<id>/delete-member');
+    public static resource_check_step = new Tastypie.Resource<any>('doador-fundo/gs/<id>/check-step');
 
     public org_fund_id: number;
     public name: string;
@@ -33,6 +34,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public categories_id: Array<number>;
     private _categories: Array<OrgGsCategory>;
     private _rs_round: Tastypie.Resource<OrgFundGsRound>;
+    private _rs_form: Tastypie.Resource<GsForm>;
 
     constructor(obj?:any){
         super(OrgFundGs.resource, obj);
@@ -70,12 +72,20 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                     OrgFundGsRound.resource.endpoint,
                     {model: OrgFundGsRound, defaults: {gs_id: obj.id}}
                 );
+                this._rs_form = new Tastypie.Resource<GsForm>(
+                    GsForm.resource.endpoint,
+                    {model: GsForm, defaults: {gs_id: obj.id}}
+                );
             }
         }
     }
 
     public get rs_round(): Tastypie.Resource<OrgFundGsRound> {
         return this._rs_round;
+    }
+
+    public get rs_form(): Tastypie.Resource<GsForm> {
+        return this._rs_form;
     }
 
     public get categories(): Array<OrgGsCategory> {
@@ -149,7 +159,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 }
 
 export class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
-    public static resource = new Tastypie.Resource<OrgGsCategory>('doador-fundo-gs/category', {model: OrgGsCategory});
+    public static resource = new Tastypie.Resource<OrgGsCategory>('doador-fundo/org-gs-category', {model: OrgGsCategory});
 
     public org_id: number;
     public name: string;
@@ -162,7 +172,7 @@ export class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
 }
 
 export class OrgGsProduct extends Tastypie.Model<OrgGsProduct> {
-    public static resource = new Tastypie.Resource<OrgGsProduct>('doador-fundo-gs/product', {model: OrgGsProduct});
+    public static resource = new Tastypie.Resource<OrgGsProduct>('doador-fundo/org-gs-product', {model: OrgGsProduct});
 
     public org_id: number;
     public name: string;
