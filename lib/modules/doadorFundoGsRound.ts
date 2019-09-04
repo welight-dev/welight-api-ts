@@ -29,8 +29,37 @@ export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     public dt_created: string;
     public dt_updated: string;
 
+    private _rs_stage: Tastypie.Resource<OfgsStage>;
+
     constructor(obj?:any){
         super(OrgFundGsRound.resource, obj);
+
+        if(obj){
+            if(obj.id){
+                this._rs_stage = new Tastypie.Resource<OfgsStage>(
+                    OfgsStage.resource.endpoint,
+                    {model: OfgsStage, defaults: {round_id: obj.id}}
+                );
+            }
+        }
+    }
+
+    public get rs_stage(): Tastypie.Resource<OfgsStage> {
+        return this._rs_stage;
+    }
+
+    public add_stage(stages: Array<OfgsStage>): Promise<Array<OfgsStage>> {
+        let stage_list = [];
+        for(let stage of stages){
+            stage_list.push(stage.getData());
+        }
+        return OfgsStage.resource_add_stage.objects.create({round_id:this.id, stages:stage_list}).then((data)=>{
+              let stages_saved:Array<OfgsStage> = [];
+              for(let obj of data){
+                  stages_saved.push(new OfgsStage(obj));
+              }
+              return stages_saved;
+        });
     }
 }
 
@@ -45,6 +74,7 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
     public dt_end: string;
     public has_referral: boolean;
     public use_standard_questions: string;
+    public order: number;
     public dt_updated: string;
     public dt_created: string;
 
@@ -56,6 +86,7 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
         super(OfgsStage.resource, obj);
         this._evaluators = [];
         this._questions = [];
+        this._member_manager = new OfgsStageMemberManager();
         if(obj){
             if(obj.evaluators){
                 for(let ev of obj.evaluators){
@@ -70,17 +101,15 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
         }
     }
 
-    public save(obj?: any): Promise<OfgsStage> {
-        if(!obj){
-            obj = {};
-        }
+    public getData(): any {
+        let obj = super.getData();
         obj['evaluators'] = [];
         for(let ev of this._evaluators){
             obj['evaluators'].push(ev.getData());
         }
 
         obj['questions'] = this._questions;
-        return super.save(obj);
+        return obj;
     }
 
     public get evaluators(): Array<OfgsStageEvaluator> {

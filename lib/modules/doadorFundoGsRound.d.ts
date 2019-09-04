@@ -22,7 +22,10 @@ export declare class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     order: number;
     dt_created: string;
     dt_updated: string;
+    private _rs_stage;
     constructor(obj?: any);
+    readonly rs_stage: Tastypie.Resource<OfgsStage>;
+    add_stage(stages: Array<OfgsStage>): Promise<Array<OfgsStage>>;
 }
 export declare class OfgsStage extends Tastypie.Model<OfgsStage> {
     static resource: Tastypie.Resource<OfgsStage>;
@@ -34,13 +37,14 @@ export declare class OfgsStage extends Tastypie.Model<OfgsStage> {
     dt_end: string;
     has_referral: boolean;
     use_standard_questions: string;
+    order: number;
     dt_updated: string;
     dt_created: string;
     private _evaluators;
     private _questions;
     private _member_manager;
     constructor(obj?: any);
-    save(obj?: any): Promise<OfgsStage>;
+    getData(): any;
     readonly evaluators: Array<OfgsStageEvaluator>;
     readonly questions: Array<StageMemberQuestionTemplate>;
     readonly member_manager: OfgsStageMemberManager;
