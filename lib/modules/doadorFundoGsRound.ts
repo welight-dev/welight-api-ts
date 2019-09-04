@@ -2,6 +2,9 @@
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
 import { Tastypie } from "ts-resource-tastypie";
+import { OrgMember } from "./doadorFundo";
+import { StageMemberQuestionTemplate } from "./doadorFundoGsQuiz";
+
 
 export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     public static resource = new Tastypie.Resource<OrgFundGsRound>('doador-fundo/gs-round', {model: OrgFundGsRound});
@@ -28,5 +31,156 @@ export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
 
     constructor(obj?:any){
         super(OrgFundGsRound.resource, obj);
+    }
+}
+
+export class OfgsStage extends Tastypie.Model<OfgsStage> {
+    public static resource = new Tastypie.Resource<OfgsStage>('doador-fundo/gs-round-stage', {model: OfgsStage});
+    public static resource_add_stage = new Tastypie.Resource<any>('doador-fundo/gs-round-stage/add-list');
+
+    public round_id: number;
+    public name: string;
+    public evaluation_standard: string;
+    public dt_start: string;
+    public dt_end: string;
+    public has_referral: boolean;
+    public use_standard_questions: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    private _evaluators: Array<OfgsStageEvaluator>;
+    private _questions: Array<StageMemberQuestionTemplate>;
+    private _member_manager: OfgsStageMemberManager;
+
+    constructor(obj?:any){
+        super(OfgsStage.resource, obj);
+        this._evaluators = [];
+        this._questions = [];
+        if(obj){
+            if(obj.evaluators){
+                for(let ev of obj.evaluators){
+                    this._evaluators.push(new OfgsStageEvaluator(ev));
+                }
+            }
+            if(obj.questions){
+                for(let qt of obj.questions){
+                    this._questions.push(new StageMemberQuestionTemplate(qt));
+                }
+            }
+        }
+    }
+
+    public save(obj?: any): Promise<OfgsStage> {
+        if(!obj){
+            obj = {};
+        }
+        obj['evaluators'] = [];
+        for(let ev of this._evaluators){
+            obj['evaluators'].push(ev.getData());
+        }
+
+        obj['questions'] = this._questions;
+        return super.save(obj);
+    }
+
+    public get evaluators(): Array<OfgsStageEvaluator> {
+        return this._evaluators;
+    }
+
+    public get questions(): Array<StageMemberQuestionTemplate> {
+        return this._questions;
+    }
+
+    public get member_manager(): OfgsStageMemberManager {
+        return this._member_manager;
+    }
+
+    public select_members(tokens: Array<string>): void {
+        for(let token of tokens){
+            let member = this._member_manager.avaliable_members.find(m => m.token === token);
+
+            if(!this._evaluators.find(m => m.member.token === member.token)){
+                this._evaluators.push(new OfgsStageEvaluator({member:member, permission:'evaluate'}));
+            }
+            this._member_manager.select_members(tokens);
+        }
+    }
+
+    public unselect_member(token: string): void {
+        if(this._evaluators.find(m => m.member.token === token)){
+            for(let i=0; i<this._evaluators.length; i++){
+                if(this._evaluators[i].member.token === token){
+                    this._evaluators.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        this._member_manager.unselect_member(token);
+    }
+}
+
+export class OfgsStageEvaluator extends Tastypie.Model<OfgsStageEvaluator> {
+    public static resource = new Tastypie.Resource<OfgsStageEvaluator>('doador-fundo/gs-round-stage-evaluator', {model: OfgsStageEvaluator});
+
+    public stage_id: number;
+    public member: OrgMember;
+    public permission: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsStageEvaluator.resource, obj);
+
+        if(obj){
+            if(obj.member) this.member = new OrgMember(obj.member);
+        }
+    }
+}
+
+export class OfgsStageMemberManager {
+    public added_members: Array<OrgMember>;
+    public avaliable_members: Array<OrgMember>;
+
+    constructor(obj?:any){
+        this.added_members = [];
+        this.avaliable_members = [];
+        if(obj){
+            if(obj.added_members){
+              for(let member of obj.added_members){
+                  this.added_members.push(new OrgMember(member));
+              }
+            }
+            if(obj.avaliable_members){
+              for(let member of obj.avaliable_members){
+                  this.avaliable_members.push(new OrgMember(member));
+              }
+            }
+        }
+    }
+
+    public unselect_member(token: string): void {
+        for(let i=0; i<this.added_members.length; i++){
+            if(token === this.added_members[i].token){
+                if(!this.avaliable_members.find(member => member.token === token)){
+                    this.avaliable_members.push(this.added_members[i]);
+                }
+                this.added_members.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    public select_members(tokens: Array<string>): void {
+        for(let token of tokens){
+            if(!this.added_members.find(member => member.token === token)){
+                for(let i=0; i<this.avaliable_members.length; i++){
+                    if(token === this.avaliable_members[i].token){
+                        this.added_members.push(this.avaliable_members[i]);
+                        this.avaliable_members.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

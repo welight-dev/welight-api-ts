@@ -1,4 +1,4 @@
-// Type definitions for [~Welight Platform~] [~1.1.110~]
+// Type definitions for [~Welight Platform~] [~1.1.111~]
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
@@ -10,13 +10,14 @@ import * as WeNotify from './modules/weNotify';
 import * as Doador  from './modules/doador';
 import * as DoadorEmpresa from './modules/doadorEmpresa';
 import * as DoadorEmpresaEcommerce from './modules/doadorEmpresaEcommerce';
-import * as doadorEmpresaFatura from './modules/doadorEmpresaFatura';
+import * as DoadorEmpresaFatura from './modules/doadorEmpresaFatura';
 import * as DoadorEmpresaEvento from './modules/doadorEmpresaEvento';
 import * as DoadorEmpresaCampanha from './modules/doadorEmpresaCampanha';
 import * as DoadorFundo from './modules/doadorFundo';
 import * as DoadorFundoGs from './modules/doadorFundoGs';
 import * as DoadorFundoGsRound from './modules/doadorFundoGsRound';
 import * as DoadorFundoGsForm from './modules/doadorFundoGsForm';
+import * as DoadorFundoGsQuiz from './modules/doadorFundoGsQuiz';
 import * as Ong from './modules/ong';
 import * as Onu from './modules/onu';
 import * as Afiliadora from './modules/afiliadora';
@@ -31,13 +32,14 @@ export { WeNotify };
 export { Doador };
 export { DoadorEmpresa };
 export { DoadorEmpresaEcommerce };
-export { doadorEmpresaFatura };
+export { DoadorEmpresaFatura };
 export { DoadorEmpresaEvento };
 export { DoadorEmpresaCampanha };
 export { DoadorFundo };
 export { DoadorFundoGs };
 export { DoadorFundoGsRound };
 export { DoadorFundoGsForm };
+export { DoadorFundoGsQuiz };
 export { Ong };
 export { Onu };
 export { Afiliadora };

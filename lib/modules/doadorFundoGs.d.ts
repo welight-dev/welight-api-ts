@@ -1,5 +1,5 @@
 import { Tastypie } from "ts-resource-tastypie";
-import { OrgFund, OrgAuthGroup } from "./doadorFundo";
+import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm } from "./doadorFundoGsForm";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
@@ -56,15 +56,6 @@ export declare class OrgGsProduct extends Tastypie.Model<OrgGsProduct> {
     slug: string;
     amount: number;
     dt_created: string;
-    constructor(obj?: any);
-}
-export declare class OrgMember {
-    id: number;
-    name: string;
-    auth_group: Array<OrgAuthGroup>;
-    auth_group_display: string;
-    admin: boolean;
-    token: string;
     constructor(obj?: any);
 }
 export declare class OrgGsMember {

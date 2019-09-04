@@ -572,3 +572,29 @@ export class OrgAuthGroup extends Tastypie.Model<OrgAuthGroup> {
         super(OrgAuthGroup.resource, obj);
     }
 }
+
+export class OrgMember {
+    public id: number;
+    public name: string;
+    public auth_group: Array<OrgAuthGroup>;
+    public auth_group_display: string;
+    public admin: boolean;
+    public token: string;
+
+    constructor(obj?:any){
+        this.auth_group = [];
+        if(obj){
+            this.id = obj.id;
+            this.name = obj.name;
+            this.auth_group_display = obj.auth_group_display;
+            this.admin = obj.admin;
+            this.token = obj.token;
+
+            if(obj.auth_group){
+                for(let group of obj.auth_group){
+                    this.auth_group.push(new OrgAuthGroup(group));
+                }
+            }
+        }
+    }
+}

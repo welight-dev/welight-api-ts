@@ -2,7 +2,7 @@
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
 import { Tastypie } from "ts-resource-tastypie";
-import { OrgFund, OrgAuthGroup } from "./doadorFundo";
+import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm } from "./doadorFundoGsForm";
 
@@ -182,32 +182,6 @@ export class OrgGsProduct extends Tastypie.Model<OrgGsProduct> {
 
     constructor(obj?:any){
         super(OrgGsProduct.resource, obj);
-    }
-}
-
-export class OrgMember {
-    public id: number;
-    public name: string;
-    public auth_group: Array<OrgAuthGroup>;
-    public auth_group_display: string;
-    public admin: boolean;
-    public token: string;
-
-    constructor(obj?:any){
-        this.auth_group = [];
-        if(obj){
-            this.id = obj.id;
-            this.name = obj.name;
-            this.auth_group_display = obj.auth_group_display;
-            this.admin = obj.admin;
-            this.token = obj.token;
-
-            if(obj.auth_group){
-                for(let group of obj.auth_group){
-                    this.auth_group.push(new OrgAuthGroup(group));
-                }
-            }
-        }
     }
 }
 

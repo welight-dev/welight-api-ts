@@ -225,3 +225,12 @@ export declare class OrgAuthGroup extends Tastypie.Model<OrgAuthGroup> {
     dt_updated: string;
     constructor(obj?: any);
 }
+export declare class OrgMember {
+    id: number;
+    name: string;
+    auth_group: Array<OrgAuthGroup>;
+    auth_group_display: string;
+    admin: boolean;
+    token: string;
+    constructor(obj?: any);
+}
