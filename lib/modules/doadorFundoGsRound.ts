@@ -131,8 +131,8 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
             if(!this._evaluators.find(m => m.member.token === member.token)){
                 this._evaluators.push(new OfgsStageEvaluator({member:member, permission:'evaluate'}));
             }
-            this._member_manager.select_members(tokens);
         }
+        this._member_manager.select_members(tokens);
     }
 
     public unselect_member(token: string): void {
