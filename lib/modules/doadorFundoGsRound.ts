@@ -147,12 +147,19 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
         this._member_manager.unselect_member(token);
     }
 
-    public add_question(obj?:any): void {
+    public add_question(obj: QuestionTemplate): void {
+        obj.evaluation_flag = this.evaluation_standard;
         this._questions.push(new QuestionTemplate(obj));
     }
 
     public delete_question(index: number): void {
         this._questions.splice(index, 1);
+    }
+
+    public on_change_evaluation_standard(): void {
+        for(let question of this._questions){
+            question.evaluation_flag = this.evaluation_standard;
+        }
     }
 }
 

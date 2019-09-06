@@ -16,6 +16,7 @@ export class QuestionTemplate {
     public dt_updated: string;
 
     constructor(obj?:any) {
+        this.choices = [];
         if(obj){
             for(let attr in obj){
                 this[attr] = obj[attr];

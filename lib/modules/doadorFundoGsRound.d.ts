@@ -50,8 +50,9 @@ export declare class OfgsStage extends Tastypie.Model<OfgsStage> {
     readonly member_manager: OfgsStageMemberManager;
     select_members(tokens: Array<string>): void;
     unselect_member(token: string): void;
-    add_question(obj?: any): void;
+    add_question(obj: QuestionTemplate): void;
     delete_question(index: number): void;
+    on_change_evaluation_standard(): void;
 }
 export declare class OfgsStageEvaluator extends Tastypie.Model<OfgsStageEvaluator> {
     static resource: Tastypie.Resource<OfgsStageEvaluator>;
