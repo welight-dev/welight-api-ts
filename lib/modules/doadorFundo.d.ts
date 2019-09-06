@@ -228,9 +228,10 @@ export declare class OrgAuthGroup extends Tastypie.Model<OrgAuthGroup> {
 export declare class OrgMember {
     id: number;
     name: string;
-    auth_group: Array<OrgAuthGroup>;
     auth_group_display: string;
     admin: boolean;
     token: string;
+    private _auth_group;
     constructor(obj?: any);
+    readonly auth_group: Array<OrgAuthGroup>;
 }

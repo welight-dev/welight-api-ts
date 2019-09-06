@@ -576,13 +576,14 @@ export class OrgAuthGroup extends Tastypie.Model<OrgAuthGroup> {
 export class OrgMember {
     public id: number;
     public name: string;
-    public auth_group: Array<OrgAuthGroup>;
     public auth_group_display: string;
     public admin: boolean;
     public token: string;
 
+    private _auth_group: Array<OrgAuthGroup>;
+
     constructor(obj?:any){
-        this.auth_group = [];
+        this._auth_group = [];
         if(obj){
             this.id = obj.id;
             this.name = obj.name;
@@ -592,9 +593,13 @@ export class OrgMember {
 
             if(obj.auth_group){
                 for(let group of obj.auth_group){
-                    this.auth_group.push(new OrgAuthGroup(group));
+                    this._auth_group.push(new OrgAuthGroup(group));
                 }
             }
         }
+    }
+
+    public get auth_group(): Array<OrgAuthGroup> {
+        return this._auth_group;
     }
 }
