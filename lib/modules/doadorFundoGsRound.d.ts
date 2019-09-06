@@ -1,6 +1,6 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { OrgMember } from "./doadorFundo";
-import { StageMemberQuestionTemplate } from "./doadorFundoGsQuiz";
+import { QuestionTemplate } from "./doadorFundoGsQuiz";
 export declare class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     static resource: Tastypie.Resource<OrgFundGsRound>;
     static resource_add_round: Tastypie.Resource<any>;
@@ -46,10 +46,12 @@ export declare class OfgsStage extends Tastypie.Model<OfgsStage> {
     constructor(obj?: any);
     getData(): any;
     readonly evaluators: Array<OfgsStageEvaluator>;
-    readonly questions: Array<StageMemberQuestionTemplate>;
+    readonly questions: Array<QuestionTemplate>;
     readonly member_manager: OfgsStageMemberManager;
     select_members(tokens: Array<string>): void;
     unselect_member(token: string): void;
+    add_question(obj?: any): void;
+    delete_question(index: number): void;
 }
 export declare class OfgsStageEvaluator extends Tastypie.Model<OfgsStageEvaluator> {
     static resource: Tastypie.Resource<OfgsStageEvaluator>;

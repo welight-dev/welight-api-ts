@@ -23,29 +23,3 @@ export class QuestionTemplate {
         }
     }
 }
-
-export class StageMemberQuestionTemplate extends QuestionTemplate {
-    public stage_id: number;
-
-    constructor(obj?:any){
-        super(obj);
-    }
-}
-
-export class RefQuestionTemplate extends QuestionTemplate {
-    public gs_id: number;
-    public form_topic: number;
-
-    constructor(obj?:any){
-        super(obj);
-    }
-}
-
-export class OngQuestionTemplate extends QuestionTemplate {
-    public gs_id: number;
-    public form_topic: number;
-
-    constructor(obj?:any){
-        super(obj);
-    }
-}

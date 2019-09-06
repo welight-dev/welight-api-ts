@@ -3,7 +3,7 @@
 
 import { Tastypie } from "ts-resource-tastypie";
 import { OrgMember } from "./doadorFundo";
-import { StageMemberQuestionTemplate } from "./doadorFundoGsQuiz";
+import { QuestionTemplate } from "./doadorFundoGsQuiz";
 
 
 export class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
@@ -79,7 +79,7 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
     public dt_created: string;
 
     private _evaluators: Array<OfgsStageEvaluator>;
-    private _questions: Array<StageMemberQuestionTemplate>;
+    private _questions: Array<QuestionTemplate>;
     private _member_manager: OfgsStageMemberManager;
 
     constructor(obj?:any){
@@ -95,7 +95,7 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
             }
             if(obj.questions){
                 for(let qt of obj.questions){
-                    this._questions.push(new StageMemberQuestionTemplate(qt));
+                    this._questions.push(new QuestionTemplate(qt));
                 }
             }
         }
@@ -116,7 +116,7 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
         return this._evaluators;
     }
 
-    public get questions(): Array<StageMemberQuestionTemplate> {
+    public get questions(): Array<QuestionTemplate> {
         return this._questions;
     }
 
@@ -145,6 +145,14 @@ export class OfgsStage extends Tastypie.Model<OfgsStage> {
             }
         }
         this._member_manager.unselect_member(token);
+    }
+
+    public add_question(obj?:any): void {
+        this._questions.push(new QuestionTemplate(obj));
+    }
+
+    public delete_question(index: number): void {
+        this._questions.splice(index, 1);
     }
 }
 
