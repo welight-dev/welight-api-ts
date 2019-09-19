@@ -55,7 +55,7 @@ export declare class Address extends Tastypie.Model<Address> {
     country: string;
     country_code: string;
     postal_code: string;
-    geocode: string;
+    geocode: any;
     place_id: string;
     dt_created: string;
     dt_updated: string;

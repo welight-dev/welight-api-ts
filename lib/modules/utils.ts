@@ -146,7 +146,7 @@ export class Address extends Tastypie.Model<Address> {
     public country: string;
     public country_code: string;
     public postal_code: string;
-    public geocode: string;
+    public geocode: any;
     public place_id: string;
     public dt_created: string;
     public dt_updated: string;
@@ -197,6 +197,7 @@ export class Address extends Tastypie.Model<Address> {
                 address_list.push(new Address(this.resource, {
                     region: add_temp.formatted_address,
                     place_id: add_temp.place_id,
+                    geocode: add_temp,
                     number: obj_address.street_number['long_name'],
                     street: obj_address.route['long_name'],
                     district: obj_address.sublocality_level_1['long_name'] || obj_address.locality['long_name'],
