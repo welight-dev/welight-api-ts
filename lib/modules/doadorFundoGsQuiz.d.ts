@@ -3,6 +3,15 @@ export interface QuestionChoice {
     value: any;
     flag: string;
 }
+export interface MeasurementType {
+    token: string;
+    name: string;
+}
+export interface DisbursementRules {
+    porcent: number;
+    measurement: MeasurementType;
+}
+export declare const MEASUREMENT_TYPES: Array<MeasurementType>;
 export declare class QuestionTemplate {
     name: string;
     choices: Array<QuestionChoice>;
