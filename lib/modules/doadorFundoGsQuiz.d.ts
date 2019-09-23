@@ -10,6 +10,7 @@ export interface MeasurementType {
 export interface DisbursementRules {
     percent: number;
     measurement: MeasurementType;
+    custom_value?: any;
 }
 export declare const MEASUREMENT_TYPES: Array<MeasurementType>;
 export declare class QuestionTemplate {

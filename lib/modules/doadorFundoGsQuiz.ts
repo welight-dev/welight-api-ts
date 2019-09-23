@@ -2,19 +2,20 @@
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
 export interface QuestionChoice {
-    name: string,
-    value: any,
-    flag: string
+    name: string;
+    value: any;
+    flag: string;
 }
 
 export interface MeasurementType {
-    token: string,
-    name: string
+    token: string;
+    name: string;
 }
 
 export interface DisbursementRules {
     percent: number;
-    measurement: MeasurementType
+    measurement: MeasurementType;
+    custom_value?: any
 }
 
 export const MEASUREMENT_TYPES: Array<MeasurementType> = [
