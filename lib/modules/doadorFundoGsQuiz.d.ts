@@ -12,7 +12,16 @@ export interface DisbursementRules {
     percent: number;
     measurement: MeasurementType;
 }
+export interface ReportingType {
+    token: string;
+    name: string;
+}
+export interface ReportingRules {
+    report: ReportingType;
+    measurement: MeasurementType;
+}
 export declare const MEASUREMENT_TYPES: Array<MeasurementType>;
+export declare const REPORTING_TYPES: Array<ReportingType>;
 export declare class QuestionTemplate {
     name: string;
     choices: Array<QuestionChoice>;
