@@ -8,7 +8,7 @@ export interface MeasurementType {
     name: string;
 }
 export interface DisbursementRules {
-    porcent: number;
+    percent: number;
     measurement: MeasurementType;
 }
 export declare const MEASUREMENT_TYPES: Array<MeasurementType>;

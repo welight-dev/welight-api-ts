@@ -13,7 +13,7 @@ export interface MeasurementType {
 }
 
 export interface DisbursementRules {
-    porcent: number;
+    percent: number;
     measurement: MeasurementType
 }
 
