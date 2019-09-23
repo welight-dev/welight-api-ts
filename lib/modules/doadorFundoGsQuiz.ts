@@ -10,12 +10,12 @@ export interface QuestionChoice {
 export interface MeasurementType {
     token: string;
     name: string;
+    custom_value?: any
 }
 
 export interface DisbursementRules {
     percent: number;
     measurement: MeasurementType;
-    custom_value?: any
 }
 
 export const MEASUREMENT_TYPES: Array<MeasurementType> = [
@@ -28,7 +28,7 @@ export const MEASUREMENT_TYPES: Array<MeasurementType> = [
     {token: 'frequency_every_2_months', name: 'Every 2 months'},
     {token: 'frequency_every_3_months', name: 'Every 3 months'},
     {token: 'frequency_every_4_months', name: 'Every 4 months'},
-    {token: 'exact_months', name: 'Months separated with commas'}
+    {token: 'exact_months', name: 'Months separated with commas', custom_value: ""}
 ];
 
 export class QuestionTemplate {
