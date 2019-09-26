@@ -46,6 +46,13 @@ export const REPORTING_TYPES: Array<ReportingType> = [
     {token: 'outcome_measurement_evidences', name: 'Outcome measurement and evidences'}
 ];
 
+export const QUESTION_TYPES: Array<string> = [
+    'radio',
+    'checkbox',
+    'text',
+    'number'
+];
+
 export class QuestionTemplate {
     public name: string;
     public choices: Array<QuestionChoice>;
