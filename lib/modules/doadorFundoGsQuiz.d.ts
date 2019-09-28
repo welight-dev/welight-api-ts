@@ -28,6 +28,7 @@ export declare class QuestionTemplate {
     choices: Array<QuestionChoice>;
     form_type: string;
     evaluation_flag: string;
+    token: string;
     dt_created: string;
     dt_updated: string;
     constructor(obj?: any);

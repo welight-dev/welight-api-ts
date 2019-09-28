@@ -58,6 +58,7 @@ export class QuestionTemplate {
     public choices: Array<QuestionChoice>;
     public form_type: string;
     public evaluation_flag: string;
+    public token: string;
     public dt_created: string;
     public dt_updated: string;
 
