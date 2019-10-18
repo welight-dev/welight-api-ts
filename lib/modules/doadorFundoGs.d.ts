@@ -2,6 +2,7 @@ import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm } from "./doadorFundoGsForm";
+import { Ong } from "./ong";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -21,6 +22,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     verified: boolean;
     private: boolean;
     published: boolean;
+    access_url: string;
     dt_created: string;
     dt_updated: string;
     org_fund: OrgFund;
@@ -29,11 +31,13 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _categories;
     private _rs_round;
     private _rs_form;
+    private _rs_invite_ong;
     constructor(obj?: any);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
     readonly rs_round: Tastypie.Resource<OrgFundGsRound>;
     readonly rs_form: Tastypie.Resource<GsForm>;
+    readonly rs_invite_ong: Tastypie.Resource<OfgsInvitationOng>;
     readonly categories: Array<OrgGsCategory>;
     get_member(): Promise<OrgGsMember>;
     add_member(tokens_member: Array<string>, passw: string): Promise<OrgGsMember>;
@@ -61,5 +65,18 @@ export declare class OrgGsProduct extends Tastypie.Model<OrgGsProduct> {
 export declare class OrgGsMember {
     added_members: Array<OrgMember>;
     avaliable_members: Array<OrgMember>;
+    constructor(obj?: any);
+}
+export declare class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng> {
+    static resource: Tastypie.Resource<OfgsInvitationOng>;
+    gs_id: number;
+    md_gs: OrgFundGs;
+    md_ong: Ong;
+    invite_name: string;
+    invite_email: string;
+    invite_token: string;
+    status: string;
+    dt_updated: string;
+    dt_created: string;
     constructor(obj?: any);
 }

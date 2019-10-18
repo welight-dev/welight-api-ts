@@ -5,6 +5,7 @@ import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm } from "./doadorFundoGsForm";
+import { Ong } from "./ong";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
@@ -26,6 +27,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public verified: boolean;
     public private: boolean;
     public published: boolean;
+    public access_url: string;
     public dt_created: string;
     public dt_updated: string;
 
@@ -35,6 +37,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _categories: Array<OrgGsCategory>;
     private _rs_round: Tastypie.Resource<OrgFundGsRound>;
     private _rs_form: Tastypie.Resource<GsForm>;
+    private _rs_invite_ong: Tastypie.Resource<OfgsInvitationOng>;
 
     constructor(obj?:any){
         super(OrgFundGs.resource, obj);
@@ -76,6 +79,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                     GsForm.resource.endpoint,
                     {model: GsForm, defaults: {gs_id: obj.id}}
                 );
+                this._rs_invite_ong = new Tastypie.Resource<OfgsInvitationOng>(
+                    OfgsInvitationOng.resource.endpoint,
+                    {model: OfgsInvitationOng, defaults: {gs_id: obj.id}}
+                );
             }
         }
     }
@@ -86,6 +93,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
     public get rs_form(): Tastypie.Resource<GsForm> {
         return this._rs_form;
+    }
+
+    public get rs_invite_ong(): Tastypie.Resource<OfgsInvitationOng> {
+        return this._rs_invite_ong;
     }
 
     public get categories(): Array<OrgGsCategory> {
@@ -203,6 +214,30 @@ export class OrgGsMember {
                   this.avaliable_members.push(new OrgMember(member));
               }
             }
+        }
+    }
+}
+
+export class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng> {
+    public static resource = new Tastypie.Resource<OfgsInvitationOng>('doador-fundo/gs-invitation', {model: OfgsInvitationOng});
+
+    public gs_id: number;
+    public md_gs: OrgFundGs;
+    public md_ong: Ong;
+
+    public invite_name: string;
+    public invite_email: string;
+    public invite_token: string;
+    public status: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsInvitationOng.resource, obj);
+
+        if(obj){
+            if(obj.gs) this.md_gs = new OrgFundGs(obj.gs);
+            if(obj.ong) this.md_ong = new Ong(obj.ong);
         }
     }
 }
