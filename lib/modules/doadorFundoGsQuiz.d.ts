@@ -33,6 +33,7 @@ export declare class QuestionTemplate {
     form_type: string;
     evaluation_flag: string;
     token: string;
+    checked: boolean;
     dt_created: string;
     dt_updated: string;
     constructor(obj?: any);

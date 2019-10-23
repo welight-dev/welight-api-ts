@@ -65,6 +65,7 @@ export class QuestionTemplate {
     public form_type: string;
     public evaluation_flag: string;
     public token: string;
+    public checked: boolean;
     public dt_created: string;
     public dt_updated: string;
 
