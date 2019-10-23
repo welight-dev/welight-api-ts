@@ -56,6 +56,7 @@ export const QUESTION_TYPES: Array<string> = [
 export class QuestionTemplate {
     public name: string;
     public choices: Array<QuestionChoice>;
+    public resp: string;
     public form_type: string;
     public evaluation_flag: string;
     public token: string;
