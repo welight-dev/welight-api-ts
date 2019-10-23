@@ -32,7 +32,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _rs_round;
     private _rs_form;
     private _rs_invite_ong;
-    constructor(obj?: any);
+    constructor(obj?: any, resource?: Tastypie.Resource<OrgFundGs>);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
     readonly rs_round: Tastypie.Resource<OrgFundGsRound>;
@@ -44,6 +44,11 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     delete_member(token: string, passw: string): Promise<OrgGsMember>;
     add_round(rounds: Array<OrgFundGsRound>): Promise<Array<OrgFundGsRound>>;
     check_step(): Promise<any>;
+}
+export declare class OrgFundGsFormSubscribe extends OrgFundGs {
+    static resource: Tastypie.Resource<OrgFundGsFormSubscribe>;
+    forms: Array<GsForm>;
+    constructor(obj?: any);
 }
 export declare class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
     static resource: Tastypie.Resource<OrgGsCategory>;

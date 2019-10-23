@@ -39,8 +39,8 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _rs_form: Tastypie.Resource<GsForm>;
     private _rs_invite_ong: Tastypie.Resource<OfgsInvitationOng>;
 
-    constructor(obj?:any){
-        super(OrgFundGs.resource, obj);
+    constructor(obj?:any, resource?:Tastypie.Resource<OrgFundGs>){
+        super(resource || OrgFundGs.resource, obj);
         this._init(obj);
     }
 
@@ -165,6 +165,23 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
             return OrgFundGs.resource_check_step.objects.get(this.id);
         }else{
             return Promise.reject('Giving stream not found');
+        }
+    }
+}
+
+export class OrgFundGsFormSubscribe extends OrgFundGs {
+    public static resource = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe', {model: OrgFundGsFormSubscribe});
+    public forms: Array<GsForm>;
+
+    constructor(obj?:any){
+        super(obj, OrgFundGsFormSubscribe.resource);
+        this.forms = [];
+        if(obj){
+            if(obj.forms){
+                for(let form of obj.forms){
+                    this.forms.push(new GsForm(form));
+                }
+            }
         }
     }
 }
