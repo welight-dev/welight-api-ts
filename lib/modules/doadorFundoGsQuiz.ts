@@ -47,16 +47,21 @@ export const REPORTING_TYPES: Array<ReportingType> = [
 ];
 
 export const QUESTION_TYPES: Array<string> = [
-    'radio',
-    'checkbox',
     'text',
-    'number'
+    'number',
+    'datetime',
+    'file',
+    'radio',
+    'checkbox'
 ];
 
 export class QuestionTemplate {
     public name: string;
     public choices: Array<QuestionChoice>;
-    public resp: string;
+    public resp_text: string;
+    public resp_number: number
+    public resp_date: string;
+    public resp_file: string;
     public form_type: string;
     public evaluation_flag: string;
     public token: string;

@@ -26,7 +26,10 @@ export declare const QUESTION_TYPES: Array<string>;
 export declare class QuestionTemplate {
     name: string;
     choices: Array<QuestionChoice>;
-    resp: string;
+    resp_text: string;
+    resp_number: number;
+    resp_date: string;
+    resp_file: string;
     form_type: string;
     evaluation_flag: string;
     token: string;
