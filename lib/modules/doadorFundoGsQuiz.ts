@@ -50,10 +50,10 @@ export const QUESTION_TYPES: Array<string> = [
     'text',
     'number',
     'datetime',
-    'file',
     'radio',
     'checkbox',
-    'metric'
+    'currency',
+    'file'
 ];
 
 export class QuestionTemplate {
