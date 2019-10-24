@@ -30,6 +30,7 @@ export declare class QuestionTemplate {
     resp_number: number;
     resp_date: string;
     resp_file: string;
+    resp_metrics: Array<number>;
     form_type: string;
     evaluation_flag: string;
     token: string;

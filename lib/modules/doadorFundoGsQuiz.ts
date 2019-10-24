@@ -52,7 +52,8 @@ export const QUESTION_TYPES: Array<string> = [
     'datetime',
     'file',
     'radio',
-    'checkbox'
+    'checkbox',
+    'metric'
 ];
 
 export class QuestionTemplate {
@@ -62,6 +63,7 @@ export class QuestionTemplate {
     public resp_number: number
     public resp_date: string;
     public resp_file: string;
+    public resp_metrics: Array<number>;
     public form_type: string;
     public evaluation_flag: string;
     public token: string;
