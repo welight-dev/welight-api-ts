@@ -29,12 +29,15 @@ export declare class QuestionTemplate {
     resp_text: string;
     resp_number: number;
     resp_date: string;
-    resp_file: string;
     resp_metrics: Array<number>;
+    resp_currency: number;
+    resp_file: string;
     form_type: string;
     evaluation_flag: string;
     token: string;
     checked: boolean;
+    order: number;
+    required: boolean;
     dt_created: string;
     dt_updated: string;
     constructor(obj?: any);

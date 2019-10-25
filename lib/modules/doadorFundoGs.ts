@@ -169,23 +169,6 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     }
 }
 
-export class OrgFundGsFormSubscribe extends OrgFundGs {
-    public static resource = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe', {model: OrgFundGsFormSubscribe});
-    public forms: Array<GsForm>;
-
-    constructor(obj?:any){
-        super(obj, OrgFundGsFormSubscribe.resource);
-        this.forms = [];
-        if(obj){
-            if(obj.forms){
-                for(let form of obj.forms){
-                    this.forms.push(new GsForm(form));
-                }
-            }
-        }
-    }
-}
-
 export class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
     public static resource = new Tastypie.Resource<OrgGsCategory>('doador-fundo/org-gs-category', {model: OrgGsCategory});
 
@@ -255,6 +238,23 @@ export class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng> {
         if(obj){
             if(obj.gs) this.md_gs = new OrgFundGs(obj.gs);
             if(obj.ong) this.md_ong = new Ong(obj.ong);
+        }
+    }
+}
+
+export class OrgFundGsFormSubscribe extends OrgFundGs {
+    public static resource = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe', {model: OrgFundGsFormSubscribe});
+    public forms: Array<GsForm>;
+
+    constructor(obj?:any){
+        super(obj, OrgFundGsFormSubscribe.resource);
+        this.forms = [];
+        if(obj){
+            if(obj.forms){
+                for(let form of obj.forms){
+                    this.forms.push(new GsForm(form));
+                }
+            }
         }
     }
 }

@@ -62,12 +62,15 @@ export class QuestionTemplate {
     public resp_text: string;
     public resp_number: number
     public resp_date: string;
-    public resp_file: string;
     public resp_metrics: Array<number>;
+    public resp_currency: number;
+    public resp_file: string;
     public form_type: string;
     public evaluation_flag: string;
     public token: string;
     public checked: boolean;
+    public order: number;
+    public required: boolean;
     public dt_created: string;
     public dt_updated: string;
 

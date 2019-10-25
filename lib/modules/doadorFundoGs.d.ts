@@ -45,11 +45,6 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     add_round(rounds: Array<OrgFundGsRound>): Promise<Array<OrgFundGsRound>>;
     check_step(): Promise<any>;
 }
-export declare class OrgFundGsFormSubscribe extends OrgFundGs {
-    static resource: Tastypie.Resource<OrgFundGsFormSubscribe>;
-    forms: Array<GsForm>;
-    constructor(obj?: any);
-}
 export declare class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
     static resource: Tastypie.Resource<OrgGsCategory>;
     org_id: number;
@@ -83,5 +78,10 @@ export declare class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng>
     status: string;
     dt_updated: string;
     dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OrgFundGsFormSubscribe extends OrgFundGs {
+    static resource: Tastypie.Resource<OrgFundGsFormSubscribe>;
+    forms: Array<GsForm>;
     constructor(obj?: any);
 }
