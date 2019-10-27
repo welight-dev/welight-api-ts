@@ -4,8 +4,8 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
-import { GsForm } from "./doadorFundoGsForm";
-import { Ong } from "./ong";
+import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
+import { Ong, OngProjeto } from "./ong";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
@@ -38,6 +38,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _rs_round: Tastypie.Resource<OrgFundGsRound>;
     private _rs_form: Tastypie.Resource<GsForm>;
     private _rs_invite_ong: Tastypie.Resource<OfgsInvitationOng>;
+    private _rs_project: Tastypie.Resource<OfgsProject>;
 
     constructor(obj?:any, resource?:Tastypie.Resource<OrgFundGs>){
         super(resource || OrgFundGs.resource, obj);
@@ -83,6 +84,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                     OfgsInvitationOng.resource.endpoint,
                     {model: OfgsInvitationOng, defaults: {gs_id: obj.id}}
                 );
+                this._rs_project = new Tastypie.Resource<OfgsProject>(
+                    OfgsProject.resource.endpoint,
+                    {model: OfgsProject, defaults: {gs_id: obj.id}}
+                );
             }
         }
     }
@@ -97,6 +102,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
     public get rs_invite_ong(): Tastypie.Resource<OfgsInvitationOng> {
         return this._rs_invite_ong;
+    }
+
+    public get rs_project(): Tastypie.Resource<OfgsProject> {
+        return this._rs_project;
     }
 
     public get categories(): Array<OrgGsCategory> {
@@ -253,6 +262,37 @@ export class OrgFundGsFormSubscribe extends OrgFundGs {
             if(obj.forms){
                 for(let form of obj.forms){
                     this.forms.push(new GsForm(form));
+                }
+            }
+        }
+    }
+}
+
+export class OfgsProject extends Tastypie.Model<OfgsProject> {
+    public static resource = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-project', {model: OfgsProject});
+
+    public gs_id: number;
+    public md_project: OngProjeto;
+    public md_ong: Ong;
+
+    public total_requested: number;
+    public total_approved: number;
+    public accept_partial: boolean;
+    public forms: Array<GsFormResponse>;
+
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsProject.resource, obj);
+        this.forms = [];
+
+        if(obj){
+            if(obj.project) this.md_project = new OngProjeto(obj.project);
+            if(obj.ong) this.md_ong = new Ong(obj.ong);
+            if(obj.forms){
+                for(let form of obj.forms){
+                    this.forms.push(new GsFormResponse(form));
                 }
             }
         }
