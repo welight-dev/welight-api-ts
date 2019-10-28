@@ -81,5 +81,8 @@ export class QuestionTemplate {
                 this[attr] = obj[attr];
             }
         }
+
+        if(!this.resp_currency) this.resp_currency = 0.00;
+        if(!this.resp_number) this.resp_number = 0;
     }
 }
