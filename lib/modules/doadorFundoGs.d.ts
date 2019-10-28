@@ -85,6 +85,7 @@ export declare class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng>
 export declare class OrgFundGsFormSubscribe extends OrgFundGs {
     static resource: Tastypie.Resource<OrgFundGsFormSubscribe>;
     forms: Array<GsForm>;
+    invite: OfgsInvitationOng;
     constructor(obj?: any);
 }
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
