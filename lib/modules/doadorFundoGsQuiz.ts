@@ -31,19 +31,20 @@ export interface ReportingRules {
 export const MEASUREMENT_TYPES: Array<MeasurementType> = [
     {token: 'milestone_project_approval', name: 'Project approval'},
     {token: 'milestone_half_project', name: 'Half project'},
-    {token: 'milestone_after_approval_mid_term_report', name: 'After approval of mid-term report'},
-    {token: 'milestone_interin_report', name: 'Interin report'},
-    {token: 'milestone_final_report', name: 'Final report'},
+    {token: 'milestone_project_conclusion', name: 'Project conclusion'},
     {token: 'frequency_every_month', name: 'Every month'},
     {token: 'frequency_every_2_months', name: 'Every 2 months'},
     {token: 'frequency_every_3_months', name: 'Every 3 months'},
     {token: 'frequency_every_4_months', name: 'Every 4 months'},
+    {token: 'frequency_every_5_months', name: 'Every 5 months'},
+    {token: 'frequency_every_6_months', name: 'Every 6 months'},
     {token: 'exact_months', name: 'Months separated with commas', custom_value: ''}
 ];
 
 export const REPORTING_TYPES: Array<ReportingType> = [
     {token: 'financial_spreadsheets', name: 'Financial spreadsheets'},
-    {token: 'outcome_measurement_evidences', name: 'Outcome measurement and evidences'}
+    {token: 'outcome_measurement_evidences', name: 'Outcome measurement and evidences'},
+    {token: 'output_measurement_evidences', name: 'Output measurement and evidences'}
 ];
 
 export const QUESTION_TYPES: Array<string> = [
