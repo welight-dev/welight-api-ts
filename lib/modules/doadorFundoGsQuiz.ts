@@ -42,9 +42,11 @@ export const MEASUREMENT_TYPES: Array<MeasurementType> = [
 ];
 
 export const REPORTING_TYPES: Array<ReportingType> = [
+    {token: 'invoices_receipts', name: 'Invoices and receipts'},
     {token: 'financial_spreadsheets', name: 'Financial spreadsheets'},
     {token: 'outcome_measurement_evidences', name: 'Outcome measurement and evidences'},
-    {token: 'output_measurement_evidences', name: 'Output measurement and evidences'}
+    {token: 'output_measurement_evidences', name: 'Output measurement and evidences'},
+    {token: 'stories', name: 'Stories'}
 ];
 
 export const QUESTION_TYPES: Array<string> = [
