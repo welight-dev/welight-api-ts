@@ -3,6 +3,7 @@ export declare class Ods extends api.Tastypie.Model<Ods> {
     static resource: api.Tastypie.Resource<Ods>;
     tipo: string;
     nome: string;
+    nome_en: string;
     descricao: string;
     objetivo: string;
     fatos: string;

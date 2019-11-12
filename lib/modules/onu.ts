@@ -8,6 +8,7 @@ export class Ods extends api.Tastypie.Model<Ods> {
 
     public tipo: string;
     public nome: string;
+    public nome_en: string;
     public descricao: string;
     public objetivo: string;
     public fatos: string;
