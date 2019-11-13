@@ -1,4 +1,3 @@
-import { Address } from "./utils";
 export interface QuestionChoice {
     name: string;
     value: any;
@@ -31,7 +30,7 @@ export declare class QuestionTemplate {
     resp_number: number;
     resp_date: string;
     resp_metrics: Array<number>;
-    resp_geolocation: Address;
+    resp_geolocation: any;
     resp_currency: number;
     resp_file: string;
     form_type: string;

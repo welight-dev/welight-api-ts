@@ -69,7 +69,7 @@ export class QuestionTemplate {
     public resp_number: number
     public resp_date: string;
     public resp_metrics: Array<number>;
-    public resp_geolocation: Address;
+    public resp_geolocation: any;
     public resp_currency: number;
     public resp_file: string;
     public form_type: string;
@@ -87,10 +87,7 @@ export class QuestionTemplate {
             for(let attr in obj){
                 this[attr] = obj[attr];
             }
-
-            if(obj.resp_geolocation) this.resp_geolocation = new Address(obj.resp_geolocation);
         }
-
         if(!this.resp_currency) this.resp_currency = 0.00;
         if(!this.resp_number) this.resp_number = 0;
     }
