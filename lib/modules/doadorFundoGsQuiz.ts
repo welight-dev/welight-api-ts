@@ -1,6 +1,8 @@
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
 
+import { Address } from "./utils";
+
 export interface QuestionChoice {
     name: string;
     value: any;
@@ -56,7 +58,8 @@ export const QUESTION_TYPES: Array<string> = [
     'radio',
     'checkbox',
     'currency',
-    'file'
+    'file',
+    'geolocation'
 ];
 
 export class QuestionTemplate {
@@ -66,6 +69,7 @@ export class QuestionTemplate {
     public resp_number: number
     public resp_date: string;
     public resp_metrics: Array<number>;
+    public resp_geolocation: Address;
     public resp_currency: number;
     public resp_file: string;
     public form_type: string;
@@ -83,6 +87,8 @@ export class QuestionTemplate {
             for(let attr in obj){
                 this[attr] = obj[attr];
             }
+
+            if(obj.resp_geolocation) this.resp_geolocation = new Address(obj.resp_geolocation);
         }
 
         if(!this.resp_currency) this.resp_currency = 0.00;
