@@ -31,6 +31,7 @@ export declare class QuestionTemplate {
     resp_date: string;
     resp_metrics: Array<number>;
     resp_geolocation: any;
+    resp_geolocation_list: Array<any>;
     resp_currency: number;
     resp_file: string;
     form_type: string;
