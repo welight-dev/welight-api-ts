@@ -96,7 +96,7 @@ export declare class User {
     readonly account: UserAccount;
     readonly address: UserAddress;
     readonly is_authenticated: boolean;
-    readonly hidden_login: boolean;
+    hidden_login: boolean;
     current_user_app: UserApp;
     readonly plugin_navegador: PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;

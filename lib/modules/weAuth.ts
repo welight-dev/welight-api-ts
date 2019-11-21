@@ -354,6 +354,10 @@ export class User {
         return this._hidden_login;
     }
 
+    public set hidden_login(p: boolean) {
+        this._hidden_login = p;
+    }
+
     public get current_user_app(): UserApp {
         return this._current_user_app;
     }
