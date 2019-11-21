@@ -73,6 +73,7 @@ export declare class User {
     private _plugin_navegador;
     private _bar;
     private _is_authenticated;
+    private _hidden_login;
     private _we_auth_user_create_account_resource;
     private _we_auth_user_create_account_ong_resource;
     private _we_auth_user_create_account_doador_empresa_resource;
@@ -94,7 +95,8 @@ export declare class User {
     readonly bar: UserBar;
     readonly account: UserAccount;
     readonly address: UserAddress;
-    readonly is_authenticated: any;
+    readonly is_authenticated: boolean;
+    readonly hidden_login: boolean;
     current_user_app: UserApp;
     readonly plugin_navegador: PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;

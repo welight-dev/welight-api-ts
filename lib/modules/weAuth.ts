@@ -232,6 +232,7 @@ export class User {
     private _plugin_navegador: PluginNavegador;
     private _bar: UserBar;
     private _is_authenticated: boolean;
+    private _hidden_login: boolean;
 
     private _we_auth_user_create_account_resource: Tastypie.Resource<any>;
     private _we_auth_user_create_account_ong_resource: Tastypie.Resource<any>;
@@ -276,6 +277,7 @@ export class User {
         this._apps = [];
         this._bar = new UserBar();
         this._is_authenticated = false;
+        this._hidden_login = false;
     }
 
     public save(): Promise<User> {
@@ -344,8 +346,12 @@ export class User {
         return this._address;
     }
 
-    public get is_authenticated(): any {
+    public get is_authenticated(): boolean {
         return this._is_authenticated;
+    }
+
+    public get hidden_login(): boolean {
+        return this._hidden_login;
     }
 
     public get current_user_app(): UserApp {
@@ -739,13 +745,18 @@ export class User {
     }
 
     public change_language(code: string): Promise<User> {
-        return UserAccount.resource.objects.update(this.id, {account: {idioma: code}}).then(() => {
+        if(this._is_authenticated){
+            return UserAccount.resource.objects.update(this.id, {account: {idioma: code}}).then(() => {
+                this._account.idioma = code;
+                return this;
+            }).catch(() => {
+                this._account.idioma = code;
+                return this;
+            });
+        }else{
             this._account.idioma = code;
-            return this;
-        }).catch(() => {
-            this._account.idioma = code;
-            return this;
-        });
+            return Promise.resolve(this);
+        }
     }
 }
 
