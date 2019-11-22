@@ -291,7 +291,10 @@ export class User {
     }
 
     public unselect_profile(): void {
+
+        this._bar.add_app(this._current_user_app);
         this._current_user_app = null;
+
         if(Tools.localStorageSuported){
             let weUser: string = localStorage.getItem('weUserX');
             if(weUser){
@@ -314,6 +317,38 @@ export class User {
                     ).toString();
                     localStorage.setItem('weUserX', encrypted_user);
                 }
+            }
+        }
+    }
+
+
+    public select_profile(user_app: UserApp): void {
+
+        this._bar.remove_app(user_app);
+        this._current_user_app = user_app;
+
+        if(Tools.localStorageSuported){
+            let weUser: string = localStorage.getItem('weUserX');
+            if(weUser){
+                let auth_user = JSON.parse(crypto.AES.decrypt(weUser, this._encrypt_key).toString(crypto.enc.Utf8));
+
+                if(!auth_user.kwargs){
+                    auth_user.kwargs = {};
+                }
+
+                if(!auth_user.kwargs.hasOwnProperty('source')){
+                     auth_user.kwargs['source'] = {
+                         detail: {}
+                     }
+                }
+
+                auth_user.kwargs.source.detail['user_app_id'] = user_app.id;
+
+                let encrypted_user = crypto.AES.encrypt(
+                    JSON.stringify(auth_user),
+                    this._encrypt_key
+                ).toString();
+                localStorage.setItem('weUserX', encrypted_user);
             }
         }
     }

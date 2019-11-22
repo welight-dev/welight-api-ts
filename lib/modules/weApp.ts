@@ -594,6 +594,50 @@ export class AppManager {
         });
     }
 
+    public authGuardMemberOrPublic(profile_id: number, permissions?: Array<string>, on_error_route?: {app_route: string, app_token: string}): Promise<boolean> {
+        return this.authGuardPublic().then(() => {
+
+            this._auth_loading = true;
+            if(!permissions){
+                permissions = ['member'];
+            }
+            if(!on_error_route){
+                on_error_route = {
+                    app_route: this._route.uri.access_denied,
+                    app_token: this._app_token
+                }
+            }
+
+            return this._app_profile.init({id: profile_id}).then(() => {
+                if(this.user_has_perm(permissions)){
+                    let userapp = this._user.getUserAppByProfile(this._app_token, profile_id);
+                    if(userapp){
+                        this._user.select_profile(userapp);
+                        this._auth_guard_member_checked = true;
+                        this._auth_loading = false;
+                        return true;
+                    }else{
+                        this.unselect_profile();
+                        this._auth_guard_member_checked = false;
+                        this._auth_loading = false;
+                        return true;
+                    }
+                }else{
+                    this.unselect_profile();
+                    this._auth_guard_member_checked = false;
+                    this._auth_loading = false;
+                    return true;
+                }
+            }).catch(() => {
+                this.unselect_profile();
+                this._auth_guard_member_checked = false;
+                this._auth_loading = false;
+                this._route.change(on_error_route.app_route, on_error_route.app_token);
+                return false;
+            });
+        });
+    }
+
     public unselect_profile(): void {
         this._auth_guard_member_checked = false;
         this._user.unselect_profile();

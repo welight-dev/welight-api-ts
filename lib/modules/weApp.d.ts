@@ -152,6 +152,10 @@ export declare class AppManager {
         app_route: string;
         app_token: string;
     }): Promise<boolean>;
+    authGuardMemberOrPublic(profile_id: number, permissions?: Array<string>, on_error_route?: {
+        app_route: string;
+        app_token: string;
+    }): Promise<boolean>;
     unselect_profile(): void;
     select_profile(app_token: string, user_app_id: number, app_route?: string): void;
     list_profile(): Array<UserApp>;

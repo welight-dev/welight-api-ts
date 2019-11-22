@@ -88,6 +88,7 @@ export declare class User {
     reset(): void;
     save(): Promise<User>;
     unselect_profile(): void;
+    select_profile(user_app: UserApp): void;
     readonly id: number;
     readonly email: string;
     readonly auth: Auth;
