@@ -449,7 +449,7 @@ export class User {
 
         let obj_userapp: UserApp = null;
 
-        if(this._current_user_app.app_token == obj_perm.app_token
+        if(this._current_user_app && this._current_user_app.app_token == obj_perm.app_token
           && this._current_user_app.app_profile_id == obj_perm.app_profile_id){
               obj_userapp = this._current_user_app;
         }else{

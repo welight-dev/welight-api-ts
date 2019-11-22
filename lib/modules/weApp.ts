@@ -345,6 +345,22 @@ export class AppManager {
         }).catch(() => { return false;});
     }
 
+    private _check_member_auth(profile_id: number, permissions: Array<string>): void {
+        if(this.user_has_perm(permissions)){
+            let userapp = this._user.getUserAppByProfile(this._app_token, profile_id);
+            if(userapp){
+                this._user.select_profile(userapp);
+                this._auth_guard_member_checked = true;
+            }else{
+                this.unselect_profile();
+                this._auth_guard_member_checked = false;
+            }
+        }else{
+            this.unselect_profile();
+            this._auth_guard_member_checked = false;
+        }
+    }
+
     public get user(): User {
         return this._user;
     }
@@ -608,26 +624,16 @@ export class AppManager {
                 }
             }
 
+            if(this._app_profile.initialized && this._app_profile.app_profile_id === profile_id){
+                this._check_member_auth(profile_id, permissions);
+                this._auth_loading = false;
+                return Promise.resolve(true);
+            }
+
             return this._app_profile.init({id: profile_id}).then(() => {
-                if(this.user_has_perm(permissions)){
-                    let userapp = this._user.getUserAppByProfile(this._app_token, profile_id);
-                    if(userapp){
-                        this._user.select_profile(userapp);
-                        this._auth_guard_member_checked = true;
-                        this._auth_loading = false;
-                        return true;
-                    }else{
-                        this.unselect_profile();
-                        this._auth_guard_member_checked = false;
-                        this._auth_loading = false;
-                        return true;
-                    }
-                }else{
-                    this.unselect_profile();
-                    this._auth_guard_member_checked = false;
-                    this._auth_loading = false;
-                    return true;
-                }
+                this._check_member_auth(profile_id, permissions);
+                this._auth_loading = false;
+                return true;
             }).catch(() => {
                 this.unselect_profile();
                 this._auth_guard_member_checked = false;

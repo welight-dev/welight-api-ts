@@ -127,6 +127,7 @@ export declare class AppManager {
     });
     private _get_source_login;
     private _init_app_profile_member;
+    private _check_member_auth;
     readonly user: User;
     readonly profile: AppProfile;
     readonly app_token: string;
