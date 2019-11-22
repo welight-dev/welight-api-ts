@@ -292,7 +292,10 @@ export class User {
 
     public unselect_profile(): void {
 
-        this._bar.add_app(this._current_user_app);
+        if(this._current_user_app){
+            this._bar.add_app(this._current_user_app);
+        }
+
         this._current_user_app = null;
 
         if(Tools.localStorageSuported){
