@@ -39,6 +39,7 @@ export class AppProfile {
     public init(obj_filter:{id?: number, slug?: string}): Promise<AppProfile> {
         if(this._app_token == 'home'){
             return Doador.resource.objects.findOne(obj_filter).then(resp => {
+                if(!resp.id) return Promise.reject('Profile not found.');
                 this._doador = resp;
                 this._app_profile_id = resp.id;
                 this._initialized = true;
@@ -46,6 +47,7 @@ export class AppProfile {
             });
         }else if(this._app_token == 'doador'){
             return Doador.resource.objects.findOne(obj_filter).then(resp => {
+                if(!resp.id) return Promise.reject('Profile not found.');
                 this._doador = resp;
                 this._app_profile_id = resp.id;
                 this._initialized = true;
@@ -53,6 +55,7 @@ export class AppProfile {
             });
         }else if(this._app_token == 'doador_empresa'){
             return Empresa.resource.objects.findOne(obj_filter).then(resp => {
+                if(!resp.id) return Promise.reject('Profile not found.');
                 this._empresa = resp;
                 this._app_profile_id = resp.id;
                 this._initialized = true;
@@ -60,6 +63,7 @@ export class AppProfile {
             });
         }else if(this._app_token == 'doador_fundo'){
             return Org.resource.objects.findOne(obj_filter).then(resp => {
+                if(!resp.id) return Promise.reject('Profile not found.');
                 this._org = resp;
                 this._app_profile_id = resp.id;
                 this._initialized = true;
@@ -67,6 +71,7 @@ export class AppProfile {
             });
         }else if(this._app_token == 'ong'){
             return Ong.resource.objects.findOne(obj_filter).then(resp => {
+                if(!resp.id) return Promise.reject('Profile not found.');
                 this._ong = resp;
                 this._app_profile_id = resp.id;
                 this._initialized = true;
@@ -352,11 +357,11 @@ export class AppManager {
                 this._user.select_profile(userapp);
                 this._auth_guard_member_checked = true;
             }else{
-                this.unselect_profile();
+                this._user.unselect_profile();
                 this._auth_guard_member_checked = false;
             }
         }else{
-            this.unselect_profile();
+            this._user.unselect_profile();
             this._auth_guard_member_checked = false;
         }
     }
@@ -612,7 +617,6 @@ export class AppManager {
 
     public authGuardMemberOrPublic(profile_id: number, permissions?: Array<string>, on_error_route?: {app_route: string, app_token: string}): Promise<boolean> {
         return this.authGuardPublic().then(() => {
-
             this._auth_loading = true;
             if(!permissions){
                 permissions = ['member'];
@@ -624,14 +628,14 @@ export class AppManager {
                 }
             }
 
-            if(this._app_profile.initialized && this._app_profile.app_profile_id === profile_id){
-                this._check_member_auth(profile_id, permissions);
+            if(this._app_profile.initialized && this._app_profile.app_profile_id === +profile_id){
+                this._check_member_auth(+profile_id, permissions);
                 this._auth_loading = false;
                 return Promise.resolve(true);
             }
 
-            return this._app_profile.init({id: profile_id}).then(() => {
-                this._check_member_auth(profile_id, permissions);
+            return this._app_profile.init({id: +profile_id}).then(() => {
+                this._check_member_auth(+profile_id, permissions);
                 this._auth_loading = false;
                 return true;
             }).catch(() => {
