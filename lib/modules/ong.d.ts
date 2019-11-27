@@ -1,6 +1,7 @@
 import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
 import { Ods, MetricCategory, MetricUnit, Metric } from "./onu";
+import { Address } from "./utils";
 export declare class Ong extends api.Tastypie.Model<Ong> {
     static resource: api.Tastypie.Resource<Ong>;
     nome: string;
@@ -103,6 +104,11 @@ export declare class OngEndereco extends api.Tastypie.Model<OngEndereco> {
     cidade: string;
     estado: string;
     pais: string;
+    constructor(obj?: any);
+}
+export declare class OngAddress extends Address {
+    static resource: api.Tastypie.Resource<OngAddress>;
+    ong_id: number;
     constructor(obj?: any);
 }
 export declare class OngBanco extends api.Tastypie.Model<OngBanco> {
@@ -283,6 +289,7 @@ export declare class OngStatus {
     qtde_pontos: number;
     qtde_doadores: number;
     qtde_avaliacao_positiva: number;
+    qtde_projetos: number;
     total_credito: number;
     total_saldo: number;
     total_debito_comprovado: number;
