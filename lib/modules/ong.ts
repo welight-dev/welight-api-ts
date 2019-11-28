@@ -27,6 +27,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _qtde_doadores: number;
     private _profile_detail: OngDetail;
     private _site_custom: OngSiteCustom;
+    private _address: OngAddress;
     private _dt_updated: string;
     private _dt_created: string;
 
@@ -83,6 +84,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
             if(obj.profile_detail) _self._profile_detail = new OngDetail(obj.profile_detail);
             if(obj.site_custom) _self._site_custom = new OngSiteCustom(obj.site_custom);
+            if(obj.address) _self._address = new OngAddress(obj.address);
             if(obj.status) _self._status = new OngStatus(obj.status);
 
             if(_self.id){
@@ -131,6 +133,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get site_custom(): OngSiteCustom {
         return this._site_custom;
+    }
+
+    public get address(): OngAddress {
+        return this._address;
     }
 
     public get dt_updated(): string {

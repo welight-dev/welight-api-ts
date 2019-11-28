@@ -19,6 +19,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     private _qtde_doadores;
     private _profile_detail;
     private _site_custom;
+    private _address;
     private _dt_updated;
     private _dt_created;
     private _user;
@@ -42,6 +43,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     readonly qtde_doadores: number;
     readonly profile_detail: OngDetail;
     readonly site_custom: OngSiteCustom;
+    readonly address: OngAddress;
     readonly dt_updated: string;
     readonly dt_created: string;
     readonly timeline: api.Tastypie.Resource<OngTimeLine>;
