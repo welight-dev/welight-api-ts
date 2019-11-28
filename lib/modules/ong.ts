@@ -28,6 +28,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _profile_detail: OngDetail;
     private _site_custom: OngSiteCustom;
     private _address: OngAddress;
+    private _ods: Array<Ods>;
     private _dt_updated: string;
     private _dt_created: string;
 
@@ -66,6 +67,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     private initProfile(obj:any): void {
         let _self = this;
+        _self._ods = [];
         if(obj){
             _self.id = obj.id;
             _self.nome = obj.nome;
@@ -86,6 +88,12 @@ export class Ong extends api.Tastypie.Model<Ong> {
             if(obj.site_custom) _self._site_custom = new OngSiteCustom(obj.site_custom);
             if(obj.address) _self._address = new OngAddress(obj.address);
             if(obj.status) _self._status = new OngStatus(obj.status);
+
+            if(obj.ods){
+                for(let o of obj.ods){
+                    _self._ods.push(new Ods(o));
+                }
+            }
 
             if(_self.id){
                 _self._timeline = new api.Tastypie.Resource<OngTimeLine>('ong/timeline', {model: OngTimeLine, defaults: {ong_id: _self.id}});
@@ -137,6 +145,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
     public get address(): OngAddress {
         return this._address;
+    }
+
+    public get ods(): Array<Ods> {
+        return this._ods;
     }
 
     public get dt_updated(): string {
