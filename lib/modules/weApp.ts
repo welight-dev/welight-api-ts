@@ -247,7 +247,7 @@ export class AppRoute {
                 }else{
                     app_route = `/quick-login/${this._app_manager.user.auth.username}/${this._app_manager.user.auth.api_key}?next=${app_route.substring(1)}`;
                 }
-            }else if((app_route == '/login' || app_route == '/cadastro-usuario') && app_token == 'home'){
+            }else if((app_route == '/login' || app_route == '/cadastro-usuario' || app_route == '/signup') && app_token == 'home'){
                 if(kwargs.hasOwnProperty('next')){
                     if(kwargs.hasOwnProperty('user_app_id')){
                         app_route = `${app_route}/?nextd=${kwargs.next.app_token}&next=${kwargs.next.app_route}&nextp=${kwargs.user_app_id}`;
@@ -402,6 +402,29 @@ export class AppManager {
         return this._auth_guard_member_checked;
     }
 
+    public createAccount(name: string, email: string, password: string, kwargs?:any): Promise<boolean> {
+        this._create_account_loading = true;
+        if(!kwargs){
+            kwargs = {};
+        }
+        return this._user.createAccount(name, email, password, this._get_source_login(kwargs)).then(() => {
+            if(kwargs.hasOwnProperty('next')){
+                this._create_account_loading = false;
+                this._route.change(kwargs.next.app_route, kwargs.next.app_token);
+            }else{
+                if(this._app_token == 'home'){
+                    let user_app_selected = this._user.getUserAppAdmin('doador');
+                    this._create_account_loading = false;
+                    this._route.change("/", user_app_selected.app_token, {user_app_id: user_app_selected.id});
+                }else{
+                    this._create_account_loading = false;
+                    this._route.change('/');
+                }
+            }
+            return true;
+        });
+    }
+
     public createAccountDoadorFundo(obj: Org): Promise<boolean> {
         if(this._app_token != 'doador_fundo'){
             return Promise.resolve(false);
@@ -413,6 +436,27 @@ export class AppManager {
         kwargs['data'] = obj.getData();
 
         return this._user.createAccountDoadorFundo(obj.name, obj.email, obj.activity_id, this._get_source_login(kwargs)).then(() => {
+            return this._init_app_profile_member().then((auth: boolean) => {
+                this._create_account_loading = false;
+                return auth;
+            });
+        }).catch(() => {
+            this._create_account_loading = false;
+            return false;
+        });
+    }
+
+    public createAccountOng(obj: Ong): Promise<boolean> {
+        if(this._app_token != 'ong'){
+            return Promise.resolve(false);
+        }
+
+        this._create_account_loading = true;
+
+        let kwargs = {};
+        kwargs['data'] = obj.getData();
+
+        return this._user.createAccountOng(obj.nome, obj.email, obj.razao_social, obj.cnpj, this._get_source_login(kwargs)).then(() => {
             return this._init_app_profile_member().then((auth: boolean) => {
                 this._create_account_loading = false;
                 return auth;
@@ -450,7 +494,11 @@ export class AppManager {
                 this._route.change(kwargs.next.app_route, kwargs.next.app_token);
             }else{
                 if(this._app_token == 'home'){
-                    let user_app_selected = this._user.getUserAppAdmin('doador_empresa');
+                    let user_app_selected = this._user.getUserAppAdmin('doador_fundo');
+
+                    if(!user_app_selected){
+                        user_app_selected = this._user.getUserAppAdmin('doador_empresa');
+                    }
 
                     if(!user_app_selected){
                         user_app_selected = this._user.getUserAppAdmin('ong');
@@ -468,15 +516,42 @@ export class AppManager {
                 }
             }
             return true;
-        }).catch(() => {
+        });
+    }
+
+    public loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?:any): Promise<boolean> {
+        this._auth_loading = true;
+        if(!kwargs){
+            kwargs = {};
+        }
+        return this._user.loginFacebook(username, facebook_uid, facebook_access_token, this._get_source_login(kwargs)).then(() => {
             if(kwargs.hasOwnProperty('next')){
                 this._auth_loading = false;
-                this._route.change('login', 'home', {next:{app_route: kwargs.next.app_route, app_token: kwargs.next.app_token}});
+                this._route.change(kwargs.next.app_route, kwargs.next.app_token);
             }else{
-                this._auth_loading = false;
-                this._route.change('login', 'home');
+                if(this._app_token == 'home'){
+                    let user_app_selected = this._user.getUserAppAdmin('doador_fundo');
+
+                    if(!user_app_selected){
+                        user_app_selected = this._user.getUserAppAdmin('doador_empresa');
+                    }
+
+                    if(!user_app_selected){
+                        user_app_selected = this._user.getUserAppAdmin('ong');
+                    }
+
+                    if(!user_app_selected){
+                        user_app_selected = this._user.getUserAppAdmin('doador');
+                    }
+
+                    this._auth_loading = false;
+                    this._route.change("/", user_app_selected.app_token, {user_app_id: user_app_selected.id});
+                }else{
+                    this._auth_loading = false;
+                    this._route.change('/');
+                }
             }
-            return false;
+            return true;
         });
     }
 

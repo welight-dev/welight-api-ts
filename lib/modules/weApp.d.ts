@@ -137,9 +137,12 @@ export declare class AppManager {
     readonly create_account_loading: boolean;
     readonly auth_guard_user_checked: boolean;
     readonly auth_guard_member_checked: boolean;
+    createAccount(name: string, email: string, password: string, kwargs?: any): Promise<boolean>;
     createAccountDoadorFundo(obj: Org): Promise<boolean>;
+    createAccountOng(obj: Ong): Promise<boolean>;
     logout(redirect?: boolean): Promise<boolean>;
     login(username: string, password: string, kwargs?: any): Promise<boolean>;
+    loginFacebook(username: string, facebook_uid: string, facebook_access_token: string, kwargs?: any): Promise<boolean>;
     quickLogin(auth: {
         username: string;
         apikey: string;

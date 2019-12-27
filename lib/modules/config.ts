@@ -47,6 +47,8 @@ export class Environment {
         }else if(Environment.env == 'dev'){
             if(name == 'home'){
                 url = 'https://dev.welight.co'+(uri||'');
+            }else if(name == 'foryou'){
+                url = 'https://foryou-dev.welight.co'+(uri||'');
             }else if(name == 'doador'){
                 url = 'https://donator-dev.welight.co'+(uri||'');
             }else if(name == 'ong'){
@@ -59,6 +61,8 @@ export class Environment {
         }else if(Environment.env == 'prod'){
             if(name == 'home'){
                 url = 'https://welight.co'+(uri||'');
+            }else if(name == 'foryou'){
+                url = 'https://foryou.welight.co'+(uri||'');
             }else if(name == 'doador'){
                 url = 'https://donator.welight.co'+(uri||'');
             }else if(name == 'ong'){
@@ -78,6 +82,8 @@ export class Environment {
 
         if(app_token == 'home'){
             app_name = 'we-site-home';
+        }else if(app_token == 'foryou'){
+            app_name = 'we-site-foryou';
         }else if(app_token == 'doador'){
             app_name = 'we-site-doador';
         }else if(app_token == 'ong'){
