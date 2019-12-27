@@ -422,6 +422,9 @@ export class AppManager {
                 }
             }
             return true;
+        }).catch(error => {
+            this._create_account_loading = false;
+            return Promise.reject(error);
         });
     }
 
@@ -440,9 +443,9 @@ export class AppManager {
                 this._create_account_loading = false;
                 return auth;
             });
-        }).catch(() => {
+        }).catch((error) => {
             this._create_account_loading = false;
-            return false;
+            return Promise.reject(error);
         });
     }
 
@@ -461,9 +464,9 @@ export class AppManager {
                 this._create_account_loading = false;
                 return auth;
             });
-        }).catch(() => {
+        }).catch((error) => {
             this._create_account_loading = false;
-            return false;
+            return Promise.reject(error);
         });
     }
 
@@ -516,6 +519,9 @@ export class AppManager {
                 }
             }
             return true;
+        }).catch((error) => {
+            this._auth_loading = false;
+            return Promise.reject(error);
         });
     }
 
@@ -552,6 +558,9 @@ export class AppManager {
                 }
             }
             return true;
+        }).catch((error) => {
+            this._auth_loading = false;
+            return Promise.reject(error);
         });
     }
 
