@@ -11,7 +11,7 @@ export declare class Banco extends Tastypie.Model<Banco> {
     competencia: string;
     website: string;
     dt_updated: string;
-    dt_created: boolean;
+    dt_created: string;
     constructor(obj?: any);
 }
 export declare class PluginNavegador {
@@ -89,6 +89,17 @@ export declare class CheckBoxManager {
     check(p: Array<number>, checked: boolean): void;
     onCheck(): void;
     readonly checked: Array<number>;
+}
+export declare class WeStatus extends Tastypie.Model<WeStatus> {
+    static resource: Tastypie.Resource<WeStatus>;
+    doacao_conf: number;
+    doacao_temp: number;
+    doacao_total: number;
+    qtde_doador: number;
+    qtde_loja: number;
+    qtde_ong: number;
+    dt_updated: string;
+    constructor(obj?: any);
 }
 export interface StepItem {
     name: string;

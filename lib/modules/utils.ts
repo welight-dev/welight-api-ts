@@ -39,7 +39,7 @@ export class Banco extends Tastypie.Model<Banco> {
     public competencia: string;
     public website: string;
     public dt_updated: string;
-    public dt_created: boolean;
+    public dt_created: string;
 
     constructor(obj?:any){
       super(Banco.resource, obj);
@@ -288,6 +288,23 @@ export class CheckBoxManager {
 
     public get checked(): Array<number> {
         return this._list;
+    }
+}
+
+export class WeStatus extends Tastypie.Model<WeStatus> {
+
+    public static resource = new Tastypie.Resource<WeStatus>('utils/we-status', {model: WeStatus});
+
+    public doacao_conf: number;
+    public doacao_temp: number;
+    public doacao_total: number;
+    public qtde_doador: number;
+    public qtde_loja: number;
+    public qtde_ong: number;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(WeStatus.resource, obj);
     }
 }
 
