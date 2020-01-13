@@ -7,6 +7,19 @@ import { Ods, MetricCategory, MetricUnit, Metric } from "./onu";
 import { Address } from "./utils";
 
 
+export class OngActivity extends api.Tastypie.Model<OngActivity> {
+    public static resource = new api.Tastypie.Resource<OngActivity>('ong/activity', {model: OngActivity});
+
+    public name: string;
+    public dt_created: string;
+    public dt_updated: string;
+
+    constructor(obj?:any){
+        super(OngActivity.resource, obj);
+    }
+}
+
+
 export class Ong extends api.Tastypie.Model<Ong> {
     public static resource = new api.Tastypie.Resource<Ong>('ong/profile', {model: Ong});
 
@@ -15,6 +28,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     public razao_social: string;
     public cnpj: string;
     public slug: string;
+    public activity_id: number;
 
     public checked: Boolean;
     public children_id: number;
@@ -27,7 +41,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     private _qtde_doadores: number;
     private _profile_detail: OngDetail;
     private _site_custom: OngSiteCustom;
-    private _address: OngAddress;
+    private _address: OngAddress;    
     private _ods: Array<Ods>;
     private _dt_updated: string;
     private _dt_created: string;
@@ -46,6 +60,10 @@ export class Ong extends api.Tastypie.Model<Ong> {
     constructor(obj?:any){
         super(Ong.resource);
         this._user = new weauth_models.User();
+        this._profile_detail = new OngDetail();
+        this._address = new OngAddress();
+        this._site_custom = new OngSiteCustom();
+        this._status = new OngStatus();
         this.initProfile(obj);
     }
 
@@ -56,7 +74,8 @@ export class Ong extends api.Tastypie.Model<Ong> {
           email: _self.email,
           razao_social: _self.razao_social,
           cnpj: _self.cnpj,
-          slug: _self.slug
+          slug: _self.slug,
+          activity_id: _self.activity_id
         }).then(
             function(data: Ong){
                 _self.initProfile(data);
@@ -75,6 +94,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
             _self.razao_social = obj.razao_social;
             _self.cnpj = obj.cnpj;
             _self.slug = obj.slug;
+            _self.activity_id = obj.activity_id;
 
             _self._ativo = obj.ativo;
             _self._parceira = obj.parceira;
@@ -106,8 +126,6 @@ export class Ong extends api.Tastypie.Model<Ong> {
                 _self._projeto_entrega = new api.Tastypie.Resource<OngProjetoEntrega>('ong/projeto-entrega', {model: OngProjetoEntrega, defaults: {ong_id: _self.id}});
                 _self._carteira = new api.Tastypie.Resource<OngCarteira>('ong/carteira', {model: OngCarteira, defaults: {ong_id: _self.id}});
             }
-        }else{
-            _self._profile_detail = new OngDetail();
         }
     }
 
@@ -251,7 +269,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
 
 export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
-    public static resource = new api.Tastypie.Resource<OngDetail>('ong/profile/<id>/detail', {model: OngDetail});
+    public static resource = new api.Tastypie.Resource<OngDetail>('ong/profile-detail', {model: OngDetail});
 
     public contato_fone: string;
 
@@ -260,6 +278,8 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
     public realizacao: string;
     public realizacao_resumo: string;
+
+    public publico_alvo: string;
 
     public img_avatar: string;
     public img_fundo: string;
@@ -272,8 +292,10 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
     public youtube: string;
     public facebook: string;
     public instagram: string;
+    public twitter: string;
 
     public oscip: boolean;
+    public oscip_number: string;
     public diretor_nome: string;
     public diretor_assinatura: string;
 
@@ -282,7 +304,7 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
     public dt_created: string;
 
     constructor(obj?:any){
-      super(OngDetail.resource, obj);
+        super(OngDetail.resource, obj);
     }
 }
 

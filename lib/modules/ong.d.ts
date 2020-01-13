@@ -2,6 +2,13 @@ import * as api from "ts-resource-tastypie";
 import * as weauth_models from "./weAuth";
 import { Ods, MetricCategory, MetricUnit, Metric } from "./onu";
 import { Address } from "./utils";
+export declare class OngActivity extends api.Tastypie.Model<OngActivity> {
+    static resource: api.Tastypie.Resource<OngActivity>;
+    name: string;
+    dt_created: string;
+    dt_updated: string;
+    constructor(obj?: any);
+}
 export declare class Ong extends api.Tastypie.Model<Ong> {
     static resource: api.Tastypie.Resource<Ong>;
     nome: string;
@@ -9,6 +16,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     razao_social: string;
     cnpj: string;
     slug: string;
+    activity_id: number;
     checked: Boolean;
     children_id: number;
     private _status;
@@ -72,6 +80,7 @@ export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     missao_resumo: string;
     realizacao: string;
     realizacao_resumo: string;
+    publico_alvo: string;
     img_avatar: string;
     img_fundo: string;
     cor_filtro: string;
@@ -82,7 +91,9 @@ export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     youtube: string;
     facebook: string;
     instagram: string;
+    twitter: string;
     oscip: boolean;
+    oscip_number: string;
     diretor_nome: string;
     diretor_assinatura: string;
     dt_fundacao: string;
