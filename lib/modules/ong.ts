@@ -303,6 +303,7 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
     public diretor_nome: string;
     public diretor_assinatura: string;
     public diretor_assinatura_url: string;
+    public currency: string;
 
     public dt_fundacao: string;
     public dt_updated: string;

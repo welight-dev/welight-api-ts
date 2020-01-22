@@ -99,6 +99,7 @@ export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     diretor_nome: string;
     diretor_assinatura: string;
     diretor_assinatura_url: string;
+    currency: string;
     dt_fundacao: string;
     dt_updated: string;
     dt_created: string;
