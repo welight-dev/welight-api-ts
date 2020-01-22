@@ -287,7 +287,11 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
     public video_institucional: string;
     public estatuto_social: string;
+    public estatuto_social_url: string;
+
     public ultima_assembleia: string;
+    public ultima_assembleia_url: string;
+
     public website: string;
     public youtube: string;
     public facebook: string;
@@ -298,6 +302,7 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
     public oscip_number: string;
     public diretor_nome: string;
     public diretor_assinatura: string;
+    public diretor_assinatura_url: string;
 
     public dt_fundacao: string;
     public dt_updated: string;
