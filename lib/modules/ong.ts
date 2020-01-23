@@ -271,6 +271,7 @@ export class OngDetail extends api.Tastypie.Model<OngDetail> {
 
     public static resource = new api.Tastypie.Resource<OngDetail>('ong/profile-detail', {model: OngDetail});
 
+    public ong_id: number;
     public contato_fone: string;
 
     public missao: string;

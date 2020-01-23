@@ -75,6 +75,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
 }
 export declare class OngDetail extends api.Tastypie.Model<OngDetail> {
     static resource: api.Tastypie.Resource<OngDetail>;
+    ong_id: number;
     contato_fone: string;
     missao: string;
     missao_resumo: string;
