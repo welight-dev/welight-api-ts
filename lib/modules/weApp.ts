@@ -457,7 +457,9 @@ export class AppManager {
         this._create_account_loading = true;
 
         let kwargs = {};
-        kwargs['data'] = obj.getData();
+        kwargs['ong'] = obj.getData();
+        kwargs['ong_detail'] = obj.profile_detail.getData();
+        kwargs['address'] = obj.address.getData();
 
         return this._user.createAccountOng(obj.nome, obj.email, obj.razao_social, obj.cnpj, this._get_source_login(kwargs)).then(() => {
             return this._init_app_profile_member().then((auth: boolean) => {
