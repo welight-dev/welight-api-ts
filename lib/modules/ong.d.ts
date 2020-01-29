@@ -134,6 +134,7 @@ export declare class OngAddress extends Address {
 export declare class OngBanco extends api.Tastypie.Model<OngBanco> {
     static resource: api.Tastypie.Resource<OngBanco>;
     ong_id: number;
+    desc: string;
     banco_codigo: string;
     banco_nome: string;
     agencia: string;
@@ -143,6 +144,9 @@ export declare class OngBanco extends api.Tastypie.Model<OngBanco> {
     pessoa_fisica: boolean;
     titular: string;
     cpf_cnpj: string;
+    iban: string;
+    bic_swift: string;
+    aba: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

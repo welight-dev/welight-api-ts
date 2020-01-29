@@ -365,6 +365,7 @@ export class OngBanco extends api.Tastypie.Model<OngBanco> {
     public static resource = new api.Tastypie.Resource<OngBanco>('ong/banco', {model: OngBanco});
 
     public ong_id: number;
+    public desc: string;
     public banco_codigo: string;
     public banco_nome: string;
     public agencia: string;
@@ -374,6 +375,9 @@ export class OngBanco extends api.Tastypie.Model<OngBanco> {
     public pessoa_fisica: boolean;
     public titular: string;
     public cpf_cnpj: string;
+    public iban: string;
+    public bic_swift: string;
+    public aba: string;
     public dt_updated: string;
     public dt_created: string;
 
