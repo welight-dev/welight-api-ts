@@ -76,7 +76,8 @@ export class Ong extends api.Tastypie.Model<Ong> {
           razao_social: _self.razao_social,
           cnpj: _self.cnpj,
           slug: _self.slug,
-          activity_id: _self.activity_id
+          activity_id: _self.activity_id,
+          publish_mode: _self.publish_mode
         }).then(
             function(data: Ong){
                 _self.initProfile(data);
