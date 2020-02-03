@@ -17,6 +17,7 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     cnpj: string;
     slug: string;
     activity_id: number;
+    publish_mode: string;
     checked: Boolean;
     children_id: number;
     private _status;

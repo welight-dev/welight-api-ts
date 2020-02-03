@@ -29,6 +29,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
     public cnpj: string;
     public slug: string;
     public activity_id: number;
+    public publish_mode: string;
 
     public checked: Boolean;
     public children_id: number;
@@ -95,6 +96,7 @@ export class Ong extends api.Tastypie.Model<Ong> {
             _self.cnpj = obj.cnpj;
             _self.slug = obj.slug;
             _self.activity_id = obj.activity_id;
+            _self.publish_mode = obj.publish_mode;
 
             _self._ativo = obj.ativo;
             _self._parceira = obj.parceira;
