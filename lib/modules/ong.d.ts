@@ -214,6 +214,11 @@ export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre>
     como_medir_impacto: string;
     website: string;
     video: string;
+    key_audience: string;
+    outcomes: string;
+    outputs: string;
+    activities: string;
+    inputs: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
@@ -224,24 +229,9 @@ export declare class OngProjetoMetricSummary extends api.Tastypie.Model<OngProje
     ods: Array<Ods>;
     constructor(obj?: any);
 }
-export declare class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
+export declare class OngProjetoEndereco extends Address {
     static resource: api.Tastypie.Resource<OngProjetoEndereco>;
     ong_projeto_id: number;
-    cep: string;
-    rua: string;
-    numero: string;
-    complemento: string;
-    bairro: string;
-    cidade: string;
-    estado: string;
-    pais: string;
-    regiao: string;
-    coordenadas: {
-        lat: string;
-        lng: string;
-    };
-    dt_updated: string;
-    dt_created: string;
     constructor(obj?: any);
 }
 export declare class OngProjetoOds extends api.Tastypie.Model<OngProjetoOds> {

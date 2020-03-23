@@ -538,6 +538,11 @@ export class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
     public como_medir_impacto: string;
     public website: string;
     public video: string;
+    public key_audience: string;
+    public outcomes: string;
+    public outputs: string;
+    public activities: string;
+    public inputs: string;
     public dt_updated: string;
     public dt_created: string;
 
@@ -574,22 +579,10 @@ export class OngProjetoMetricSummary extends api.Tastypie.Model<OngProjetoMetric
     }
 }
 
-export class OngProjetoEndereco extends api.Tastypie.Model<OngProjetoEndereco> {
-    public static resource = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco});
+export class OngProjetoEndereco extends Address {
 
+    public static resource = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco});
     public ong_projeto_id: number;
-    public cep: string;
-    public rua: string;
-    public numero: string;
-    public complemento: string;
-    public bairro: string;
-    public cidade: string;
-    public estado: string;
-    public pais: string;
-    public regiao: string;
-    public coordenadas: {lat: string, lng: string};
-    public dt_updated: string;
-    public dt_created: string;
 
     constructor(obj?:any){
         super(OngProjetoEndereco.resource, obj);
