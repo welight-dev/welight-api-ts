@@ -488,6 +488,7 @@ export class OngTimeLine extends OngPost {
 export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     public static resource = new api.Tastypie.Resource<OngProjeto>('ong/projeto', {model: OngProjeto});
 
+    public ong_id: number;
     public nome: string;
     public descricao: string;
     public img_capa: string;
@@ -501,6 +502,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     private _endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     private _metric: api.Tastypie.Resource<OngProjetoMetric>;
+    private _ods: api.Tastypie.Resource<OngProjetoOds>;
 
     public getSobre(): Promise<OngProjetoSobre> {
         return OngProjetoSobre.resource.objects.findOne({ong_projeto_id: this.id});
@@ -511,6 +513,7 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
         if(this.id){
             this._endereco = new api.Tastypie.Resource<OngProjetoEndereco>('ong/projeto-endereco', {model: OngProjetoEndereco, defaults: {ong_projeto_id: this.id}});
             this._metric = new api.Tastypie.Resource<OngProjetoMetric>('ong/projeto-metric', {model: OngProjetoMetric, defaults: {ong_projeto_id: this.id}});
+            this._ods = new api.Tastypie.Resource<OngProjetoOds>('ong/projeto-ods', {model: OngProjetoOds, defaults: {ong_projeto_id: this.id}});
         }
     }
 
@@ -520,6 +523,10 @@ export class OngProjeto extends api.Tastypie.Model<OngProjeto> {
 
     public get metric(): api.Tastypie.Resource<OngProjetoMetric> {
         return this._metric;
+    }
+
+    public get ods(): api.Tastypie.Resource<OngProjetoOds> {
+        return this._ods;
     }
 
     public get_metric_summary(): Promise<OngProjetoMetricSummary> {

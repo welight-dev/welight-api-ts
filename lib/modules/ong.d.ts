@@ -186,6 +186,7 @@ export declare class OngTimeLine extends OngPost {
 }
 export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     static resource: api.Tastypie.Resource<OngProjeto>;
+    ong_id: number;
     nome: string;
     descricao: string;
     img_capa: string;
@@ -198,10 +199,12 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     dt_created: string;
     private _endereco;
     private _metric;
+    private _ods;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
     readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
     readonly metric: api.Tastypie.Resource<OngProjetoMetric>;
+    readonly ods: api.Tastypie.Resource<OngProjetoOds>;
     get_metric_summary(): Promise<OngProjetoMetricSummary>;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
