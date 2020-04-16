@@ -22,13 +22,13 @@ export declare class Org extends Tastypie.Model<Org> {
     private _rs_auth_group;
     private _activity;
     constructor(obj?: any);
-    readonly rs_adm: Tastypie.Resource<OrgAdm>;
-    readonly rs_fund: Tastypie.Resource<OrgFund>;
-    readonly rs_fund_balance_source: Tastypie.Resource<OrgFundBalanceSource>;
-    readonly rs_auth_group: Tastypie.Resource<OrgAuthGroup>;
-    readonly rs_category_fund: Tastypie.Resource<OrgCategoryFund>;
-    readonly rs_activity: Tastypie.Resource<OrgActivity>;
-    readonly md_activity: OrgActivity;
+    get rs_adm(): Tastypie.Resource<OrgAdm>;
+    get rs_fund(): Tastypie.Resource<OrgFund>;
+    get rs_fund_balance_source(): Tastypie.Resource<OrgFundBalanceSource>;
+    get rs_auth_group(): Tastypie.Resource<OrgAuthGroup>;
+    get rs_category_fund(): Tastypie.Resource<OrgCategoryFund>;
+    get rs_activity(): Tastypie.Resource<OrgActivity>;
+    get md_activity(): OrgActivity;
     send_invite_adm(name: string, email: string, passw: string): Promise<OrgAdm>;
     getAddress(): Promise<OrgAddress>;
 }
@@ -126,10 +126,10 @@ export declare class OrgFund extends Tastypie.Model<OrgFund> {
     constructor(obj?: any);
     save(obj?: any): Promise<OrgFund>;
     private _init;
-    readonly rs_balance: Tastypie.Resource<OrgFundBalance>;
-    readonly rs_member: Tastypie.Resource<OrgFundMember>;
-    readonly rs_category: Tastypie.Resource<OrgFundCategory>;
-    readonly categories: Array<OrgCategoryFund>;
+    get rs_balance(): Tastypie.Resource<OrgFundBalance>;
+    get rs_member(): Tastypie.Resource<OrgFundMember>;
+    get rs_category(): Tastypie.Resource<OrgFundCategory>;
+    get categories(): Array<OrgCategoryFund>;
     add_credit(source_id: number, amount: number, passw: string): Promise<OrgFundBalance>;
     send_invite_member(name: string, email: string, auth_group_list: Array<number>, passw: string): Promise<OrgFundMember>;
     check_step(): Promise<any>;
@@ -206,8 +206,8 @@ export declare class OrgFundBalance extends Tastypie.Model<OrgFundBalance> {
         amount: number;
         passw: string;
     }): Promise<OrgFundBalance>;
-    readonly md_source: OrgFundBalanceSource;
-    readonly md_credit_custom: OrgFundBalanceCreditCustom;
+    get md_source(): OrgFundBalanceSource;
+    get md_credit_custom(): OrgFundBalanceCreditCustom;
 }
 export declare class OrgFundBalanceCreditCustom {
     user_id: number;
@@ -232,5 +232,5 @@ export declare class OrgMember extends Tastypie.Model<OrgMember> {
     token: string;
     private _auth_group;
     constructor(obj?: any);
-    readonly auth_group: Array<OrgAuthGroup>;
+    get auth_group(): Array<OrgAuthGroup>;
 }

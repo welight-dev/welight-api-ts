@@ -25,9 +25,9 @@ export declare class Fatura extends api.Tastypie.Model<Fatura> {
     private _distribuicao;
     private _ong_distribuicao;
     constructor(obj?: any);
-    readonly venda: api.Tastypie.Resource<FaturaVenda>;
-    readonly distribuicao: api.Tastypie.Resource<FaturaDistribuicao>;
-    readonly ong_distribuicao: api.Tastypie.Resource<FaturaOngDistribuicao>;
+    get venda(): api.Tastypie.Resource<FaturaVenda>;
+    get distribuicao(): api.Tastypie.Resource<FaturaDistribuicao>;
+    get ong_distribuicao(): api.Tastypie.Resource<FaturaOngDistribuicao>;
 }
 export declare class FaturaTaxa {
     id: number;

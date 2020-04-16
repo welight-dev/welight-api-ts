@@ -22,8 +22,8 @@ export declare class Campanha extends Tastypie.Model<Campanha> {
     private _md_empresa;
     private _rs_ong;
     constructor(obj?: any);
-    readonly md_empresa: Empresa;
-    readonly rs_ong: Tastypie.Resource<CampanhaOng>;
+    get md_empresa(): Empresa;
+    get rs_ong(): Tastypie.Resource<CampanhaOng>;
     gerar_fatura(metodo_pgto: string, valor_doacao: number, recorrente: boolean, anonimo: boolean, ongs: Array<number>, cpf?: string): Promise<DoacaoFatura>;
 }
 export declare class CampanhaOng extends Tastypie.Model<CampanhaOng> {
@@ -34,8 +34,8 @@ export declare class CampanhaOng extends Tastypie.Model<CampanhaOng> {
     private _md_campanha;
     private _md_ong;
     constructor(obj?: any);
-    readonly md_campanha: Campanha;
-    readonly md_ong: Ong;
+    get md_campanha(): Campanha;
+    get md_ong(): Ong;
 }
 export declare class CampanhaDoacao extends Tastypie.Model<CampanhaDoacao> {
     static resource: Tastypie.Resource<CampanhaDoacao>;
@@ -52,8 +52,8 @@ export declare class CampanhaDoacao extends Tastypie.Model<CampanhaDoacao> {
     private _md_campanha;
     private _md_doador;
     constructor(obj?: any);
-    readonly md_campanha: Campanha;
-    readonly md_doador: Doador;
+    get md_campanha(): Campanha;
+    get md_doador(): Doador;
 }
 export declare class DoacaoFatura {
     static rs_fatura_add: Tastypie.Resource<DoacaoFatura>;
@@ -73,9 +73,9 @@ export declare class DoacaoFatura {
     private _md_pagamento;
     private _md_ongs;
     constructor(obj?: any);
-    readonly md_campanha_doacao: CampanhaDoacao;
-    readonly md_pagamento: DoacaoFaturaPagamento;
-    readonly md_ongs: Array<Ong>;
+    get md_campanha_doacao(): CampanhaDoacao;
+    get md_pagamento(): DoacaoFaturaPagamento;
+    get md_ongs(): Array<Ong>;
     static gerar_fatura(obj: {
         campanha_id: number;
         metodo_pgto: string;

@@ -37,11 +37,11 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     constructor(obj?: any, resource?: Tastypie.Resource<OrgFundGs>);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
-    readonly rs_round: Tastypie.Resource<OrgFundGsRound>;
-    readonly rs_form: Tastypie.Resource<GsForm>;
-    readonly rs_invite_ong: Tastypie.Resource<OfgsInvitationOng>;
-    readonly rs_project: Tastypie.Resource<OfgsProject>;
-    readonly categories: Array<OrgGsCategory>;
+    get rs_round(): Tastypie.Resource<OrgFundGsRound>;
+    get rs_form(): Tastypie.Resource<GsForm>;
+    get rs_invite_ong(): Tastypie.Resource<OfgsInvitationOng>;
+    get rs_project(): Tastypie.Resource<OfgsProject>;
+    get categories(): Array<OrgGsCategory>;
     get_member(): Promise<OrgGsMember>;
     add_member(tokens_member: Array<string>, passw: string): Promise<OrgGsMember>;
     delete_member(token: string, passw: string): Promise<OrgGsMember>;

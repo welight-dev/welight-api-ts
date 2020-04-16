@@ -45,28 +45,28 @@ export declare class Ong extends api.Tastypie.Model<Ong> {
     constructor(obj?: any);
     save(): Promise<Ong>;
     private initProfile;
-    readonly status: OngStatus;
-    readonly ativo: boolean;
-    readonly parceira: boolean;
-    readonly invite: string;
-    readonly qtde_pontos: number;
-    readonly qtde_doadores: number;
-    readonly profile_detail: OngDetail;
-    readonly site_custom: OngSiteCustom;
-    readonly address: OngAddress;
-    readonly ods: Array<Ods>;
-    readonly dt_updated: string;
-    readonly dt_created: string;
-    readonly timeline: api.Tastypie.Resource<OngTimeLine>;
-    readonly fotos: api.Tastypie.Resource<OngTimeLine>;
-    readonly videos: api.Tastypie.Resource<OngTimeLine>;
-    readonly user: weauth_models.User;
-    readonly projetos: api.Tastypie.Resource<OngProjeto>;
-    readonly bancos: api.Tastypie.Resource<OngBanco>;
-    readonly recursos: api.Tastypie.Resource<OngRecurso>;
-    readonly status_carteira: api.Tastypie.Resource<OngStatusCarteira>;
-    readonly projeto_entrega: api.Tastypie.Resource<OngProjetoEntrega>;
-    readonly carteira: api.Tastypie.Resource<OngCarteira>;
+    get status(): OngStatus;
+    get ativo(): boolean;
+    get parceira(): boolean;
+    get invite(): string;
+    get qtde_pontos(): number;
+    get qtde_doadores(): number;
+    get profile_detail(): OngDetail;
+    get site_custom(): OngSiteCustom;
+    get address(): OngAddress;
+    get ods(): Array<Ods>;
+    get dt_updated(): string;
+    get dt_created(): string;
+    get timeline(): api.Tastypie.Resource<OngTimeLine>;
+    get fotos(): api.Tastypie.Resource<OngTimeLine>;
+    get videos(): api.Tastypie.Resource<OngTimeLine>;
+    get user(): weauth_models.User;
+    get projetos(): api.Tastypie.Resource<OngProjeto>;
+    get bancos(): api.Tastypie.Resource<OngBanco>;
+    get recursos(): api.Tastypie.Resource<OngRecurso>;
+    get status_carteira(): api.Tastypie.Resource<OngStatusCarteira>;
+    get projeto_entrega(): api.Tastypie.Resource<OngProjetoEntrega>;
+    get carteira(): api.Tastypie.Resource<OngCarteira>;
     getEndereco(): Promise<OngEndereco>;
     createAccount(nome: string, email: string, razao_social: string, cnpj: string, kwargs?: any): Promise<Ong>;
     quickLogin(auth?: {
@@ -202,9 +202,9 @@ export declare class OngProjeto extends api.Tastypie.Model<OngProjeto> {
     private _ods;
     getSobre(): Promise<OngProjetoSobre>;
     constructor(obj?: any);
-    readonly endereco: api.Tastypie.Resource<OngProjetoEndereco>;
-    readonly metric: api.Tastypie.Resource<OngProjetoMetric>;
-    readonly ods: api.Tastypie.Resource<OngProjetoOds>;
+    get endereco(): api.Tastypie.Resource<OngProjetoEndereco>;
+    get metric(): api.Tastypie.Resource<OngProjetoMetric>;
+    get ods(): api.Tastypie.Resource<OngProjetoOds>;
     get_metric_summary(): Promise<OngProjetoMetricSummary>;
 }
 export declare class OngProjetoSobre extends api.Tastypie.Model<OngProjetoSobre> {
@@ -266,7 +266,7 @@ export declare class OngProjetoMetricRegister extends api.Tastypie.Model<OngProj
     dt_created: string;
     private _evidencies;
     constructor(obj?: any);
-    readonly evidencies: api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>;
+    get evidencies(): api.Tastypie.Resource<OngProjetoMetricRegisterEvidence>;
 }
 export declare class OngProjetoMetricConfig extends api.Tastypie.Model<OngProjetoMetricConfig> {
     static resource: api.Tastypie.Resource<OngProjetoMetricConfig>;
@@ -286,7 +286,7 @@ export declare class OngProjetoMetricConfig extends api.Tastypie.Model<OngProjet
     dt_created: string;
     private _registers;
     constructor(obj?: any);
-    readonly register: api.Tastypie.Resource<OngProjetoMetricRegister>;
+    get register(): api.Tastypie.Resource<OngProjetoMetricRegister>;
 }
 export declare class OngProjetoMetric extends api.Tastypie.Model<OngProjetoMetric> {
     static resource: api.Tastypie.Resource<OngProjetoMetric>;
@@ -299,9 +299,9 @@ export declare class OngProjetoMetric extends api.Tastypie.Model<OngProjetoMetri
     private _metric;
     private _metric_config;
     constructor(obj?: any);
-    readonly ong_projeto: OngProjeto;
-    readonly metric: Metric;
-    readonly metric_config: api.Tastypie.Resource<OngProjetoMetricConfig>;
+    get ong_projeto(): OngProjeto;
+    get metric(): Metric;
+    get metric_config(): api.Tastypie.Resource<OngProjetoMetricConfig>;
 }
 export declare class OngStatus {
     qtde_pontos: number;
@@ -336,8 +336,8 @@ export declare class OngRecurso extends api.Tastypie.Model<OngRecurso> {
     private _doacao;
     private _comprovante;
     constructor(obj?: any);
-    readonly doacao: api.Tastypie.Resource<OngRecursoDoacao>;
-    readonly comprovante: api.Tastypie.Resource<OngRecursoComprovante>;
+    get doacao(): api.Tastypie.Resource<OngRecursoDoacao>;
+    get comprovante(): api.Tastypie.Resource<OngRecursoComprovante>;
 }
 export declare class OngRecursoDoacao extends api.Tastypie.Model<OngRecursoDoacao> {
     static resource: api.Tastypie.Resource<OngRecursoDoacao>;
@@ -408,7 +408,7 @@ export declare class OngCarteiraCreditoCustom {
     dt_created: string;
     private _comprovante;
     constructor(obj?: any);
-    readonly comprovante: api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>;
+    get comprovante(): api.Tastypie.Resource<OngCarteiraCreditoCustomComprovante>;
 }
 export declare class OngCarteira extends api.Tastypie.Model<OngCarteira> {
     static resource: api.Tastypie.Resource<OngCarteira>;
@@ -470,8 +470,8 @@ export declare class OngProjetoEntrega extends api.Tastypie.Model<OngProjetoEntr
     private _endereco;
     private _comprovante;
     constructor(obj?: any);
-    readonly endereco: api.Tastypie.Resource<OngProjetoEntregaEndereco>;
-    readonly comprovante: api.Tastypie.Resource<OngProjetoEntregaComprovante>;
+    get endereco(): api.Tastypie.Resource<OngProjetoEntregaEndereco>;
+    get comprovante(): api.Tastypie.Resource<OngProjetoEntregaComprovante>;
 }
 export declare class OngProjetoEntregaEndereco extends api.Tastypie.Model<OngProjetoEntregaEndereco> {
     static resource: api.Tastypie.Resource<OngProjetoEntregaEndereco>;

@@ -28,7 +28,7 @@ export declare class IngressoCupomFatura {
     dt_created: string;
     private _ingresso_cupom;
     constructor(obj?: any);
-    readonly ingresso_cupom: IngressoCupom;
+    get ingresso_cupom(): IngressoCupom;
 }
 export declare class IngressoFatura {
     id: number;

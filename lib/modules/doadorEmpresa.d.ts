@@ -25,12 +25,12 @@ export declare class Empresa extends api.Tastypie.Model<Empresa> {
     constructor(obj?: any);
     save(): Promise<Empresa>;
     private initProfile;
-    readonly doador: Doador;
-    readonly vendas: api.Tastypie.Resource<Venda>;
-    readonly ongs: api.Tastypie.Resource<EmpresaOng>;
-    readonly clientes: api.Tastypie.Resource<Cliente>;
-    readonly faturas: api.Tastypie.Resource<Fatura>;
-    readonly modulos: api.Tastypie.Resource<EmpresaModuloAtivo>;
+    get doador(): Doador;
+    get vendas(): api.Tastypie.Resource<Venda>;
+    get ongs(): api.Tastypie.Resource<EmpresaOng>;
+    get clientes(): api.Tastypie.Resource<Cliente>;
+    get faturas(): api.Tastypie.Resource<Fatura>;
+    get modulos(): api.Tastypie.Resource<EmpresaModuloAtivo>;
     getEndereco(): Promise<EmpresaEndereco>;
     createAccount(nome: string, email: string, cpf_cnpj: string, kwargs?: any): Promise<Empresa>;
     login(username: string, password: string, kwargs?: any): Promise<Empresa>;
@@ -139,9 +139,9 @@ export declare class Cliente extends api.Tastypie.Model<Cliente> {
     constructor(obj?: any, _resource?: api.Tastypie.Resource<Cliente>);
     private initProfile;
     save(): Promise<Cliente>;
-    readonly ongs: api.Tastypie.Resource<ClienteOng>;
-    readonly compras: api.Tastypie.Resource<Venda>;
-    readonly doacoes: api.Tastypie.Resource<FaturaDistribuicao>;
+    get ongs(): api.Tastypie.Resource<ClienteOng>;
+    get compras(): api.Tastypie.Resource<Venda>;
+    get doacoes(): api.Tastypie.Resource<FaturaDistribuicao>;
 }
 export declare class Venda extends api.Tastypie.Model<Venda> {
     static resource: api.Tastypie.Resource<Venda>;
@@ -170,7 +170,7 @@ export declare class Venda extends api.Tastypie.Model<Venda> {
     dt_created: string;
     private _ongs;
     constructor(obj?: any, _resource?: api.Tastypie.Resource<Venda>);
-    readonly ongs: api.Tastypie.Resource<ClienteVendaOng>;
+    get ongs(): api.Tastypie.Resource<ClienteVendaOng>;
 }
 export declare class ClienteVendaOng extends api.Tastypie.Model<ClienteVendaOng> {
     static resource: api.Tastypie.Resource<ClienteVendaOng>;

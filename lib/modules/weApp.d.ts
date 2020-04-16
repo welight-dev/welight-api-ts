@@ -19,13 +19,13 @@ export declare class AppProfile {
         id?: number;
         slug?: string;
     }): Promise<AppProfile>;
-    readonly doador: Doador;
-    readonly empresa: Empresa;
-    readonly org: Org;
-    readonly ong: Ong;
-    readonly app_token: string;
-    readonly app_profile_id: number;
-    readonly initialized: boolean;
+    get doador(): Doador;
+    get empresa(): Empresa;
+    get org(): Org;
+    get ong(): Ong;
+    get app_token(): string;
+    get app_profile_id(): number;
+    get initialized(): boolean;
 }
 export declare class AppDevice {
     is_mobile: boolean;
@@ -87,7 +87,7 @@ export declare class AppRoute {
         not_found: string;
     });
     private _check_uri_slash;
-    readonly uri: {
+    get uri(): {
         home: string;
         landing_page: string;
         account: string;
@@ -128,15 +128,15 @@ export declare class AppManager {
     private _get_source_login;
     private _init_app_profile_member;
     private _check_member_auth;
-    readonly user: User;
-    readonly profile: AppProfile;
-    readonly app_token: string;
-    readonly device: AppDevice;
-    readonly route: AppRoute;
-    readonly auth_loading: boolean;
-    readonly create_account_loading: boolean;
-    readonly auth_guard_user_checked: boolean;
-    readonly auth_guard_member_checked: boolean;
+    get user(): User;
+    get profile(): AppProfile;
+    get app_token(): string;
+    get device(): AppDevice;
+    get route(): AppRoute;
+    get auth_loading(): boolean;
+    get create_account_loading(): boolean;
+    get auth_guard_user_checked(): boolean;
+    get auth_guard_member_checked(): boolean;
     createAccount(name: string, email: string, password: string, kwargs?: any): Promise<boolean>;
     createAccountDoadorFundo(obj: Org): Promise<boolean>;
     createAccountOng(obj: Ong): Promise<boolean>;
@@ -165,5 +165,6 @@ export declare class AppManager {
     list_profile(): Array<UserApp>;
     check_list_profile(app_route?: string): Array<UserApp>;
     user_has_perm(perm_token_list: Array<string>): boolean;
-    global_loading: boolean;
+    get global_loading(): boolean;
+    set global_loading(p: boolean);
 }

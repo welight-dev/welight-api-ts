@@ -24,7 +24,7 @@ export declare class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     dt_updated: string;
     private _rs_stage;
     constructor(obj?: any);
-    readonly rs_stage: Tastypie.Resource<OfgsStage>;
+    get rs_stage(): Tastypie.Resource<OfgsStage>;
     add_stage(stages: Array<OfgsStage>): Promise<Array<OfgsStage>>;
 }
 export declare class OfgsStage extends Tastypie.Model<OfgsStage> {
@@ -45,9 +45,9 @@ export declare class OfgsStage extends Tastypie.Model<OfgsStage> {
     private _member_manager;
     constructor(obj?: any);
     getData(): any;
-    readonly evaluators: Array<OfgsStageEvaluator>;
-    readonly questions: Array<QuestionTemplate>;
-    readonly member_manager: OfgsStageMemberManager;
+    get evaluators(): Array<OfgsStageEvaluator>;
+    get questions(): Array<QuestionTemplate>;
+    get member_manager(): OfgsStageMemberManager;
     select_members(tokens: Array<string>): void;
     unselect_member(token: string): void;
     add_question(obj: QuestionTemplate): void;

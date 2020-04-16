@@ -31,15 +31,15 @@ export declare class Doador extends api.Tastypie.Model<Doador> {
         available: boolean;
     }>;
     instalarPluginNavegador(navegador: string): Promise<any>;
-    readonly email: string;
-    readonly dt_created: string;
-    readonly dt_updated: string;
-    readonly rede: DoadorRede;
-    readonly ong_timeline: api.Tastypie.Resource<ong_models.OngTimeLine>;
-    readonly doacao_mes: api.Tastypie.Resource<DoadorDoacaoMes>;
-    readonly we_notify: api.Tastypie.Resource<we_notify_models.WeNotifyDoador>;
-    readonly user: weauth_models.User;
-    readonly plugin_navegador: utils.PluginNavegador;
+    get email(): string;
+    get dt_created(): string;
+    get dt_updated(): string;
+    get rede(): DoadorRede;
+    get ong_timeline(): api.Tastypie.Resource<ong_models.OngTimeLine>;
+    get doacao_mes(): api.Tastypie.Resource<DoadorDoacaoMes>;
+    get we_notify(): api.Tastypie.Resource<we_notify_models.WeNotifyDoador>;
+    get user(): weauth_models.User;
+    get plugin_navegador(): utils.PluginNavegador;
     set_all_notify_read(): Promise<any>;
     notificarPlugin(): Promise<any>;
     getPontos(): Promise<DoadorPontos>;
@@ -107,17 +107,17 @@ export declare class DoadorPontos extends api.Tastypie.Model<DoadorPontos> {
     private _distribuicao_resource;
     constructor(obj?: any);
     distribuir(ong_id: number, pontos: number): Promise<DoadorPontos>;
-    readonly doador_id: number;
-    readonly recebidos: number;
-    readonly distribuidos: number;
-    readonly disponiveis: number;
-    readonly recebidos_cadastro: number;
-    readonly recebidos_convite: number;
-    readonly recebidos_compra: number;
-    readonly recebidos_plugin_installed: number;
-    readonly recebidos_app_installed: number;
-    readonly recebidos_perfil_completo: number;
-    readonly ong: api.Tastypie.Resource<DoadorDoacaoOng>;
+    get doador_id(): number;
+    get recebidos(): number;
+    get distribuidos(): number;
+    get disponiveis(): number;
+    get recebidos_cadastro(): number;
+    get recebidos_convite(): number;
+    get recebidos_compra(): number;
+    get recebidos_plugin_installed(): number;
+    get recebidos_app_installed(): number;
+    get recebidos_perfil_completo(): number;
+    get ong(): api.Tastypie.Resource<DoadorDoacaoOng>;
 }
 export declare class DoadorDoacaoMes extends api.Tastypie.Model<DoadorDoacaoMes> {
     static resource: api.Tastypie.Resource<DoadorDoacaoMes>;
@@ -179,32 +179,32 @@ export declare class DoadorDoacao extends api.Tastypie.Model<DoadorDoacao> {
     private _doacao_ods;
     private _dt_updated;
     constructor(obj?: any);
-    readonly moeda: string;
-    readonly doador_doacao_pendente: number;
-    readonly doador_doacao_direta: number;
-    readonly doador_doacao_pool: number;
-    readonly doador_doacao_total: number;
-    readonly doador_doacao_soluz: number;
-    readonly doador_doacao_impacto: number;
-    readonly rede_acima_doacao_pendente: number;
-    readonly rede_acima_doacao_direta: number;
-    readonly rede_acima_doacao_pool: number;
-    readonly rede_acima_doacao_total: number;
-    readonly rede_abaixo_doacao_pendente: number;
-    readonly rede_abaixo_doacao_direta: number;
-    readonly rede_abaixo_doacao_pool: number;
-    readonly rede_abaixo_doacao_total: number;
-    readonly rede_direta_doacao_pendente: number;
-    readonly rede_direta_doacao_direta: number;
-    readonly rede_direta_doacao_pool: number;
-    readonly rede_direta_doacao_total: number;
-    readonly rede_indireta_doacao_pendente: number;
-    readonly rede_indireta_doacao_direta: number;
-    readonly rede_indireta_doacao_pool: number;
-    readonly rede_indireta_doacao_total: number;
-    readonly doacao_ong: api.Tastypie.Resource<DoadorDoacaoOng>;
-    readonly doacao_ods: api.Tastypie.Resource<DoadorDoacaoOds>;
-    readonly dt_updated: string;
+    get moeda(): string;
+    get doador_doacao_pendente(): number;
+    get doador_doacao_direta(): number;
+    get doador_doacao_pool(): number;
+    get doador_doacao_total(): number;
+    get doador_doacao_soluz(): number;
+    get doador_doacao_impacto(): number;
+    get rede_acima_doacao_pendente(): number;
+    get rede_acima_doacao_direta(): number;
+    get rede_acima_doacao_pool(): number;
+    get rede_acima_doacao_total(): number;
+    get rede_abaixo_doacao_pendente(): number;
+    get rede_abaixo_doacao_direta(): number;
+    get rede_abaixo_doacao_pool(): number;
+    get rede_abaixo_doacao_total(): number;
+    get rede_direta_doacao_pendente(): number;
+    get rede_direta_doacao_direta(): number;
+    get rede_direta_doacao_pool(): number;
+    get rede_direta_doacao_total(): number;
+    get rede_indireta_doacao_pendente(): number;
+    get rede_indireta_doacao_direta(): number;
+    get rede_indireta_doacao_pool(): number;
+    get rede_indireta_doacao_total(): number;
+    get doacao_ong(): api.Tastypie.Resource<DoadorDoacaoOng>;
+    get doacao_ods(): api.Tastypie.Resource<DoadorDoacaoOds>;
+    get dt_updated(): string;
 }
 export declare class DoadorRede {
     private _doador_id;
@@ -213,11 +213,11 @@ export declare class DoadorRede {
     private _direta_resource;
     private _indireta_resource;
     constructor(doador_id: number);
-    readonly doador_id: number;
-    readonly acima: api.Tastypie.Resource<DoadorRedeAmigos>;
-    readonly abaixo: api.Tastypie.Resource<DoadorRedeAmigos>;
-    readonly direta: api.Tastypie.Resource<DoadorRedeAmigos>;
-    readonly indireta: api.Tastypie.Resource<DoadorRedeAmigos>;
+    get doador_id(): number;
+    get acima(): api.Tastypie.Resource<DoadorRedeAmigos>;
+    get abaixo(): api.Tastypie.Resource<DoadorRedeAmigos>;
+    get direta(): api.Tastypie.Resource<DoadorRedeAmigos>;
+    get indireta(): api.Tastypie.Resource<DoadorRedeAmigos>;
 }
 export declare class DoadorRedeAmigos extends api.Tastypie.Model<DoadorRedeAmigos> {
     static resource: api.Tastypie.Resource<DoadorRedeAmigos>;
@@ -243,7 +243,7 @@ export declare class DoadorDoacaoOng extends api.Tastypie.Model<DoadorDoacaoOng>
     dt_updated: string;
     private _doacao_ods;
     constructor(obj?: any);
-    readonly doacao_ods: api.Tastypie.Resource<DoadorDoacaoOds>;
+    get doacao_ods(): api.Tastypie.Resource<DoadorDoacaoOds>;
 }
 export declare class DoadorDoacaoOds extends api.Tastypie.Model<DoadorDoacaoOds> {
     static resource: api.Tastypie.Resource<DoadorDoacaoOds>;
@@ -257,7 +257,7 @@ export declare class DoadorDoacaoOds extends api.Tastypie.Model<DoadorDoacaoOds>
     dt_updated: string;
     private _doacao_ong;
     constructor(obj?: any);
-    readonly doacao_ong: api.Tastypie.Resource<DoadorDoacaoOng>;
+    get doacao_ong(): api.Tastypie.Resource<DoadorDoacaoOng>;
 }
 export declare class DoadorCompraAfiliadoraStatus extends api.Tastypie.Model<DoadorCompraAfiliadoraStatus> {
     static resource: api.Tastypie.Resource<DoadorCompraAfiliadoraStatus>;
@@ -269,13 +269,13 @@ export declare class DoadorCompraAfiliadoraStatus extends api.Tastypie.Model<Doa
     private _dt_updated;
     private _compra;
     constructor(obj?: any);
-    readonly doador_id: number;
-    readonly ativo: boolean;
-    readonly compra_qtde: number;
-    readonly doacao_total: number;
-    readonly doacao_porcentagem: number;
-    readonly dt_updated: string;
-    readonly compra: api.Tastypie.Resource<DoadorCompraAfiliadora>;
+    get doador_id(): number;
+    get ativo(): boolean;
+    get compra_qtde(): number;
+    get doacao_total(): number;
+    get doacao_porcentagem(): number;
+    get dt_updated(): string;
+    get compra(): api.Tastypie.Resource<DoadorCompraAfiliadora>;
 }
 export declare class DoadorCompraAfiliadora extends api.Tastypie.Model<DoadorCompraAfiliadora> {
     static resource: api.Tastypie.Resource<DoadorCompraAfiliadora>;

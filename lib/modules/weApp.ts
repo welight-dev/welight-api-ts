@@ -38,44 +38,69 @@ export class AppProfile {
 
     public init(obj_filter:{id?: number, slug?: string}): Promise<AppProfile> {
         if(this._app_token == 'home'){
-            return Doador.resource.objects.findOne(obj_filter).then(resp => {
-                if(!resp.id) return Promise.reject('Profile not found.');
-                this._doador = resp;
-                this._app_profile_id = resp.id;
-                this._initialized = true;
-                return this;
+            return new Promise<AppProfile>((resolve, reject) => {
+                Doador.resource.objects.findOne(obj_filter).then(resp => {
+                    if(!resp.id){
+                        reject('Profile not found.');
+                    }else{
+                        this._doador = resp;
+                        this._app_profile_id = resp.id;
+                        this._initialized = true;
+                        resolve(this);
+                    }
+                }).catch(error => reject(error));
             });
         }else if(this._app_token == 'doador'){
-            return Doador.resource.objects.findOne(obj_filter).then(resp => {
-                if(!resp.id) return Promise.reject('Profile not found.');
-                this._doador = resp;
-                this._app_profile_id = resp.id;
-                this._initialized = true;
-                return this;
+            return new Promise<AppProfile>((resolve, reject) => {
+                Doador.resource.objects.findOne(obj_filter).then(resp => {
+                    if(!resp.id){
+                        reject('Profile not found.');
+                    }else{
+                        this._doador = resp;
+                        this._app_profile_id = resp.id;
+                        this._initialized = true;
+                        resolve(this);
+                    }
+                }).catch(error => reject(error));
             });
         }else if(this._app_token == 'doador_empresa'){
-            return Empresa.resource.objects.findOne(obj_filter).then(resp => {
-                if(!resp.id) return Promise.reject('Profile not found.');
-                this._empresa = resp;
-                this._app_profile_id = resp.id;
-                this._initialized = true;
-                return this;
+            return new Promise<AppProfile>((resolve, reject) => {
+                Empresa.resource.objects.findOne(obj_filter).then(resp => {
+                    if(!resp.id){
+                        reject('Profile not found.');
+                    }else{
+                        this._empresa = resp;
+                        this._app_profile_id = resp.id;
+                        this._initialized = true;
+                        resolve(this);
+                    }
+                }).catch(error => reject(error));
             });
         }else if(this._app_token == 'doador_fundo'){
-            return Org.resource.objects.findOne(obj_filter).then(resp => {
-                if(!resp.id) return Promise.reject('Profile not found.');
-                this._org = resp;
-                this._app_profile_id = resp.id;
-                this._initialized = true;
-                return this;
+            return new Promise<AppProfile>((resolve, reject) => {
+                Org.resource.objects.findOne(obj_filter).then(resp => {
+                    if(!resp.id){
+                        reject('Profile not found.');
+                    }else{
+                        this._org = resp;
+                        this._app_profile_id = resp.id;
+                        this._initialized = true;
+                        resolve(this);
+                    }
+                }).catch(error => reject(error));
             });
         }else if(this._app_token == 'ong'){
-            return Ong.resource.objects.findOne(obj_filter).then(resp => {
-                if(!resp.id) return Promise.reject('Profile not found.');
-                this._ong = resp;
-                this._app_profile_id = resp.id;
-                this._initialized = true;
-                return this;
+            return new Promise<AppProfile>((resolve, reject) => {
+                Ong.resource.objects.findOne(obj_filter).then(resp => {
+                    if(!resp.id){
+                        reject('Profile not found.');
+                    }else{
+                        this._ong = resp;
+                        this._app_profile_id = resp.id;
+                        this._initialized = true;
+                        resolve(this);
+                    }
+                }).catch(error => reject(error));
             });
         }else{
             Promise.reject('invalid app_token');

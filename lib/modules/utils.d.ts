@@ -1,6 +1,6 @@
 import { Tastypie } from "ts-resource-tastypie";
 export declare class Tools {
-    static readonly localStorageSuported: boolean;
+    static get localStorageSuported(): boolean;
     static setData(obj_from: any, obj_to: any): void;
 }
 export declare class Banco extends Tastypie.Model<Banco> {
@@ -67,7 +67,7 @@ export declare class Address extends Tastypie.Model<Address> {
         address?: string;
         latlng?: string;
     }): Promise<Array<Address>>;
-    readonly searching: boolean;
+    get searching(): boolean;
 }
 export declare class Country extends Tastypie.Model<Country> {
     static resource: Tastypie.Resource<Country>;
@@ -88,7 +88,7 @@ export declare class CheckBoxManager {
     reset(): void;
     check(p: Array<number>, checked: boolean): void;
     onCheck(): void;
-    readonly checked: Array<number>;
+    get checked(): Array<number>;
 }
 export declare class WeStatus extends Tastypie.Model<WeStatus> {
     static resource: Tastypie.Resource<WeStatus>;

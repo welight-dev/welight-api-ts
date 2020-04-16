@@ -4,8 +4,8 @@ export declare class Auth {
     private _username;
     private _api_key;
     constructor(username: string, api_key: string);
-    readonly username: string;
-    readonly api_key: string;
+    get username(): string;
+    get api_key(): string;
 }
 export declare class App extends Tastypie.Model<App> {
     static resource: Tastypie.Resource<App>;
@@ -25,9 +25,9 @@ export declare class AppPermission {
         name: string;
         token: string;
     });
-    readonly id: number;
-    readonly name: string;
-    readonly token: string;
+    get id(): number;
+    get name(): string;
+    get token(): string;
 }
 export declare class UserApp {
     private _id;
@@ -39,13 +39,13 @@ export declare class UserApp {
     private _admin;
     private _permissions;
     constructor(id: number, app_name: string, app_token: string, app_profile_id: number, display_name: string, avatar: string, admin: boolean, permissions: Array<any>);
-    readonly id: number;
-    readonly app_name: string;
-    readonly app_token: string;
-    readonly app_profile_id: number;
-    readonly display_name: string;
-    readonly avatar: string;
-    readonly admin: boolean;
+    get id(): number;
+    get app_name(): string;
+    get app_token(): string;
+    get app_profile_id(): number;
+    get display_name(): string;
+    get avatar(): string;
+    get admin(): boolean;
     has_perm(perm_token_list: Array<string>): boolean;
 }
 export declare class UserBar {
@@ -56,9 +56,9 @@ export declare class UserBar {
     private _set_available;
     add_app(obj: UserApp): void;
     remove_app(obj: UserApp): void;
-    readonly app_admin: Array<UserApp>;
-    readonly app_shared: Array<UserApp>;
-    readonly app_available: Array<UserApp>;
+    get app_admin(): Array<UserApp>;
+    get app_shared(): Array<UserApp>;
+    get app_available(): Array<UserApp>;
 }
 export declare class User {
     private _id;
@@ -89,17 +89,19 @@ export declare class User {
     save(): Promise<User>;
     unselect_profile(): void;
     select_profile(user_app: UserApp): void;
-    readonly id: number;
-    readonly email: string;
-    readonly auth: Auth;
-    readonly apps: Array<UserApp>;
-    readonly bar: UserBar;
-    readonly account: UserAccount;
-    readonly address: UserAddress;
-    readonly is_authenticated: boolean;
-    hidden_login: boolean;
-    current_user_app: UserApp;
-    readonly plugin_navegador: PluginNavegador;
+    get id(): number;
+    get email(): string;
+    get auth(): Auth;
+    get apps(): Array<UserApp>;
+    get bar(): UserBar;
+    get account(): UserAccount;
+    get address(): UserAddress;
+    get is_authenticated(): boolean;
+    get hidden_login(): boolean;
+    set hidden_login(p: boolean);
+    get current_user_app(): UserApp;
+    set current_user_app(userapp: UserApp);
+    get plugin_navegador(): PluginNavegador;
     getUserAppAdmin(app_token: string): UserApp;
     getUserAppById(id: number): UserApp;
     getUserAppByProfile(token: string, profile_id: number): UserApp;

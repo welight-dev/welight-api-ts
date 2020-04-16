@@ -17,7 +17,7 @@ export declare class Loja extends api.Tastypie.Model<Loja> {
     total_cupons_ativos: number;
     private _cupons;
     constructor(obj?: any);
-    readonly cupons: api.Tastypie.Resource<Cupom>;
+    get cupons(): api.Tastypie.Resource<Cupom>;
 }
 export declare class Cupom extends api.Tastypie.Model<Cupom> {
     static resource: api.Tastypie.Resource<Cupom>;

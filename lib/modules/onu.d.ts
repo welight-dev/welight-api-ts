@@ -107,10 +107,10 @@ export declare class Metric extends api.Tastypie.Model<Metric> {
     private _metric_unit;
     private _metric_ods;
     constructor(obj?: any);
-    readonly standard: MetricStandard;
-    readonly category: MetricCategory;
-    readonly subcategory: MetricSubcategory;
-    readonly unit_group: MetricUnitGroup;
-    readonly unit: MetricUnit;
-    readonly ods: Array<MetricOds>;
+    get standard(): MetricStandard;
+    get category(): MetricCategory;
+    get subcategory(): MetricSubcategory;
+    get unit_group(): MetricUnitGroup;
+    get unit(): MetricUnit;
+    get ods(): Array<MetricOds>;
 }
