@@ -4,10 +4,11 @@
 import { Tastypie } from "ts-resource-tastypie";
 import { QuestionTemplate } from "./doadorFundoGsQuiz";
 
-export class GsForm extends Tastypie.Model<GsForm> {
-    public static resource = new Tastypie.Resource<GsForm>('doador-fundo/gs-form', {model: GsForm});
+
+export class GsFormModel extends Tastypie.Model<GsFormModel> {
 
     public gs_id: number;
+    public gs_project_id: number;
     public type: string;
     public topic: string;
     public content: any;
@@ -16,8 +17,8 @@ export class GsForm extends Tastypie.Model<GsForm> {
     public dt_created: string;
     public questions: Array<QuestionTemplate>;
 
-    constructor(obj?:any){
-        super(GsForm.resource, obj);
+    constructor(resource: Tastypie.Resource<GsFormModel>, obj?: any){
+        super(resource, obj);
         this.questions = [];
         if(obj){
             if(obj.questions){
@@ -29,26 +30,15 @@ export class GsForm extends Tastypie.Model<GsForm> {
     }
 }
 
-export class GsFormResponse extends Tastypie.Model<GsFormResponse> {
+export class GsForm extends GsFormModel {
+    public static resource = new Tastypie.Resource<GsForm>('doador-fundo/gs-form', {model: GsForm});
+    constructor(obj?:any){
+        super(GsForm.resource, obj);
+    }
+}
 
-    public gs_project_id: number;
-    public type: string;
-    public topic: string;
-    public content: any;
-    public document: string;
-    public dt_updated: string;
-    public dt_created: string;
-    public questions: Array<QuestionTemplate>;
-
+export class GsFormResponse extends GsFormModel {
     constructor(obj?:any){
         super(null, obj);
-        this.questions = [];
-        if(obj){
-            if(obj.questions){
-                for(let question of obj.questions){
-                    this.questions.push(new QuestionTemplate(question));
-                }
-            }
-        }
     }
 }
