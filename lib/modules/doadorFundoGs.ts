@@ -6,6 +6,7 @@ import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
+import { Doador } from "./doador";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
@@ -283,6 +284,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public total_approved: number;
     public accept_partial: boolean;
     public forms: Array<GsFormResponse>;
+    private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
 
     public dt_updated: string;
     public dt_created: string;
@@ -299,6 +301,34 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                     this.forms.push(new GsFormResponse(form));
                 }
             }
+            if(obj.id){
+                this._rs_comments = new Tastypie.Resource<OfgsProjectComment>(
+                    OfgsProjectComment.resource.endpoint,
+                    {model: OfgsProjectComment, defaults: {gs_project_id: obj.id}}
+                );
+            }
+        }
+    }
+
+    public get rs_comments(): Tastypie.Resource<OfgsProjectComment> {
+        return this._rs_comments;
+    }
+}
+
+
+export class OfgsProjectComment extends Tastypie.Model<OfgsProjectComment> {
+    public static resource = new Tastypie.Resource<OfgsProjectComment>('doador-fundo/gs-project-comment', {model: OfgsProjectComment});
+
+    public gs_project_id: number;
+    public md_doador: Doador;
+    public comment: string;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsProjectComment.resource, obj);
+        if(obj){
+            if(obj.doador) this.md_doador = new Doador(obj.doador);
         }
     }
 }

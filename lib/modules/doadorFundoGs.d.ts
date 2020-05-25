@@ -3,6 +3,7 @@ import { OrgFund, OrgMember } from "./doadorFundo";
 import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
+import { Doador } from "./doador";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -98,6 +99,17 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     total_approved: number;
     accept_partial: boolean;
     forms: Array<GsFormResponse>;
+    private _rs_comments;
+    dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+    get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
+}
+export declare class OfgsProjectComment extends Tastypie.Model<OfgsProjectComment> {
+    static resource: Tastypie.Resource<OfgsProjectComment>;
+    gs_project_id: number;
+    md_doador: Doador;
+    comment: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
