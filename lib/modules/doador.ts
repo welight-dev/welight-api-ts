@@ -18,6 +18,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
     public has_plugin: boolean;
     public has_app: boolean;
     public invite: string;
+    public foto: string;
     private _email: string;
     private _dt_updated: string;
     private _dt_created: string;
