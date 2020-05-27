@@ -58,6 +58,10 @@ export class Doador extends api.Tastypie.Model<Doador> {
             this.slug = obj.slug;
             this.is_avaliador = obj.is_avaliador;
             this.is_empresa = obj.is_empresa;
+            this.has_plugin = obj.has_plugin;
+            this.has_app = obj.has_app;
+            this.invite = obj.invite;
+            this.foto = obj.foto;
             this._email = obj.email;
             this._dt_updated = obj.dt_updated;
             this._dt_created = obj.dt_created;
