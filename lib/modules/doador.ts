@@ -19,6 +19,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
     public has_app: boolean;
     public invite: string;
     public foto: string;
+    public user_id: number;
     private _email: string;
     private _dt_updated: string;
     private _dt_created: string;
@@ -62,6 +63,7 @@ export class Doador extends api.Tastypie.Model<Doador> {
             this.has_app = obj.has_app;
             this.invite = obj.invite;
             this.foto = obj.foto;
+            this.user_id = obj.user_id;
             this._email = obj.email;
             this._dt_updated = obj.dt_updated;
             this._dt_created = obj.dt_created;
