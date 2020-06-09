@@ -273,6 +273,12 @@ export class OrgFundGsFormSubscribe extends OrgFundGs {
     }
 }
 
+export interface IProjectSummary {
+    views: number,
+    score: number,
+    comments: number
+}
+
 export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-project', {model: OfgsProject});
 
@@ -281,11 +287,13 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public md_ong: Ong;
     public round_id: number;
     public stage_id: number;
-
+    public summary: IProjectSummary = {views: 0, score:0, comments: 0};
     public total_requested: number;
     public total_approved: number;
     public accept_partial: boolean;
     public forms: Array<GsFormResponse>;
+    private _rs_views: Tastypie.Resource<OfgsProjectView>;
+    private _rs_score: Tastypie.Resource<OfgsProjectScore>;
     private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
 
     public dt_updated: string;
@@ -304,6 +312,14 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                 }
             }
             if(obj.id){
+                this._rs_views = new Tastypie.Resource<OfgsProjectView>(
+                    OfgsProjectView.resource.endpoint,
+                    {model: OfgsProjectView, defaults: {gs_project_id: obj.id}}
+                );
+                this._rs_score = new Tastypie.Resource<OfgsProjectScore>(
+                    OfgsProjectScore.resource.endpoint,
+                    {model: OfgsProjectScore, defaults: {gs_project_id: obj.id}}
+                );
                 this._rs_comments = new Tastypie.Resource<OfgsProjectComment>(
                     OfgsProjectComment.resource.endpoint,
                     {model: OfgsProjectComment, defaults: {gs_project_id: obj.id}}
@@ -312,8 +328,53 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         }
     }
 
+    public get rs_views(): Tastypie.Resource<OfgsProjectView> {
+        return this._rs_views;
+    }
+
+    public get rs_score(): Tastypie.Resource<OfgsProjectScore> {
+        return this._rs_score;
+    }
+
     public get rs_comments(): Tastypie.Resource<OfgsProjectComment> {
         return this._rs_comments;
+    }
+
+    public setView(): Promise<OfgsProjectView> {
+        return this.rs_views.objects.create({gs_project_id: this.id});
+    }
+}
+
+export class OfgsProjectView extends Tastypie.Model<OfgsProjectView> {
+    public static resource = new Tastypie.Resource<OfgsProjectView>('doador-fundo/gs-project-view', {model: OfgsProjectView});
+
+    public gs_project_id: number;
+    public md_doador: Doador;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsProjectView.resource, obj);
+        if(obj){
+            if(obj.doador) this.md_doador = new Doador(obj.doador);
+        }
+    }
+}
+
+export class OfgsProjectScore extends Tastypie.Model<OfgsProjectScore> {
+    public static resource = new Tastypie.Resource<OfgsProjectScore>('doador-fundo/gs-project-score', {model: OfgsProjectScore});
+
+    public gs_project_id: number;
+    public md_doador: Doador;
+    public stage_id: number;
+    public score: number;
+    public dt_updated: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsProjectScore.resource, obj);
+        if(obj){
+            if(obj.doador) this.md_doador = new Doador(obj.doador);
+        }
     }
 }
 
