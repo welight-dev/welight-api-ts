@@ -287,7 +287,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public md_ong: Ong;
     public round_id: number;
     public stage_id: number;
-    public summary: IProjectSummary = {views: 0, score:0, comments: 0};
+    public summary: IProjectSummary;
     public total_requested: number;
     public total_approved: number;
     public accept_partial: boolean;
@@ -325,6 +325,8 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                     {model: OfgsProjectComment, defaults: {gs_project_id: obj.id}}
                 );
             }
+        }else{
+            this.summary = {views: 0, score:0, comments: 0};
         }
     }
 
