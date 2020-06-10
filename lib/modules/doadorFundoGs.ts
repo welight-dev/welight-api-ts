@@ -281,6 +281,7 @@ export interface IProjectSummary {
 
 export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-project', {model: OfgsProject});
+    public static resource_approve_stage = new Tastypie.Resource<{approved: boolean}>('doador-fundo/gs-project/<id>/approve-stage');
 
     public gs_id: number;
     public md_project: OngProjeto;
@@ -344,6 +345,22 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
 
     public setView(): Promise<OfgsProjectView> {
         return this.rs_views.objects.create({gs_project_id: this.id});
+    }
+
+    public approveCurrentStage(passw: string): Promise<{approved: boolean}> {
+        if(this.id){
+            return OfgsProject.resource_approve_stage.objects.get(this.id, {passw: passw}).then((data) => {
+                if(data.approved){
+                    return this.refresh().then(() => {
+                        return data;
+                    });
+                }else{
+                    return data;
+                }          
+            });
+        }else{
+            return Promise.reject('GsProject not found');
+        }
     }
 }
 

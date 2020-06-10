@@ -97,6 +97,9 @@ export interface IProjectSummary {
 }
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     static resource: Tastypie.Resource<OfgsProject>;
+    static resource_approve_stage: Tastypie.Resource<{
+        approved: boolean;
+    }>;
     gs_id: number;
     md_project: OngProjeto;
     md_ong: Ong;
@@ -117,6 +120,9 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     get rs_score(): Tastypie.Resource<OfgsProjectScore>;
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     setView(): Promise<OfgsProjectView>;
+    approveCurrentStage(passw: string): Promise<{
+        approved: boolean;
+    }>;
 }
 export declare class OfgsProjectView extends Tastypie.Model<OfgsProjectView> {
     static resource: Tastypie.Resource<OfgsProjectView>;
