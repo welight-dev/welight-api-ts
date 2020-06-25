@@ -4,6 +4,7 @@ import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
+import { DisbursementRules } from "./doadorFundoGsQuiz";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -95,11 +96,25 @@ export interface IProjectSummary {
     score: number;
     comments: number;
 }
+export interface IProjectDealSchedule {
+    total_requested: number;
+    total_approved: number;
+    deal: Array<{
+        amount: number;
+        rule: DisbursementRules;
+    }>;
+    schedule: Array<{
+        amount: number;
+        dt_amount: string;
+    }>;
+}
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     static resource: Tastypie.Resource<OfgsProject>;
     static resource_approve_stage: Tastypie.Resource<{
         approved: boolean;
     }>;
+    static resource_check_approve: Tastypie.Resource<IProjectDealSchedule>;
+    static resource_approve: Tastypie.Resource<IProjectDealSchedule>;
     gs_id: number;
     md_project: OngProjeto;
     md_ong: Ong;
@@ -113,13 +128,17 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_views;
     private _rs_score;
     private _rs_comments;
+    private _rs_finance_schedule;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
     get rs_views(): Tastypie.Resource<OfgsProjectView>;
     get rs_score(): Tastypie.Resource<OfgsProjectScore>;
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
+    get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
     setView(): Promise<OfgsProjectView>;
+    checkApprove(): Promise<IProjectDealSchedule>;
+    approve(data: IProjectDealSchedule): Promise<IProjectDealSchedule>;
     approveCurrentStage(passw: string): Promise<{
         approved: boolean;
     }>;
@@ -147,6 +166,17 @@ export declare class OfgsProjectComment extends Tastypie.Model<OfgsProjectCommen
     md_doador: Doador;
     comment: string;
     dt_updated: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProjectFinanceSchedule> {
+    static resource: Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    gs_project_id: number;
+    amount: number;
+    status: string;
+    invoice_id: string;
+    dt_due_transfer: string;
+    dt_transfer: string;
     dt_created: string;
     constructor(obj?: any);
 }

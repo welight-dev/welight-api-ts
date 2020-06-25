@@ -7,6 +7,7 @@ import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
+import { DisbursementRules } from "./doadorFundoGsQuiz";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
@@ -279,9 +280,18 @@ export interface IProjectSummary {
     comments: number
 }
 
+export interface IProjectDealSchedule {
+    total_requested: number,
+    total_approved: number,
+    deal: Array<{amount: number, rule: DisbursementRules}>,
+    schedule: Array<{amount: number, dt_amount: string }>
+}
+
 export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-project', {model: OfgsProject});
     public static resource_approve_stage = new Tastypie.Resource<{approved: boolean}>('doador-fundo/gs-project/<id>/approve-stage');
+    public static resource_check_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/check-approve');
+    public static resource_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/approve');
 
     public gs_id: number;
     public md_project: OngProjeto;
@@ -296,7 +306,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_views: Tastypie.Resource<OfgsProjectView>;
     private _rs_score: Tastypie.Resource<OfgsProjectScore>;
     private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
-
+    private _rs_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
     public dt_updated: string;
     public dt_created: string;
 
@@ -325,6 +335,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                     OfgsProjectComment.resource.endpoint,
                     {model: OfgsProjectComment, defaults: {gs_project_id: obj.id}}
                 );
+                this._rs_finance_schedule = new Tastypie.Resource<OfgsProjectFinanceSchedule>(
+                    OfgsProjectFinanceSchedule.resource.endpoint,
+                    {model: OfgsProjectFinanceSchedule, defaults: {gs_project_id: obj.id}}
+                );
             }
         }else{
             this.summary = {views: 0, score:0, comments: 0};
@@ -343,8 +357,20 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         return this._rs_comments;
     }
 
+    public get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule> {
+        return this._rs_finance_schedule;
+    }
+
     public setView(): Promise<OfgsProjectView> {
         return this.rs_views.objects.create({gs_project_id: this.id});
+    }
+
+    public checkApprove(): Promise<IProjectDealSchedule> {
+        return OfgsProject.resource_check_approve.objects.get(this.id);
+    }
+
+    public approve(data: IProjectDealSchedule): Promise<IProjectDealSchedule> {
+        return OfgsProject.resource_approve.objects.update(this.id, data);
     }
 
     public approveCurrentStage(passw: string): Promise<{approved: boolean}> {
@@ -412,5 +438,22 @@ export class OfgsProjectComment extends Tastypie.Model<OfgsProjectComment> {
         if(obj){
             if(obj.doador) this.md_doador = new Doador(obj.doador);
         }
+    }
+}
+
+
+export class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProjectFinanceSchedule> {
+    public static resource = new Tastypie.Resource<OfgsProjectFinanceSchedule>('doador-fundo/gs-project-finance-schedule', {model: OfgsProjectFinanceSchedule});
+
+    public gs_project_id: number;
+    public amount: number;
+    public status: string;
+    public invoice_id: string;
+    public dt_due_transfer: string;
+    public dt_transfer: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsProjectFinanceSchedule.resource, obj);
     }
 }
