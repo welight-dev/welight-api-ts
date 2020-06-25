@@ -96,19 +96,21 @@ export interface IProjectSummary {
     score: number;
     comments: number;
 }
+export interface IDealItem {
+    id: number;
+    amount: number;
+    rule: DisbursementRules;
+}
+export interface IScheduleItem {
+    amount: number;
+    dt_amount: string;
+    deal_id?: number;
+}
 export interface IProjectDealSchedule {
     total_requested: number;
     total_approved: number;
-    deal: Array<{
-        amount: number;
-        rule: DisbursementRules;
-        id: number;
-    }>;
-    schedule: Array<{
-        amount: number;
-        dt_amount: string;
-        deal_id: number;
-    }>;
+    deal: Array<IDealItem>;
+    schedule: Array<IScheduleItem>;
 }
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     static resource: Tastypie.Resource<OfgsProject>;
