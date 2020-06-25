@@ -102,10 +102,12 @@ export interface IProjectDealSchedule {
     deal: Array<{
         amount: number;
         rule: DisbursementRules;
+        id: number;
     }>;
     schedule: Array<{
         amount: number;
         dt_amount: string;
+        deal_id: number;
     }>;
 }
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {

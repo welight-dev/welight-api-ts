@@ -283,8 +283,8 @@ export interface IProjectSummary {
 export interface IProjectDealSchedule {
     total_requested: number,
     total_approved: number,
-    deal: Array<{amount: number, rule: DisbursementRules}>,
-    schedule: Array<{amount: number, dt_amount: string }>
+    deal: Array<{amount: number, rule: DisbursementRules, id: number}>,
+    schedule: Array<{amount: number, dt_amount: string , deal_id: number}>
 }
 
 export class OfgsProject extends Tastypie.Model<OfgsProject> {
