@@ -141,7 +141,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
     setView(): Promise<OfgsProjectView>;
-    checkApprove(): Promise<IProjectDealSchedule>;
+    checkApprove(total_approved?: number): Promise<IProjectDealSchedule>;
     approve(data: IProjectDealSchedule): Promise<IProjectDealSchedule>;
     approveCurrentStage(passw: string): Promise<{
         approved: boolean;

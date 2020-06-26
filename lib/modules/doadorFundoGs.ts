@@ -377,8 +377,8 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         return this.rs_views.objects.create({gs_project_id: this.id});
     }
 
-    public checkApprove(): Promise<IProjectDealSchedule> {
-        return OfgsProject.resource_check_approve.objects.get(this.id);
+    public checkApprove(total_approved?: number): Promise<IProjectDealSchedule> {
+        return OfgsProject.resource_check_approve.objects.get(this.id, {total_approved: total_approved || null});
     }
 
     public approve(data: IProjectDealSchedule): Promise<IProjectDealSchedule> {
