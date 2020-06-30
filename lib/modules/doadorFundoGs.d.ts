@@ -11,6 +11,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource_add_member: Tastypie.Resource<any>;
     static resource_delete_member: Tastypie.Resource<any>;
     static resource_check_step: Tastypie.Resource<any>;
+    static resource_get_permissions: Tastypie.Resource<string[]>;
     org_fund_id: number;
     name: string;
     slug: string;
@@ -49,6 +50,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     delete_member(token: string, passw: string): Promise<OrgGsMember>;
     add_round(rounds: Array<OrgFundGsRound>): Promise<Array<OrgFundGsRound>>;
     check_step(): Promise<any>;
+    get_permissions(): Promise<Array<string>>;
 }
 export declare class OrgGsCategory extends Tastypie.Model<OrgGsCategory> {
     static resource: Tastypie.Resource<OrgGsCategory>;
