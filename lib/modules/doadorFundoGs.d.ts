@@ -4,7 +4,7 @@ import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
-import { DisbursementRules } from "./doadorFundoGsQuiz";
+import { DisbursementRules, QuestionTemplate } from "./doadorFundoGsQuiz";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -114,6 +114,17 @@ export interface IProjectDealSchedule {
     deal: Array<IDealItem>;
     schedule: Array<IScheduleItem>;
 }
+export declare class OfgsProjectMemberQuestionResp {
+    doador_id: number;
+    stage_id: number;
+    questions: Array<QuestionTemplate>;
+    constructor(obj?: any);
+}
+export declare class OfgsProjectMemberQuestion {
+    members: Array<Doador>;
+    member_resp: Array<OfgsProjectMemberQuestionResp>;
+    constructor(obj?: any);
+}
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     static resource: Tastypie.Resource<OfgsProject>;
     static resource_approve_stage: Tastypie.Resource<{
@@ -121,6 +132,8 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     }>;
     static resource_check_approve: Tastypie.Resource<IProjectDealSchedule>;
     static resource_approve: Tastypie.Resource<IProjectDealSchedule>;
+    static resource_get_member_resp: Tastypie.Resource<OfgsProjectMemberQuestion>;
+    static resource_set_member_resp: Tastypie.Resource<OfgsProjectMemberQuestionResp>;
     gs_id: number;
     md_project: OngProjeto;
     md_ong: Ong;
@@ -143,6 +156,8 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     get rs_score(): Tastypie.Resource<OfgsProjectScore>;
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    getStageMemberResponse(): Promise<OfgsProjectMemberQuestion>;
+    setStageMemberResponse(data: OfgsProjectMemberQuestionResp): Promise<OfgsProjectMemberQuestionResp>;
     setView(): Promise<OfgsProjectView>;
     checkApprove(total_approved?: number): Promise<IProjectDealSchedule>;
     approve(data: IProjectDealSchedule, passw: string): Promise<IProjectDealSchedule>;

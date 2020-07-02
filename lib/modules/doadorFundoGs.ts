@@ -7,7 +7,7 @@ import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
-import { DisbursementRules } from "./doadorFundoGsQuiz";
+import { DisbursementRules, QuestionTemplate } from "./doadorFundoGsQuiz";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
@@ -284,28 +284,73 @@ export class OrgFundGsFormSubscribe extends OrgFundGs {
 }
 
 export interface IProjectSummary {
-    views: number,
-    score: number,
-    comments: number
+    views: number;
+    score: number;
+    comments: number;
 }
 
 export interface IDealItem {
-    id: number,
-    amount: number,
-    rule: DisbursementRules
+    id: number;
+    amount: number;
+    rule: DisbursementRules;
 }
 
 export interface IScheduleItem {
-    amount: number,
-    dt_amount: string,
-    deal_id?: number
+    amount: number;
+    dt_amount: string;
+    deal_id?: number;
 }
 
 export interface IProjectDealSchedule {
-    total_requested: number,
-    total_approved: number,
-    deal: Array<IDealItem>,
-    schedule: Array<IScheduleItem>
+    total_requested: number;
+    total_approved: number;
+    deal: Array<IDealItem>;
+    schedule: Array<IScheduleItem>;
+}
+
+export class OfgsProjectMemberQuestionResp {
+    public doador_id: number;
+    public stage_id: number;
+    public questions:Array <QuestionTemplate>;
+
+    constructor(obj?:any){
+        this.doador_id = null;
+        this.stage_id = null;
+        this.questions = [];
+        if(obj){
+            if(obj.doador_id) this.doador_id = obj.doador_id;
+            if(obj.stage_id) this.stage_id = obj.stage_id;
+            if(obj.questions){
+                for(let q of obj.questions){
+                    this.questions.push(new QuestionTemplate(q));
+                }
+            }
+        }
+    }
+}
+
+export class OfgsProjectMemberQuestion {
+    public members: Array<Doador>;
+    public member_resp: Array<OfgsProjectMemberQuestionResp>;
+
+    constructor(obj?: any){
+        this.members = [];
+        this.member_resp = [];
+
+        if(obj){
+            if(obj.members){
+                for(let m of obj.members){
+                    this.members.push(new Doador(m));
+                }
+            }
+
+            if(obj.member_resp){
+                for(let mr of obj.member_resp){
+                    this.member_resp.push(new OfgsProjectMemberQuestionResp(mr));
+                }
+            }
+        }
+    }
 }
 
 export class OfgsProject extends Tastypie.Model<OfgsProject> {
@@ -313,6 +358,12 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource_approve_stage = new Tastypie.Resource<{approved: boolean}>('doador-fundo/gs-project/<id>/approve-stage');
     public static resource_check_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/check-approve');
     public static resource_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/approve');
+    public static resource_get_member_resp = new Tastypie.Resource<OfgsProjectMemberQuestion>(
+        'doador-fundo/gs-project/<id>/get-stage-member-response', {model: OfgsProjectMemberQuestion}
+    );
+    public static resource_set_member_resp = new Tastypie.Resource<OfgsProjectMemberQuestionResp>(
+        'doador-fundo/gs-project/<id>/set-stage-member-response', {model: OfgsProjectMemberQuestionResp}
+    );
 
     public gs_id: number;
     public md_project: OngProjeto;
@@ -381,6 +432,14 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
 
     public get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule> {
         return this._rs_finance_schedule;
+    }
+
+    public getStageMemberResponse(): Promise<OfgsProjectMemberQuestion> {
+        return OfgsProject.resource_get_member_resp.objects.get(this.id);
+    }
+
+    public setStageMemberResponse(data: OfgsProjectMemberQuestionResp): Promise<OfgsProjectMemberQuestionResp> {
+        return OfgsProject.resource_set_member_resp.objects.update(this.id, data);
     }
 
     public setView(): Promise<OfgsProjectView> {
