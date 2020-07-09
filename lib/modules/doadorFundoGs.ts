@@ -7,7 +7,7 @@ import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
-import { DisbursementRules, QuestionTemplate } from "./doadorFundoGsQuiz";
+import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
 
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
@@ -283,12 +283,6 @@ export class OrgFundGsFormSubscribe extends OrgFundGs {
     }
 }
 
-export interface IProjectSummary {
-    views: number;
-    score: number;
-    comments: number;
-}
-
 export interface IDealItem {
     id: number;
     amount: number;
@@ -308,18 +302,22 @@ export interface IProjectDealSchedule {
     schedule: Array<IScheduleItem>;
 }
 
-export class OfgsProjectMemberQuestionResp {
+export class EvaluatorsData {
     public doador_id: number;
     public stage_id: number;
-    public questions:Array <QuestionTemplate>;
+    public score: string;
+    public questions: Array <QuestionTemplate>;
 
     constructor(obj?:any){
         this.doador_id = null;
         this.stage_id = null;
-        this.questions = [];
+        this.score = 'yellow';
+        this.questions = [];        
+
         if(obj){
             if(obj.doador_id) this.doador_id = obj.doador_id;
             if(obj.stage_id) this.stage_id = obj.stage_id;
+            if(obj.score) this.score = obj.score;
             if(obj.questions){
                 for(let q of obj.questions){
                     this.questions.push(new QuestionTemplate(q));
@@ -329,26 +327,116 @@ export class OfgsProjectMemberQuestionResp {
     }
 }
 
-export class OfgsProjectMemberQuestion {
-    public members: Array<Doador>;
-    public member_resp: Array<OfgsProjectMemberQuestionResp>;
+export class ProjectSummary {
+    public views: number;
+    public comments: number;
+    private _evaluators: Array<Doador>;
+    private _evaluators_data: Array<EvaluatorsData>;
+    private _forms: Array<GsFormResponse>;
+    private _form_flags: IProjectsFlags;
 
-    constructor(obj?: any){
-        this.members = [];
-        this.member_resp = [];
+    constructor(forms: Array<GsFormResponse>, obj?: any){
+        this.views = 0;
+        this.comments = 0;
+        this._evaluators = [];
+        this._evaluators_data = [];
+        this._forms = forms;
 
         if(obj){
-            if(obj.members){
-                for(let m of obj.members){
-                    this.members.push(new Doador(m));
-                }
+            if(obj.views) this.views = obj.views;
+            if(obj.comments) this.comments = obj.comments;
+
+            if(obj.evaluators){
+                for(let item of obj.evaluators){
+                    this._evaluators.push(new Doador(item));
+                }  
             }
 
-            if(obj.member_resp){
-                for(let mr of obj.member_resp){
-                    this.member_resp.push(new OfgsProjectMemberQuestionResp(mr));
-                }
+            if(obj.evaluators_data){
+                for(let item of obj.evaluators_data){
+                    this._evaluators_data.push(new EvaluatorsData(item));
+                }                
             }
+        }
+        this._count_form_flags();
+    }
+
+    public get evaluators(): Array<Doador> {
+        return this._evaluators;
+    }
+
+    public get evaluators_data(): Array<EvaluatorsData> {
+        return this._evaluators_data;
+    }
+
+    public get_evaluators_questions(doador_id: number, stage_id: number): Array<QuestionTemplate> {
+        return (this._evaluators_data.find(
+            m => m.doador_id === doador_id && m.stage_id === stage_id) || {questions: []}
+        ).questions;
+    }
+
+    public get_evaluators_data(doador_id: number, stage_id: number): EvaluatorsData {
+        return (this._evaluators_data.find(
+            m => m.doador_id === doador_id && m.stage_id === stage_id) ||
+            new EvaluatorsData({doador_id: doador_id, stage_id: stage_id})
+        );
+    }
+
+    public get_evaluators_flag(doador_id: number): IProjectsFlags {
+        return {
+            green: this._count_score_evaluator(doador_id, 'green'),
+            yellow: this._count_score_evaluator(doador_id, 'yellow'),
+            red: this._count_score_evaluator(doador_id, 'red')
+        }
+    }
+
+    public get score(): IProjectsFlags {
+        return {
+            green: this._count_score('green'),
+            yellow: this._count_score('yellow'),
+            red: this._count_score('red')
+        }
+    }
+
+    public get flag(): IProjectsFlags {
+        return {
+            green: this._count_question_flags('green'),
+            yellow: this._count_question_flags('yellow'),
+            red: this._count_question_flags('red')
+        }
+    }
+
+    private _count_score(flag: string): number {
+        return this._evaluators_data.filter(m => m.score === flag).length;
+    }
+
+    private _count_score_evaluator(doador_id: number, flag: string): number {
+        return this._evaluators_data.filter(m => m.doador_id === doador_id && m.score === flag).length;
+    }
+
+    private _count_question_flags(flag: string): number {
+        let _total: number = this._form_flags[flag] || 0;
+
+        for(let item of this._evaluators_data){
+            for(let q of item.questions.filter(q => (q.form_type === 'radio' || q.form_type === 'checkbox'))){
+                _total += q.choices.filter(c => c.flag === flag && c.value === true).length;
+            }
+        }
+
+        return _total;
+    }
+
+    private _count_form_flags(): void {
+        this._form_flags = {
+            green: 0,
+            yellow: 0,
+            red: 0
+        }
+
+        for(let f of this._forms){
+            this._form_flags.green += f.flag.green;
+            this._form_flags.yellow += f.flag.yellow;
+            this._form_flags.red += f.flag.red;
         }
     }
 }
@@ -358,11 +446,9 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource_approve_stage = new Tastypie.Resource<{approved: boolean}>('doador-fundo/gs-project/<id>/approve-stage');
     public static resource_check_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/check-approve');
     public static resource_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/approve');
-    public static resource_get_member_resp = new Tastypie.Resource<OfgsProjectMemberQuestion>(
-        'doador-fundo/gs-project/<id>/get-stage-member-response', {model: OfgsProjectMemberQuestion}
-    );
-    public static resource_set_member_resp = new Tastypie.Resource<OfgsProjectMemberQuestionResp>(
-        'doador-fundo/gs-project/<id>/set-stage-member-response', {model: OfgsProjectMemberQuestionResp}
+
+    public static resource_set_member_resp = new Tastypie.Resource<EvaluatorsData>(
+        'doador-fundo/gs-project/<id>/set-stage-member-response', {model: EvaluatorsData}
     );
 
     public gs_id: number;
@@ -370,39 +456,35 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public md_ong: Ong;
     public round_id: number;
     public stage_id: number;
-    public approved: boolean;
-    public summary: IProjectSummary;
+    public approved: boolean;    
     public total_requested: number;
     public total_approved: number;
     public accept_partial: boolean;
     public forms: Array<GsFormResponse>;
     private _rs_views: Tastypie.Resource<OfgsProjectView>;
-    private _rs_score: Tastypie.Resource<OfgsProjectScore>;
     private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
     private _rs_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    private _summary: ProjectSummary;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
-        super(OfgsProject.resource, obj);
+        super(OfgsProject.resource, obj);        
         this.forms = [];
 
         if(obj){
             if(obj.project) this.md_project = new OngProjeto(obj.project);
-            if(obj.ong) this.md_ong = new Ong(obj.ong);
+            if(obj.ong) this.md_ong = new Ong(obj.ong);            
             if(obj.forms){
                 for(let form of obj.forms){
                     this.forms.push(new GsFormResponse(form));
                 }
             }
+            if(obj.summary) this._summary = new ProjectSummary(this.forms, obj.summary);
             if(obj.id){
                 this._rs_views = new Tastypie.Resource<OfgsProjectView>(
                     OfgsProjectView.resource.endpoint,
                     {model: OfgsProjectView, defaults: {gs_project_id: obj.id}}
-                );
-                this._rs_score = new Tastypie.Resource<OfgsProjectScore>(
-                    OfgsProjectScore.resource.endpoint,
-                    {model: OfgsProjectScore, defaults: {gs_project_id: obj.id}}
                 );
                 this._rs_comments = new Tastypie.Resource<OfgsProjectComment>(
                     OfgsProjectComment.resource.endpoint,
@@ -414,16 +496,14 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                 );
             }
         }else{
-            this.summary = {views: 0, score:0, comments: 0};
+            this.md_project = new OngProjeto();
+            this.md_ong = new Ong();
+            this._summary = new ProjectSummary(this.forms);
         }
     }
 
     public get rs_views(): Tastypie.Resource<OfgsProjectView> {
         return this._rs_views;
-    }
-
-    public get rs_score(): Tastypie.Resource<OfgsProjectScore> {
-        return this._rs_score;
     }
 
     public get rs_comments(): Tastypie.Resource<OfgsProjectComment> {
@@ -434,11 +514,11 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         return this._rs_finance_schedule;
     }
 
-    public getStageMemberResponse(): Promise<OfgsProjectMemberQuestion> {
-        return OfgsProject.resource_get_member_resp.objects.get(this.id);
+    public get summary(): ProjectSummary {
+        return this._summary;
     }
 
-    public setStageMemberResponse(data: OfgsProjectMemberQuestionResp): Promise<OfgsProjectMemberQuestionResp> {
+    public setStageMemberResponse(data: EvaluatorsData): Promise<EvaluatorsData> {
         return OfgsProject.resource_set_member_resp.objects.update(this.id, data);
     }
 
@@ -481,24 +561,6 @@ export class OfgsProjectView extends Tastypie.Model<OfgsProjectView> {
 
     constructor(obj?:any){
         super(OfgsProjectView.resource, obj);
-        if(obj){
-            if(obj.doador) this.md_doador = new Doador(obj.doador);
-        }
-    }
-}
-
-export class OfgsProjectScore extends Tastypie.Model<OfgsProjectScore> {
-    public static resource = new Tastypie.Resource<OfgsProjectScore>('doador-fundo/gs-project-score', {model: OfgsProjectScore});
-
-    public gs_project_id: number;
-    public md_doador: Doador;
-    public stage_id: number;
-    public score: number;
-    public dt_updated: string;
-    public dt_created: string;
-
-    constructor(obj?:any){
-        super(OfgsProjectScore.resource, obj);
         if(obj){
             if(obj.doador) this.md_doador = new Doador(obj.doador);
         }

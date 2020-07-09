@@ -23,6 +23,11 @@ export interface ReportingRules {
 export declare const MEASUREMENT_TYPES: Array<MeasurementType>;
 export declare const REPORTING_TYPES: Array<ReportingType>;
 export declare const QUESTION_TYPES: Array<string>;
+export interface IProjectsFlags {
+    green: number;
+    yellow: number;
+    red: number;
+}
 export declare class QuestionTemplate {
     name: string;
     choices: Array<QuestionChoice>;

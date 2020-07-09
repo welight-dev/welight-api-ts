@@ -4,7 +4,7 @@ import { OrgFundGsRound } from "./doadorFundoGsRound";
 import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
-import { DisbursementRules, QuestionTemplate } from "./doadorFundoGsQuiz";
+import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -93,11 +93,6 @@ export declare class OrgFundGsFormSubscribe extends OrgFundGs {
     invite: OfgsInvitationOng;
     constructor(obj?: any);
 }
-export interface IProjectSummary {
-    views: number;
-    score: number;
-    comments: number;
-}
 export interface IDealItem {
     id: number;
     amount: number;
@@ -114,16 +109,32 @@ export interface IProjectDealSchedule {
     deal: Array<IDealItem>;
     schedule: Array<IScheduleItem>;
 }
-export declare class OfgsProjectMemberQuestionResp {
+export declare class EvaluatorsData {
     doador_id: number;
     stage_id: number;
+    score: string;
     questions: Array<QuestionTemplate>;
     constructor(obj?: any);
 }
-export declare class OfgsProjectMemberQuestion {
-    members: Array<Doador>;
-    member_resp: Array<OfgsProjectMemberQuestionResp>;
-    constructor(obj?: any);
+export declare class ProjectSummary {
+    views: number;
+    comments: number;
+    private _evaluators;
+    private _evaluators_data;
+    private _forms;
+    private _form_flags;
+    constructor(forms: Array<GsFormResponse>, obj?: any);
+    get evaluators(): Array<Doador>;
+    get evaluators_data(): Array<EvaluatorsData>;
+    get_evaluators_questions(doador_id: number, stage_id: number): Array<QuestionTemplate>;
+    get_evaluators_data(doador_id: number, stage_id: number): EvaluatorsData;
+    get_evaluators_flag(doador_id: number): IProjectsFlags;
+    get score(): IProjectsFlags;
+    get flag(): IProjectsFlags;
+    private _count_score;
+    private _count_score_evaluator;
+    private _count_question_flags;
+    private _count_form_flags;
 }
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     static resource: Tastypie.Resource<OfgsProject>;
@@ -132,32 +143,29 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     }>;
     static resource_check_approve: Tastypie.Resource<IProjectDealSchedule>;
     static resource_approve: Tastypie.Resource<IProjectDealSchedule>;
-    static resource_get_member_resp: Tastypie.Resource<OfgsProjectMemberQuestion>;
-    static resource_set_member_resp: Tastypie.Resource<OfgsProjectMemberQuestionResp>;
+    static resource_set_member_resp: Tastypie.Resource<EvaluatorsData>;
     gs_id: number;
     md_project: OngProjeto;
     md_ong: Ong;
     round_id: number;
     stage_id: number;
     approved: boolean;
-    summary: IProjectSummary;
     total_requested: number;
     total_approved: number;
     accept_partial: boolean;
     forms: Array<GsFormResponse>;
     private _rs_views;
-    private _rs_score;
     private _rs_comments;
     private _rs_finance_schedule;
+    private _summary;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
     get rs_views(): Tastypie.Resource<OfgsProjectView>;
-    get rs_score(): Tastypie.Resource<OfgsProjectScore>;
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
-    getStageMemberResponse(): Promise<OfgsProjectMemberQuestion>;
-    setStageMemberResponse(data: OfgsProjectMemberQuestionResp): Promise<OfgsProjectMemberQuestionResp>;
+    get summary(): ProjectSummary;
+    setStageMemberResponse(data: EvaluatorsData): Promise<EvaluatorsData>;
     setView(): Promise<OfgsProjectView>;
     checkApprove(total_approved?: number): Promise<IProjectDealSchedule>;
     approve(data: IProjectDealSchedule, passw: string): Promise<IProjectDealSchedule>;
@@ -169,16 +177,6 @@ export declare class OfgsProjectView extends Tastypie.Model<OfgsProjectView> {
     static resource: Tastypie.Resource<OfgsProjectView>;
     gs_project_id: number;
     md_doador: Doador;
-    dt_created: string;
-    constructor(obj?: any);
-}
-export declare class OfgsProjectScore extends Tastypie.Model<OfgsProjectScore> {
-    static resource: Tastypie.Resource<OfgsProjectScore>;
-    gs_project_id: number;
-    md_doador: Doador;
-    stage_id: number;
-    score: number;
-    dt_updated: string;
     dt_created: string;
     constructor(obj?: any);
 }

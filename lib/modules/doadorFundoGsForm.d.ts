@@ -1,5 +1,5 @@
 import { Tastypie } from "ts-resource-tastypie";
-import { QuestionTemplate } from "./doadorFundoGsQuiz";
+import { QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
 export declare class GsFormModel extends Tastypie.Model<GsFormModel> {
     gs_id: number;
     gs_project_id: number;
@@ -11,6 +11,8 @@ export declare class GsFormModel extends Tastypie.Model<GsFormModel> {
     dt_created: string;
     questions: Array<QuestionTemplate>;
     constructor(resource: Tastypie.Resource<GsFormModel>, obj?: any);
+    get flag(): IProjectsFlags;
+    private _count_question_flags;
 }
 export declare class GsForm extends GsFormModel {
     static resource: Tastypie.Resource<GsForm>;

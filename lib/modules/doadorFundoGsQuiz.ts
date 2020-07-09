@@ -61,6 +61,12 @@ export const QUESTION_TYPES: Array<string> = [
     'geolocation_list'
 ];
 
+export interface IProjectsFlags {
+    green: number;
+    yellow: number;
+    red: number;
+}
+
 export class QuestionTemplate {
     public name: string;
     public choices: Array<QuestionChoice>;
