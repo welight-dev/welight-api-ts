@@ -134,6 +134,7 @@ export declare class ProjectSummary {
     private _count_score;
     private _count_score_evaluator;
     private _count_question_flags;
+    private _count_question_flags_evaluator;
     private _count_form_flags;
 }
 export declare class OfgsProject extends Tastypie.Model<OfgsProject> {

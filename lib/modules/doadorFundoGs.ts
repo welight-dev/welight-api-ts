@@ -384,9 +384,9 @@ export class ProjectSummary {
 
     public get_evaluators_flag(doador_id: number): IProjectsFlags {
         return {
-            green: this._count_score_evaluator(doador_id, 'green'),
-            yellow: this._count_score_evaluator(doador_id, 'yellow'),
-            red: this._count_score_evaluator(doador_id, 'red')
+            green: this._count_question_flags_evaluator(doador_id, 'green'),
+            yellow: this._count_question_flags_evaluator(doador_id, 'yellow'),
+            red: this._count_question_flags_evaluator(doador_id, 'red')
         }
     }
 
@@ -418,6 +418,18 @@ export class ProjectSummary {
         let _total: number = this._form_flags[flag] || 0;
 
         for(let item of this._evaluators_data){
+            for(let q of item.questions.filter(q => (q.form_type === 'radio' || q.form_type === 'checkbox'))){
+                _total += q.choices.filter(c => c.flag === flag && c.value === true).length;
+            }
+        }
+
+        return _total;
+    }
+
+    private _count_question_flags_evaluator(doador_id: number, flag: string): number {
+        let _total: number = 0;
+
+        for(let item of this._evaluators_data.filter(e => e.doador_id === doador_id)){
             for(let q of item.questions.filter(q => (q.form_type === 'radio' || q.form_type === 'checkbox'))){
                 _total += q.choices.filter(c => c.flag === flag && c.value === true).length;
             }
