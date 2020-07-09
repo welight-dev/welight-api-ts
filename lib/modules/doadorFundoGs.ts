@@ -311,7 +311,7 @@ export class EvaluatorsData {
     constructor(obj?:any){
         this.doador_id = null;
         this.stage_id = null;
-        this.score = 'yellow';
+        this.score = '';
         this.questions = [];        
 
         if(obj){
@@ -408,10 +408,6 @@ export class ProjectSummary {
 
     private _count_score(flag: string): number {
         return this._evaluators_data.filter(m => m.score === flag).length;
-    }
-
-    private _count_score_evaluator(doador_id: number, flag: string): number {
-        return this._evaluators_data.filter(m => m.doador_id === doador_id && m.score === flag).length;
     }
 
     private _count_question_flags(flag: string): number {

@@ -132,7 +132,6 @@ export declare class ProjectSummary {
     get score(): IProjectsFlags;
     get flag(): IProjectsFlags;
     private _count_score;
-    private _count_score_evaluator;
     private _count_question_flags;
     private _count_question_flags_evaluator;
     private _count_form_flags;
