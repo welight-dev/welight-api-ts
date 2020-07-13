@@ -464,7 +464,9 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public md_ong: Ong;
     public round_id: number;
     public stage_id: number;
-    public approved: boolean;    
+    public approved: boolean;  
+    public canceled: boolean;
+    public status: string;
     public total_requested: number;
     public total_approved: number;
     public accept_partial: boolean;
