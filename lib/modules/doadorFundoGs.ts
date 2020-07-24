@@ -626,11 +626,10 @@ export class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportS
     public static resource = new Tastypie.Resource<OfgsProjectReportSchedule>('doador-fundo/gs-project-report-schedule', {model: OfgsProjectReportSchedule});
 
     public gs_project_id: number;
-    public amount: number;
+    public reports_type: string;
     public status: string;
-    public invoice_id: string;
-    public dt_due_transfer: string;
-    public dt_transfer: string;
+    public dt_due_sent: string;
+    public dt_sent: string;
     public dt_created: string;
 
     constructor(obj?:any){

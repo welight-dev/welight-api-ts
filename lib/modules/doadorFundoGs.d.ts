@@ -207,11 +207,10 @@ export declare class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProje
 export declare class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportSchedule> {
     static resource: Tastypie.Resource<OfgsProjectReportSchedule>;
     gs_project_id: number;
-    amount: number;
+    reports_type: string;
     status: string;
-    invoice_id: string;
-    dt_due_transfer: string;
-    dt_transfer: string;
+    dt_due_sent: string;
+    dt_sent: string;
     dt_created: string;
     constructor(obj?: any);
 }
