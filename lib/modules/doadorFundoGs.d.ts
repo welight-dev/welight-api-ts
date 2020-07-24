@@ -159,6 +159,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_views;
     private _rs_comments;
     private _rs_finance_schedule;
+    private _rs_report_schedule;
     private _summary;
     dt_updated: string;
     dt_created: string;
@@ -166,6 +167,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     get rs_views(): Tastypie.Resource<OfgsProjectView>;
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    get rs_report_schedule(): Tastypie.Resource<OfgsProjectReportSchedule>;
     get summary(): ProjectSummary;
     setStageMemberResponse(data: EvaluatorsData): Promise<EvaluatorsData>;
     setView(): Promise<OfgsProjectView>;
@@ -193,6 +195,17 @@ export declare class OfgsProjectComment extends Tastypie.Model<OfgsProjectCommen
 }
 export declare class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProjectFinanceSchedule> {
     static resource: Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    gs_project_id: number;
+    amount: number;
+    status: string;
+    invoice_id: string;
+    dt_due_transfer: string;
+    dt_transfer: string;
+    dt_created: string;
+    constructor(obj?: any);
+}
+export declare class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportSchedule> {
+    static resource: Tastypie.Resource<OfgsProjectReportSchedule>;
     gs_project_id: number;
     amount: number;
     status: string;

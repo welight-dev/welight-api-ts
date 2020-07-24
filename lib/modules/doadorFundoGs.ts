@@ -474,6 +474,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_views: Tastypie.Resource<OfgsProjectView>;
     private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
     private _rs_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    private _rs_report_schedule: Tastypie.Resource<OfgsProjectReportSchedule>;
     private _summary: ProjectSummary;
     public dt_updated: string;
     public dt_created: string;
@@ -504,6 +505,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                     OfgsProjectFinanceSchedule.resource.endpoint,
                     {model: OfgsProjectFinanceSchedule, defaults: {gs_project_id: obj.id}}
                 );
+                this._rs_report_schedule = new Tastypie.Resource<OfgsProjectReportSchedule>(
+                    OfgsProjectReportSchedule.resource.endpoint,
+                    {model: OfgsProjectReportSchedule, defaults: {gs_project_id: obj.id}}
+                );
             }
         }else{
             this.md_project = new OngProjeto();
@@ -522,6 +527,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
 
     public get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule> {
         return this._rs_finance_schedule;
+    }
+
+    public get rs_report_schedule(): Tastypie.Resource<OfgsProjectReportSchedule> {
+        return this._rs_report_schedule;
     }
 
     public get summary(): ProjectSummary {
@@ -609,5 +618,22 @@ export class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProjectFinanc
 
     constructor(obj?:any){
         super(OfgsProjectFinanceSchedule.resource, obj);
+    }
+}
+
+
+export class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportSchedule> {
+    public static resource = new Tastypie.Resource<OfgsProjectReportSchedule>('doador-fundo/gs-project-report-schedule', {model: OfgsProjectReportSchedule});
+
+    public gs_project_id: number;
+    public amount: number;
+    public status: string;
+    public invoice_id: string;
+    public dt_due_transfer: string;
+    public dt_transfer: string;
+    public dt_created: string;
+
+    constructor(obj?:any){
+        super(OfgsProjectReportSchedule.resource, obj);
     }
 }

@@ -20,6 +20,7 @@ export declare class OrgFundGsRound extends Tastypie.Model<OrgFundGsRound> {
     set_winners: boolean;
     qty_winners: number;
     order: number;
+    can_applicate: boolean;
     dt_created: string;
     dt_updated: string;
     private _rs_stage;
