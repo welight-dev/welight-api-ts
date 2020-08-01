@@ -330,6 +330,11 @@ export class EvaluatorsData {
 export class ProjectSummary {
     public views: number;
     public comments: number;
+    public total_amount_sent: number;
+    public total_amount_pending: number;
+    public total_reports: number;
+    public total_reports_sent: number;
+
     private _evaluators: Array<Doador>;
     private _evaluators_data: Array<EvaluatorsData>;
     private _forms: Array<GsFormResponse>;
@@ -345,6 +350,11 @@ export class ProjectSummary {
         if(obj){
             if(obj.views) this.views = obj.views;
             if(obj.comments) this.comments = obj.comments;
+
+            if(obj.total_amount_sent) this.total_amount_sent = obj.total_amount_sent;
+            if(obj.total_amount_pending) this.total_amount_pending = obj.total_amount_pending;
+            if(obj.total_reports) this.total_reports = obj.total_reports;
+            if(obj.total_reports_sent) this.total_reports_sent = obj.total_reports_sent;
 
             if(obj.evaluators){
                 for(let item of obj.evaluators){

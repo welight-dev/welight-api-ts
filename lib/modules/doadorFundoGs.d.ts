@@ -119,6 +119,10 @@ export declare class EvaluatorsData {
 export declare class ProjectSummary {
     views: number;
     comments: number;
+    total_amount_sent: number;
+    total_amount_pending: number;
+    total_reports: number;
+    total_reports_sent: number;
     private _evaluators;
     private _evaluators_data;
     private _forms;
