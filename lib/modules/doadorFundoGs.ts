@@ -343,6 +343,11 @@ export class ProjectSummary {
     constructor(forms: Array<GsFormResponse>, obj?: any){
         this.views = 0;
         this.comments = 0;
+        this.total_amount_sent = 0.00;
+        this.total_amount_pending = 0.00;
+        this.total_reports = 0;
+        this.total_reports_sent = 0;
+
         this._evaluators = [];
         this._evaluators_data = [];
         this._forms = forms;
