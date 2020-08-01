@@ -225,6 +225,8 @@ export declare class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvo
     gs_id: number;
     currency: string;
     amount: number;
+    qty_project: number;
+    qty_org: number;
     transfer_status: string;
     transfer_status_display: string;
     broker_status: string;
