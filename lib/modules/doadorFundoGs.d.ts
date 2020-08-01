@@ -198,19 +198,55 @@ export declare class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProje
     gs_project_id: number;
     amount: number;
     status: string;
+    status_display: string;
     invoice_id: string;
     dt_due_transfer: string;
     dt_transfer: string;
     dt_created: string;
+    private _md_gs_project;
     constructor(obj?: any);
+    get md_gs_project(): OfgsProject;
 }
 export declare class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportSchedule> {
     static resource: Tastypie.Resource<OfgsProjectReportSchedule>;
     gs_project_id: number;
     reports_type: string;
+    reports_type_display: string;
     status: string;
+    status_display: string;
     dt_due_sent: string;
     dt_sent: string;
     dt_created: string;
     constructor(obj?: any);
+}
+export declare class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
+    static resource: Tastypie.Resource<OfgsTransferInvoice>;
+    static rs_add: Tastypie.Resource<OfgsTransferInvoice>;
+    gs_id: number;
+    currency: string;
+    amount: number;
+    transfer_status: string;
+    transfer_status_display: string;
+    broker_status: string;
+    broker_status_display: string;
+    dt_broker_transfer: string;
+    dt_ong_transfer: string;
+    dt_created: string;
+    private _items;
+    constructor(obj?: any);
+    add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice>;
+}
+export declare class OfgsTransferInvoiceItem {
+    id: number;
+    invoice_id: number;
+    gs_project_id: number;
+    currency: string;
+    amount: number;
+    broker_status: string;
+    broker_status_display: string;
+    schedule_id: number;
+    dt_created: string;
+    private _md_gs_project;
+    constructor(obj?: any);
+    get md_gs_project(): OfgsProject;
 }

@@ -611,13 +611,25 @@ export class OfgsProjectFinanceSchedule extends Tastypie.Model<OfgsProjectFinanc
     public gs_project_id: number;
     public amount: number;
     public status: string;
+    public status_display: string;
     public invoice_id: string;
     public dt_due_transfer: string;
     public dt_transfer: string;
     public dt_created: string;
+    private _md_gs_project: OfgsProject;
 
     constructor(obj?:any){
         super(OfgsProjectFinanceSchedule.resource, obj);
+
+        if(obj){
+            if(obj.gs_project) this._md_gs_project = new OfgsProject(obj.gs_project);
+        }else{
+            this._md_gs_project = new OfgsProject();
+        }
+    }
+
+    public get md_gs_project(): OfgsProject {
+        return this._md_gs_project;
     }
 }
 
@@ -627,12 +639,86 @@ export class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportS
 
     public gs_project_id: number;
     public reports_type: string;
+    public reports_type_display: string;
     public status: string;
+    public status_display: string;
     public dt_due_sent: string;
     public dt_sent: string;
     public dt_created: string;
 
     constructor(obj?:any){
         super(OfgsProjectReportSchedule.resource, obj);
+    }
+}
+
+
+export class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
+    public static resource = new Tastypie.Resource<OfgsTransferInvoice>('doador-fundo/gs-transfer-invoice', {model: OfgsTransferInvoice});
+    public static rs_add = new Tastypie.Resource<OfgsTransferInvoice>('doador-fundo/gs-transfer-invoice/add', {model: OfgsTransferInvoice});
+
+    public gs_id: number;
+    public currency: string;
+    public amount: number;
+    public transfer_status: string;
+    public transfer_status_display: string;
+    public broker_status: string;
+    public broker_status_display: string;
+    public dt_broker_transfer: string;
+    public dt_ong_transfer: string;
+    public dt_created: string;
+    private _items: Array<OfgsTransferInvoiceItem>;
+
+    constructor(obj?:any){
+        super(OfgsTransferInvoice.resource, obj);
+
+        this._items = [];
+        if(obj && obj.items){
+            for(let i of obj.items){
+                this._items.push(new OfgsTransferInvoiceItem(i));
+            }
+        }
+    }
+
+    public add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice> {
+        return OfgsTransferInvoice.rs_add.objects.create({gs_id, passw, items});
+    }
+}
+
+
+export class OfgsTransferInvoiceItem {
+
+    public id: number;
+    public invoice_id: number;
+    public gs_project_id: number;
+    public currency: string;
+    public amount: number;
+    public broker_status: string;
+    public broker_status_display: string;
+    public schedule_id: number;
+    public dt_created: string;
+    private _md_gs_project: OfgsProject;
+
+    constructor(obj?:any){
+        if(obj){
+            this.id = obj.id;
+            this.invoice_id = obj.invoice_id;
+            this.gs_project_id = obj.gs_project_id;
+            this.currency = obj.currency;
+            this.amount = obj.amount;
+            this.broker_status = obj.broker_status;
+            this.broker_status_display = obj.broker_status_display;
+            this.schedule_id = obj.schedule_id;
+            this.dt_created = obj.dt_created;
+        }
+
+        if(obj && obj.gs_project){
+            this._md_gs_project = new OfgsProject(obj.gs_project);
+        }else{
+            this._md_gs_project = new OfgsProject();
+        }
+    }
+
+    public get md_gs_project(): OfgsProject {
+        return this._md_gs_project;
     }
 }
