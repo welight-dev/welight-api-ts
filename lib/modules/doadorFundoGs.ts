@@ -44,6 +44,7 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _rs_invite_ong: Tastypie.Resource<OfgsInvitationOng>;
     private _rs_project: Tastypie.Resource<OfgsProject>;
     private _rs_project_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    private _rs_transfer_invoice: Tastypie.Resource<OfgsTransferInvoice>;
 
     constructor(obj?:any, resource?:Tastypie.Resource<OrgFundGs>){
         super(resource || OrgFundGs.resource, obj);
@@ -97,6 +98,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
                     OfgsProjectFinanceSchedule.resource.endpoint,
                     {model: OfgsProjectFinanceSchedule, defaults: {gs_id: obj.id}}
                 );
+                this._rs_transfer_invoice = new Tastypie.Resource<OfgsTransferInvoice>(
+                    OfgsTransferInvoice.resource.endpoint,
+                    {model: OfgsTransferInvoice, defaults: {gs_id: obj.id}}
+                );
             }
         }
     }
@@ -119,6 +124,10 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
     public get rs_project_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule> {
         return this._rs_project_finance_schedule;
+    }
+
+    public get rs_transfer_invoice(): Tastypie.Resource<OfgsTransferInvoice> {
+        return this._rs_transfer_invoice;
     }
 
     public get categories(): Array<OrgGsCategory> {

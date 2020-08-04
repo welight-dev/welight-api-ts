@@ -38,6 +38,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     private _rs_invite_ong;
     private _rs_project;
     private _rs_project_finance_schedule;
+    private _rs_transfer_invoice;
     constructor(obj?: any, resource?: Tastypie.Resource<OrgFundGs>);
     save(obj?: any): Promise<OrgFundGs>;
     private _init;
@@ -46,6 +47,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     get rs_invite_ong(): Tastypie.Resource<OfgsInvitationOng>;
     get rs_project(): Tastypie.Resource<OfgsProject>;
     get rs_project_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
+    get rs_transfer_invoice(): Tastypie.Resource<OfgsTransferInvoice>;
     get categories(): Array<OrgGsCategory>;
     get_member(): Promise<OrgGsMember>;
     add_member(tokens_member: Array<string>, passw: string): Promise<OrgGsMember>;
