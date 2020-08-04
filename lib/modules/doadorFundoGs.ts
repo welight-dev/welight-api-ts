@@ -705,7 +705,7 @@ export class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
         }
     }
 
-    public add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice> {
+    public static add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice> {
         return OfgsTransferInvoice.rs_add.objects.create({gs_id, passw, items});
     }
 }

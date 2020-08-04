@@ -242,7 +242,7 @@ export declare class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvo
     dt_created: string;
     private _items;
     constructor(obj?: any);
-    add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice>;
+    static add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice>;
 }
 export declare class OfgsTransferInvoiceItem {
     id: number;
