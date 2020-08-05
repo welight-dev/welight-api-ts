@@ -688,6 +688,7 @@ export class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjectReportS
 export class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
     public static resource = new Tastypie.Resource<OfgsTransferInvoice>('doador-fundo/gs-transfer-invoice', {model: OfgsTransferInvoice});
     public static rs_add = new Tastypie.Resource<OfgsTransferInvoice>('doador-fundo/gs-transfer-invoice/add', {model: OfgsTransferInvoice});
+    public static rs_set_sent = new Tastypie.Resource<OfgsTransferInvoice>('doador-fundo/gs-transfer-invoice/<id>/set-sent', {model: OfgsTransferInvoice});
 
     public gs_id: number;
     public currency: string;
@@ -716,6 +717,10 @@ export class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
 
     public static add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice> {
         return OfgsTransferInvoice.rs_add.objects.create({gs_id, passw, items});
+    }
+
+    public set_sent(): Promise<OfgsTransferInvoice> {
+        return OfgsTransferInvoice.rs_set_sent.objects.update(this.id, {});
     }
 }
 

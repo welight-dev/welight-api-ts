@@ -230,6 +230,7 @@ export declare class OfgsProjectReportSchedule extends Tastypie.Model<OfgsProjec
 export declare class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
     static resource: Tastypie.Resource<OfgsTransferInvoice>;
     static rs_add: Tastypie.Resource<OfgsTransferInvoice>;
+    static rs_set_sent: Tastypie.Resource<OfgsTransferInvoice>;
     gs_id: number;
     currency: string;
     amount: number;
@@ -245,6 +246,7 @@ export declare class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvo
     private _items;
     constructor(obj?: any);
     static add(gs_id: number, passw: string, items: Array<number>): Promise<OfgsTransferInvoice>;
+    set_sent(): Promise<OfgsTransferInvoice>;
 }
 export declare class OfgsTransferInvoiceItem {
     id: number;
