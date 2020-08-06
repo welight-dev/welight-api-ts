@@ -7,6 +7,10 @@ import { Doador } from "./doador";
 import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
 export interface IGssummary {
     project_approved: number;
+    donated: number;
+    balance: number;
+    realtime: number;
+    commited: number;
 }
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
