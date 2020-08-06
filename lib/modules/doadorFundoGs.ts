@@ -720,7 +720,10 @@ export class OfgsTransferInvoice extends Tastypie.Model<OfgsTransferInvoice> {
     }
 
     public set_sent(): Promise<OfgsTransferInvoice> {
-        return OfgsTransferInvoice.rs_set_sent.objects.update(this.id, {});
+        return OfgsTransferInvoice.rs_set_sent.objects.update(this.id, {}).then((data) => {
+            this.setData(data);
+            return this;
+        });
     }
 }
 
