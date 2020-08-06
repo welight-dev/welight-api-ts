@@ -6,7 +6,8 @@ import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
 import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
 export interface IGssummary {
-    project_approved: number;
+    qty_projects_accepted: number;
+    qty_projects_total: number;
     donated: number;
     balance: number;
     realtime: number;

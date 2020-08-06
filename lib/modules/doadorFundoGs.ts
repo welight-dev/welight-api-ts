@@ -11,7 +11,8 @@ import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFun
 
 
 export interface IGssummary {
-    project_approved: number;
+    qty_projects_accepted: number;
+    qty_projects_total: number;
     donated: number;
     balance: number;
     realtime: number;
@@ -80,7 +81,8 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
         if(!this.summary){
             this.summary = {
-                project_approved: 0,
+                qty_projects_accepted: 0,
+                qty_projects_total: 0,
                 donated: 0,
                 balance: 0,
                 realtime: 0,

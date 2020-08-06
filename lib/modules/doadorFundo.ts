@@ -242,11 +242,15 @@ export class OrgCategoryFund extends Tastypie.Model<OrgCategoryFund> {
 }
 
 export interface OrgFundSummary {
-    current_balance: number,
-    qty_projects_pending: number,
-    qty_projects_accepted: number,
-    qty_projects_total: number,
-    qty_giving_stream: number
+    current_balance: number;
+    qty_projects_pending: number;
+    qty_projects_accepted: number;
+    qty_projects_total: number;
+    qty_giving_stream: number;
+    donated: number;
+    balance: number;
+    realtime: number;
+    commited: number;
 }
 
 export class OrgFund extends Tastypie.Model<OrgFund> {
@@ -297,7 +301,11 @@ export class OrgFund extends Tastypie.Model<OrgFund> {
                 qty_projects_pending: 0,
                 qty_projects_accepted: 0,
                 qty_projects_total: 0,
-                qty_giving_stream: 0
+                qty_giving_stream: 0,
+                donated: 0.00,
+                balance: 0.00,
+                realtime: 0.00,
+                commited: 0.00
             }
         }
 

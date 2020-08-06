@@ -102,6 +102,10 @@ export interface OrgFundSummary {
     qty_projects_accepted: number;
     qty_projects_total: number;
     qty_giving_stream: number;
+    donated: number;
+    balance: number;
+    realtime: number;
+    commited: number;
 }
 export declare class OrgFund extends Tastypie.Model<OrgFund> {
     static resource: Tastypie.Resource<OrgFund>;
