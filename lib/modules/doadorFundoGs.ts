@@ -9,6 +9,12 @@ import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
 import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
 
+
+export interface IGssummary {
+    project_approved: number;
+}
+
+
 export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public static resource = new Tastypie.Resource<OrgFundGs>('doador-fundo/gs', {model: OrgFundGs});
     public static resource_get_member = new Tastypie.Resource<any>('doador-fundo/gs/<id>/get-member');
@@ -38,6 +44,9 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     public org_fund: OrgFund;
     public product: OrgGsProduct;
     public categories_id: Array<number>;
+
+    public summary: IGssummary;
+
     private _categories: Array<OrgGsCategory>;
     private _rs_round: Tastypie.Resource<OrgFundGsRound>;
     private _rs_form: Tastypie.Resource<GsForm>;
@@ -63,6 +72,12 @@ export class OrgFundGs extends Tastypie.Model<OrgFundGs> {
 
         if(!this.categories_id){
             this.categories_id = [];
+        }
+
+        if(!this.summary){
+            this.summary = {
+                project_approved: 0
+            }
         }
 
         this.org_fund = new OrgFund();

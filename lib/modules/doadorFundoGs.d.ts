@@ -5,6 +5,9 @@ import { GsForm, GsFormResponse } from "./doadorFundoGsForm";
 import { Ong, OngProjeto } from "./ong";
 import { Doador } from "./doador";
 import { DisbursementRules, QuestionTemplate, IProjectsFlags } from "./doadorFundoGsQuiz";
+export interface IGssummary {
+    project_approved: number;
+}
 export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     static resource: Tastypie.Resource<OrgFundGs>;
     static resource_get_member: Tastypie.Resource<any>;
@@ -32,6 +35,7 @@ export declare class OrgFundGs extends Tastypie.Model<OrgFundGs> {
     org_fund: OrgFund;
     product: OrgGsProduct;
     categories_id: Array<number>;
+    summary: IGssummary;
     private _categories;
     private _rs_round;
     private _rs_form;
