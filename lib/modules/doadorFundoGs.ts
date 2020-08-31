@@ -326,6 +326,51 @@ export class OrgFundGsFormSubscribe extends OrgFundGs {
     }
 }
 
+export class OrgFundGsFormRefSubscribe extends Tastypie.Model<OrgFundGsFormRefSubscribe> {
+
+    public static resource = new Tastypie.Resource<OrgFundGsFormRefSubscribe>('doador-fundo/gs-form-referral', {model: OrgFundGsFormRefSubscribe});
+    public static rs_form_ref = new Tastypie.Resource<OrgFundGsFormRefSubscribe>('doador-fundo/gs-form-ref-subscribe', {model: OrgFundGsFormRefSubscribe});
+
+    public gs_project_id: number;
+    public name: string;
+    public email: string;
+    public token: string;
+    public received: boolean;
+    public dt_received: string;
+    public dt_updated: string;
+    public dt_created: string;
+    public questions: Array<QuestionTemplate>;
+
+    private _md_gs_project: OfgsProject;
+
+    constructor(obj?: any){
+        super(OrgFundGsFormRefSubscribe.resource, obj);
+        this.questions = [];
+        if(obj){
+            if(obj.questions){
+                for(let question of obj.questions){
+                    this.questions.push(new QuestionTemplate(question));
+                }
+            }
+            if(obj.gs_project){
+                this._md_gs_project = new OfgsProject(obj.gs_project);
+            }
+        }
+    }
+
+    public get md_gs_project(): OfgsProject {
+        return this._md_gs_project;
+    }
+
+    public static get_form(token: string): Promise<OrgFundGsFormRefSubscribe> {
+        return OrgFundGsFormRefSubscribe.rs_form_ref.objects.findOne({token: token});
+    }
+
+    public static set_form(token: string, questions: Array<QuestionTemplate>): Promise<OrgFundGsFormRefSubscribe> {
+        return OrgFundGsFormRefSubscribe.rs_form_ref.objects.create({token: token, questions: questions});
+    }
+}
+
 export interface IDealItem {
     id: number;
     amount: number;
@@ -533,6 +578,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
     private _rs_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
     private _rs_report_schedule: Tastypie.Resource<OfgsProjectReportSchedule>;
+    private _rs_form_ref: Tastypie.Resource<OrgFundGsFormRefSubscribe>;
     private _summary: ProjectSummary;
     public dt_updated: string;
     public dt_created: string;
@@ -567,6 +613,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                     OfgsProjectReportSchedule.resource.endpoint,
                     {model: OfgsProjectReportSchedule, defaults: {gs_project_id: obj.id}}
                 );
+                this._rs_form_ref = new Tastypie.Resource<OrgFundGsFormRefSubscribe>(
+                    OrgFundGsFormRefSubscribe.resource.endpoint,
+                    {model: OrgFundGsFormRefSubscribe, defaults: {gs_project_id: obj.id}}
+                );
             }
         }else{
             this.md_project = new OngProjeto();
@@ -589,6 +639,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
 
     public get rs_report_schedule(): Tastypie.Resource<OfgsProjectReportSchedule> {
         return this._rs_report_schedule;
+    }
+
+    public get rs_form_ref(): Tastypie.Resource<OrgFundGsFormRefSubscribe> {
+        return this._rs_form_ref;
     }
 
     public get summary(): ProjectSummary {

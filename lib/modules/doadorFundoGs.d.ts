@@ -106,6 +106,24 @@ export declare class OrgFundGsFormSubscribe extends OrgFundGs {
     invite: OfgsInvitationOng;
     constructor(obj?: any);
 }
+export declare class OrgFundGsFormRefSubscribe extends Tastypie.Model<OrgFundGsFormRefSubscribe> {
+    static resource: Tastypie.Resource<OrgFundGsFormRefSubscribe>;
+    static rs_form_ref: Tastypie.Resource<OrgFundGsFormRefSubscribe>;
+    gs_project_id: number;
+    name: string;
+    email: string;
+    token: string;
+    received: boolean;
+    dt_received: string;
+    dt_updated: string;
+    dt_created: string;
+    questions: Array<QuestionTemplate>;
+    private _md_gs_project;
+    constructor(obj?: any);
+    get md_gs_project(): OfgsProject;
+    static get_form(token: string): Promise<OrgFundGsFormRefSubscribe>;
+    static set_form(token: string, questions: Array<QuestionTemplate>): Promise<OrgFundGsFormRefSubscribe>;
+}
 export interface IDealItem {
     id: number;
     amount: number;
@@ -177,6 +195,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_comments;
     private _rs_finance_schedule;
     private _rs_report_schedule;
+    private _rs_form_ref;
     private _summary;
     dt_updated: string;
     dt_created: string;
@@ -185,6 +204,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
     get rs_report_schedule(): Tastypie.Resource<OfgsProjectReportSchedule>;
+    get rs_form_ref(): Tastypie.Resource<OrgFundGsFormRefSubscribe>;
     get summary(): ProjectSummary;
     setStageMemberResponse(data: EvaluatorsData): Promise<EvaluatorsData>;
     setView(): Promise<OfgsProjectView>;
