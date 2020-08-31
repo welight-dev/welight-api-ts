@@ -114,6 +114,9 @@ export declare class OrgFundGsFormRefSubscribe extends Tastypie.Model<OrgFundGsF
     email: string;
     token: string;
     received: boolean;
+    currency: string;
+    org_name: string;
+    org_email: string;
     dt_received: string;
     dt_updated: string;
     dt_created: string;
