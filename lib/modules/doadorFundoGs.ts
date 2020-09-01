@@ -594,6 +594,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public gs_id: number;
     public md_project: OngProjeto;
     public md_ong: Ong;
+    public md_doador: Doador;
     public round_id: number;
     public stage_id: number;
     public approved: boolean;  
@@ -623,7 +624,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
             }
             if(obj.ong){
                 this.md_ong = new Ong(obj.ong);
-            }        
+            }    
+            if(obj.doador){
+                this.md_doador = new Doador(obj.doador);
+            }      
             if(obj.forms){
                 for(let form of obj.forms){
                     this.forms.push(new GsFormResponse(form));
@@ -658,6 +662,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         }else{
             this.md_project = new OngProjeto();
             this.md_ong = new Ong();
+            this.md_doador = new Doador();
             this._summary = new ProjectSummary(this.forms, this.forms_referral);
         }
     }

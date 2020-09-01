@@ -188,6 +188,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     gs_id: number;
     md_project: OngProjeto;
     md_ong: Ong;
+    md_doador: Doador;
     round_id: number;
     stage_id: number;
     approved: boolean;
