@@ -123,9 +123,11 @@ export declare class OrgFundGsFormRefSubscribe extends Tastypie.Model<OrgFundGsF
     questions: Array<QuestionTemplate>;
     private _md_gs_project;
     constructor(obj?: any);
-    get md_gs_project(): OfgsProject;
     static get_form(token: string): Promise<OrgFundGsFormRefSubscribe>;
     static set_form(token: string, questions: Array<QuestionTemplate>): Promise<OrgFundGsFormRefSubscribe>;
+    get md_gs_project(): OfgsProject;
+    get flag(): IProjectsFlags;
+    private _count_question_flags;
 }
 export interface IDealItem {
     id: number;
@@ -160,8 +162,9 @@ export declare class ProjectSummary {
     private _evaluators;
     private _evaluators_data;
     private _forms;
+    private _forms_referral;
     private _form_flags;
-    constructor(forms: Array<GsFormResponse>, obj?: any);
+    constructor(forms: Array<GsFormResponse>, forms_referral: Array<OrgFundGsFormRefSubscribe>, obj?: any);
     get evaluators(): Array<Doador>;
     get evaluators_data(): Array<EvaluatorsData>;
     get_evaluators_questions(doador_id: number, stage_id: number): Array<QuestionTemplate>;
@@ -194,11 +197,11 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     total_approved: number;
     accept_partial: boolean;
     forms: Array<GsFormResponse>;
+    forms_referral: Array<OrgFundGsFormRefSubscribe>;
     private _rs_views;
     private _rs_comments;
     private _rs_finance_schedule;
     private _rs_report_schedule;
-    private _rs_form_ref;
     private _summary;
     dt_updated: string;
     dt_created: string;
@@ -207,7 +210,6 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     get rs_comments(): Tastypie.Resource<OfgsProjectComment>;
     get rs_finance_schedule(): Tastypie.Resource<OfgsProjectFinanceSchedule>;
     get rs_report_schedule(): Tastypie.Resource<OfgsProjectReportSchedule>;
-    get rs_form_ref(): Tastypie.Resource<OrgFundGsFormRefSubscribe>;
     get summary(): ProjectSummary;
     setStageMemberResponse(data: EvaluatorsData): Promise<EvaluatorsData>;
     setView(): Promise<OfgsProjectView>;

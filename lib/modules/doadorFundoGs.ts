@@ -361,16 +361,34 @@ export class OrgFundGsFormRefSubscribe extends Tastypie.Model<OrgFundGsFormRefSu
         }
     }
 
-    public get md_gs_project(): OfgsProject {
-        return this._md_gs_project;
-    }
-
     public static get_form(token: string): Promise<OrgFundGsFormRefSubscribe> {
         return OrgFundGsFormRefSubscribe.rs_form_ref.objects.findOne({token: token});
     }
 
     public static set_form(token: string, questions: Array<QuestionTemplate>): Promise<OrgFundGsFormRefSubscribe> {
         return OrgFundGsFormRefSubscribe.rs_form_ref.objects.create({token: token, questions: questions});
+    }
+
+    public get md_gs_project(): OfgsProject {
+        return this._md_gs_project;
+    }
+
+    public get flag(): IProjectsFlags {
+        return {
+            green: this._count_question_flags('green'),
+            yellow: this._count_question_flags('yellow'),
+            red: this._count_question_flags('red')
+        }
+    }
+
+    private _count_question_flags(flag: string): number {
+        let _total: number = 0;
+
+        for(let q of this.questions.filter(q => (q.form_type === 'radio' || q.form_type === 'checkbox'))){
+            _total += q.choices.filter(c => c.flag === flag && c.value === true).length;
+        }
+
+        return _total;
     }
 }
 
@@ -429,9 +447,10 @@ export class ProjectSummary {
     private _evaluators: Array<Doador>;
     private _evaluators_data: Array<EvaluatorsData>;
     private _forms: Array<GsFormResponse>;
+    private _forms_referral: Array<OrgFundGsFormRefSubscribe>;
     private _form_flags: IProjectsFlags;
 
-    constructor(forms: Array<GsFormResponse>, obj?: any){
+    constructor(forms: Array<GsFormResponse>, forms_referral: Array<OrgFundGsFormRefSubscribe>, obj?: any){
         this.views = 0;
         this.comments = 0;
         this.total_amount_sent = 0.00;
@@ -442,6 +461,7 @@ export class ProjectSummary {
         this._evaluators = [];
         this._evaluators_data = [];
         this._forms = forms;
+        this._forms_referral = forms_referral;
 
         if(obj){
             if(obj.views) this.views = obj.views;
@@ -552,6 +572,12 @@ export class ProjectSummary {
             this._form_flags.yellow += f.flag.yellow;
             this._form_flags.red += f.flag.red;
         }
+
+        for(let f of this._forms_referral){
+            this._form_flags.green += f.flag.green;
+            this._form_flags.yellow += f.flag.yellow;
+            this._form_flags.red += f.flag.red;
+        }
     }
 }
 
@@ -577,11 +603,11 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public total_approved: number;
     public accept_partial: boolean;
     public forms: Array<GsFormResponse>;
+    public forms_referral: Array<OrgFundGsFormRefSubscribe>;
     private _rs_views: Tastypie.Resource<OfgsProjectView>;
     private _rs_comments: Tastypie.Resource<OfgsProjectComment>;
     private _rs_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
     private _rs_report_schedule: Tastypie.Resource<OfgsProjectReportSchedule>;
-    private _rs_form_ref: Tastypie.Resource<OrgFundGsFormRefSubscribe>;
     private _summary: ProjectSummary;
     public dt_updated: string;
     public dt_created: string;
@@ -589,16 +615,28 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     constructor(obj?:any){
         super(OfgsProject.resource, obj);        
         this.forms = [];
+        this.forms_referral = [];
 
         if(obj){
-            if(obj.project) this.md_project = new OngProjeto(obj.project);
-            if(obj.ong) this.md_ong = new Ong(obj.ong);            
+            if(obj.project){
+                this.md_project = new OngProjeto(obj.project);
+            }
+            if(obj.ong){
+                this.md_ong = new Ong(obj.ong);
+            }        
             if(obj.forms){
                 for(let form of obj.forms){
                     this.forms.push(new GsFormResponse(form));
                 }
             }
-            if(obj.summary) this._summary = new ProjectSummary(this.forms, obj.summary);
+            if(obj.forms_referral){
+                for(let form of obj.forms_referral){
+                    this.forms_referral.push(new OrgFundGsFormRefSubscribe(form));
+                }
+            }
+            if(obj.summary){
+                this._summary = new ProjectSummary(this.forms, this.forms_referral, obj.summary);
+            }
             if(obj.id){
                 this._rs_views = new Tastypie.Resource<OfgsProjectView>(
                     OfgsProjectView.resource.endpoint,
@@ -616,15 +654,11 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
                     OfgsProjectReportSchedule.resource.endpoint,
                     {model: OfgsProjectReportSchedule, defaults: {gs_project_id: obj.id}}
                 );
-                this._rs_form_ref = new Tastypie.Resource<OrgFundGsFormRefSubscribe>(
-                    OrgFundGsFormRefSubscribe.resource.endpoint,
-                    {model: OrgFundGsFormRefSubscribe, defaults: {gs_project_id: obj.id}}
-                );
             }
         }else{
             this.md_project = new OngProjeto();
             this.md_ong = new Ong();
-            this._summary = new ProjectSummary(this.forms);
+            this._summary = new ProjectSummary(this.forms, this.forms_referral);
         }
     }
 
@@ -642,10 +676,6 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
 
     public get rs_report_schedule(): Tastypie.Resource<OfgsProjectReportSchedule> {
         return this._rs_report_schedule;
-    }
-
-    public get rs_form_ref(): Tastypie.Resource<OrgFundGsFormRefSubscribe> {
-        return this._rs_form_ref;
     }
 
     public get summary(): ProjectSummary {
