@@ -451,6 +451,7 @@ export class ProjectSummary {
     private _forms: Array<GsFormResponse>;
     private _forms_referral: Array<OrgFundGsFormRefSubscribe>;
     private _form_flags: IProjectsFlags;
+    private _gs: OrgFundGs;
 
     constructor(forms: Array<GsFormResponse>, forms_referral: Array<OrgFundGsFormRefSubscribe>, obj?: any){
         this.views = 0;
@@ -459,9 +460,9 @@ export class ProjectSummary {
         this.total_amount_pending = 0.00;
         this.total_reports = 0;
         this.total_reports_sent = 0;
-
         this.total_tranche = 0;
         this.total_tranche_sent = 0;
+        this._gs = new OrgFundGs();
 
         this._evaluators = [];
         this._evaluators_data = [];
@@ -478,6 +479,7 @@ export class ProjectSummary {
             if(obj.total_reports_sent) this.total_reports_sent = obj.total_reports_sent;
             if(obj.total_tranche) this.total_tranche = obj.total_tranche;
             if(obj.total_tranche_sent) this.total_tranche_sent = obj.total_tranche_sent;
+            if(obj.gs) this._gs = new OrgFundGs(obj.gs);
 
             if(obj.evaluators){
                 for(let item of obj.evaluators){
@@ -500,6 +502,10 @@ export class ProjectSummary {
 
     public get evaluators_data(): Array<EvaluatorsData> {
         return this._evaluators_data;
+    }
+
+    public get gs(): OrgFundGs {
+        return this._gs;
     }
 
     public get_evaluators_questions(doador_id: number, stage_id: number): Array<QuestionTemplate> {

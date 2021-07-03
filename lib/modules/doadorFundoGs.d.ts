@@ -166,9 +166,11 @@ export declare class ProjectSummary {
     private _forms;
     private _forms_referral;
     private _form_flags;
+    private _gs;
     constructor(forms: Array<GsFormResponse>, forms_referral: Array<OrgFundGsFormRefSubscribe>, obj?: any);
     get evaluators(): Array<Doador>;
     get evaluators_data(): Array<EvaluatorsData>;
+    get gs(): OrgFundGs;
     get_evaluators_questions(doador_id: number, stage_id: number): Array<QuestionTemplate>;
     get_evaluators_data(doador_id: number, stage_id: number): EvaluatorsData;
     get_evaluators_flag(doador_id: number): IProjectsFlags;
