@@ -450,8 +450,7 @@ export class ProjectSummary {
     private _evaluators_data: Array<EvaluatorsData>;
     private _forms: Array<GsFormResponse>;
     private _forms_referral: Array<OrgFundGsFormRefSubscribe>;
-    private _form_flags: IProjectsFlags;
-    private _gs: OrgFundGs;
+    private _form_flags: IProjectsFlags;    
 
     constructor(forms: Array<GsFormResponse>, forms_referral: Array<OrgFundGsFormRefSubscribe>, obj?: any){
         this.views = 0;
@@ -461,8 +460,7 @@ export class ProjectSummary {
         this.total_reports = 0;
         this.total_reports_sent = 0;
         this.total_tranche = 0;
-        this.total_tranche_sent = 0;
-        this._gs = new OrgFundGs();
+        this.total_tranche_sent = 0;        
 
         this._evaluators = [];
         this._evaluators_data = [];
@@ -478,8 +476,7 @@ export class ProjectSummary {
             if(obj.total_reports) this.total_reports = obj.total_reports;
             if(obj.total_reports_sent) this.total_reports_sent = obj.total_reports_sent;
             if(obj.total_tranche) this.total_tranche = obj.total_tranche;
-            if(obj.total_tranche_sent) this.total_tranche_sent = obj.total_tranche_sent;
-            if(obj.gs) this._gs = new OrgFundGs(obj.gs);
+            if(obj.total_tranche_sent) this.total_tranche_sent = obj.total_tranche_sent;            
 
             if(obj.evaluators){
                 for(let item of obj.evaluators){
@@ -502,10 +499,6 @@ export class ProjectSummary {
 
     public get evaluators_data(): Array<EvaluatorsData> {
         return this._evaluators_data;
-    }
-
-    public get gs(): OrgFundGs {
-        return this._gs;
     }
 
     public get_evaluators_questions(doador_id: number, stage_id: number): Array<QuestionTemplate> {
@@ -623,6 +616,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_finance_schedule: Tastypie.Resource<OfgsProjectFinanceSchedule>;
     private _rs_report_schedule: Tastypie.Resource<OfgsProjectReportSchedule>;
     private _summary: ProjectSummary;
+    private _gs: OrgFundGs;
     public dt_updated: string;
     public dt_created: string;
 
@@ -630,6 +624,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         super(OfgsProject.resource, obj);        
         this.forms = [];
         this.forms_referral = [];
+        this._gs = new OrgFundGs();
 
         if(obj){
             if(obj.project){
@@ -654,6 +649,8 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
             if(obj.summary){
                 this._summary = new ProjectSummary(this.forms, this.forms_referral, obj.summary);
             }
+            if(obj.gs) this._gs = new OrgFundGs(obj.gs);
+
             if(obj.id){
                 this._rs_views = new Tastypie.Resource<OfgsProjectView>(
                     OfgsProjectView.resource.endpoint,
@@ -698,6 +695,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
 
     public get summary(): ProjectSummary {
         return this._summary;
+    }
+
+    public get gs(): OrgFundGs {
+        return this._gs;
     }
 
     public setStageMemberResponse(data: EvaluatorsData): Promise<EvaluatorsData> {
