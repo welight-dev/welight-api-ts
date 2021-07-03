@@ -159,6 +159,8 @@ export declare class ProjectSummary {
     total_amount_pending: number;
     total_reports: number;
     total_reports_sent: number;
+    total_tranche: number;
+    total_tranche_sent: number;
     private _evaluators;
     private _evaluators_data;
     private _forms;

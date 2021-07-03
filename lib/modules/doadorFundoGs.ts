@@ -443,6 +443,8 @@ export class ProjectSummary {
     public total_amount_pending: number;
     public total_reports: number;
     public total_reports_sent: number;
+    public total_tranche: number;
+    public total_tranche_sent: number;
 
     private _evaluators: Array<Doador>;
     private _evaluators_data: Array<EvaluatorsData>;
@@ -458,6 +460,9 @@ export class ProjectSummary {
         this.total_reports = 0;
         this.total_reports_sent = 0;
 
+        this.total_tranche = 0;
+        this.total_tranche_sent = 0;
+
         this._evaluators = [];
         this._evaluators_data = [];
         this._forms = forms;
@@ -471,6 +476,8 @@ export class ProjectSummary {
             if(obj.total_amount_pending) this.total_amount_pending = obj.total_amount_pending;
             if(obj.total_reports) this.total_reports = obj.total_reports;
             if(obj.total_reports_sent) this.total_reports_sent = obj.total_reports_sent;
+            if(obj.total_tranche) this.total_tranche = obj.total_tranche;
+            if(obj.total_tranche_sent) this.total_tranche_sent = obj.total_tranche_sent;
 
             if(obj.evaluators){
                 for(let item of obj.evaluators){
