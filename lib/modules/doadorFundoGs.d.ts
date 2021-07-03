@@ -207,6 +207,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_report_schedule;
     private _summary;
     private _gs;
+    status_display: string;
     dt_updated: string;
     dt_created: string;
     constructor(obj?: any);

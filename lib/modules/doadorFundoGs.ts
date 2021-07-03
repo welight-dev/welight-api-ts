@@ -617,14 +617,14 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     private _rs_report_schedule: Tastypie.Resource<OfgsProjectReportSchedule>;
     private _summary: ProjectSummary;
     private _gs: OrgFundGs;
+    public status_display: string;
     public dt_updated: string;
     public dt_created: string;
 
     constructor(obj?:any){
         super(OfgsProject.resource, obj);        
         this.forms = [];
-        this.forms_referral = [];
-        this._gs = new OrgFundGs();
+        this.forms_referral = [];        
 
         if(obj){
             if(obj.project){
@@ -674,6 +674,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
             this.md_ong = new Ong();
             this.md_doador = new Doador();
             this._summary = new ProjectSummary(this.forms, this.forms_referral);
+            this._gs = new OrgFundGs();
         }
     }
 
