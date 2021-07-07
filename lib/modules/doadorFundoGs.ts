@@ -307,7 +307,7 @@ export class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng> {
 }
 
 export class OrgFundGsFormSubscribe extends OrgFundGs {
-    public static resource = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe', {model: OrgFundGsFormSubscribe});
+    public static resource = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe', {model: OrgFundGsFormSubscribe});    
     public forms: Array<GsForm>;
     public invite: OfgsInvitationOng;
 
@@ -592,6 +592,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource_approve_stage = new Tastypie.Resource<{approved: boolean}>('doador-fundo/gs-project/<id>/approve-stage');
     public static resource_check_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/check-approve');
     public static resource_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/approve');
+    public static resource_init_subscribe = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-form-subscribe/init_form', {model: OfgsProject});
 
     public static resource_set_member_resp = new Tastypie.Resource<EvaluatorsData>(
         'doador-fundo/gs-project/<id>/set-stage-member-response', {model: EvaluatorsData}
@@ -733,6 +734,10 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
         }else{
             return Promise.reject('GsProject not found');
         }
+    }
+
+    public static initSubscribe(gs_id: number): Promise<OfgsProject> {
+        return OfgsProject.resource_init_subscribe.objects.create({gs_id: gs_id});
     }
 }
 

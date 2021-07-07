@@ -1,3 +1,4 @@
+import { Tastypie } from "ts-resource-tastypie";
 export interface QuestionChoice {
     name: string;
     value: any;
@@ -28,7 +29,8 @@ export interface IProjectsFlags {
     yellow: number;
     red: number;
 }
-export declare class QuestionTemplate {
+export declare class QuestionTemplate extends Tastypie.Model<QuestionTemplate> {
+    static resource: Tastypie.Resource<QuestionTemplate>;
     name: string;
     choices: Array<QuestionChoice>;
     resp_text: string;

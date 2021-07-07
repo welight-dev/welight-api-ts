@@ -186,6 +186,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     }>;
     static resource_check_approve: Tastypie.Resource<IProjectDealSchedule>;
     static resource_approve: Tastypie.Resource<IProjectDealSchedule>;
+    static resource_init_subscribe: Tastypie.Resource<OfgsProject>;
     static resource_set_member_resp: Tastypie.Resource<EvaluatorsData>;
     gs_id: number;
     md_project: OngProjeto;
@@ -224,6 +225,7 @@ export declare class OfgsProject extends Tastypie.Model<OfgsProject> {
     approveCurrentStage(passw: string): Promise<{
         approved: boolean;
     }>;
+    static initSubscribe(gs_id: number): Promise<OfgsProject>;
 }
 export declare class OfgsProjectView extends Tastypie.Model<OfgsProjectView> {
     static resource: Tastypie.Resource<OfgsProjectView>;

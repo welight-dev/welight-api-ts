@@ -1,5 +1,6 @@
 // Project: [~welight-api-ts~]
 // Definitions by: [~MARCOS WILLIAM FERRETTI~] <[~https://github.com/mw-ferretti~]>
+import { Tastypie } from "ts-resource-tastypie";
 
 export interface QuestionChoice {
     name: string;
@@ -67,7 +68,10 @@ export interface IProjectsFlags {
     red: number;
 }
 
-export class QuestionTemplate {
+export class QuestionTemplate extends Tastypie.Model<QuestionTemplate>{
+
+    public static resource = new Tastypie.Resource<QuestionTemplate>('doador-fundo/gs-form-response', {model: QuestionTemplate});
+
     public name: string;
     public choices: Array<QuestionChoice>;
     public resp_text: string;
@@ -86,18 +90,14 @@ export class QuestionTemplate {
     public required: boolean;
     public dt_created: string;
     public dt_updated: string;
-
+    
     constructor(obj?:any) {
+        super(QuestionTemplate.resource, {});
         this.choices = [];
         this.resp_currency = 0.00;
         this.resp_number = 0;
         this.resp_metrics = [];
         this.resp_geolocation_list = [];
-
-        if(obj){
-            for(let attr in obj){
-                this[attr] = obj[attr];
-            }
-        }
+        this.setData(obj);
     }
 }
