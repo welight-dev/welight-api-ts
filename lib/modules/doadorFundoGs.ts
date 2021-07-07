@@ -592,7 +592,7 @@ export class OfgsProject extends Tastypie.Model<OfgsProject> {
     public static resource_approve_stage = new Tastypie.Resource<{approved: boolean}>('doador-fundo/gs-project/<id>/approve-stage');
     public static resource_check_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/check-approve');
     public static resource_approve = new Tastypie.Resource<IProjectDealSchedule>('doador-fundo/gs-project/<id>/approve');
-    public static resource_init_subscribe = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-form-subscribe/init_form', {model: OfgsProject});
+    public static resource_init_subscribe = new Tastypie.Resource<OfgsProject>('doador-fundo/gs-form-subscribe/init-form', {model: OfgsProject});
 
     public static resource_set_member_resp = new Tastypie.Resource<EvaluatorsData>(
         'doador-fundo/gs-project/<id>/set-stage-member-response', {model: EvaluatorsData}
