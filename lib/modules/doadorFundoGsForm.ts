@@ -36,6 +36,8 @@ export class GsFormModel extends Tastypie.Model<GsFormModel> {
         for(let item of this.questions){
             _data['questions'].push(item.getData());
         }
+
+        return _data;
     }
 
     public get flag(): IProjectsFlags {

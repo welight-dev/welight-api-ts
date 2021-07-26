@@ -11,7 +11,7 @@ export declare class GsFormModel extends Tastypie.Model<GsFormModel> {
     dt_created: string;
     questions: Array<QuestionTemplate>;
     constructor(resource: Tastypie.Resource<GsFormModel>, obj?: any);
-    getData(): void;
+    getData(): any;
     get flag(): IProjectsFlags;
     private _count_question_flags;
 }
