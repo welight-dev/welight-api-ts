@@ -29,6 +29,15 @@ export class GsFormModel extends Tastypie.Model<GsFormModel> {
         }
     }
 
+    public getData() {
+        let _data = super.getData();
+        _data['questions'] = []
+
+        for(let item of this.questions){
+            _data['questions'].push(item.getData());
+        }
+    }
+
     public get flag(): IProjectsFlags {
         return {
             green: this._count_question_flags('green'),
