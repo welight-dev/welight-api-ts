@@ -308,7 +308,7 @@ export class OfgsInvitationOng extends Tastypie.Model<OfgsInvitationOng> {
 
 export class OrgFundGsFormSubscribe extends OrgFundGs {
     public static resource = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe', {model: OrgFundGsFormSubscribe});
-    public static rs_init = new Tastypie.Resource<OrgFundGsFormSubscribe>('doador-fundo/gs-form-subscribe/init-form', {model: OrgFundGsFormSubscribe});
+    public static rs_init = new Tastypie.Resource<{gs_project_id: number}>('doador-fundo/gs-form-subscribe/init-form');
     public forms: Array<GsForm>;
     public invite: OfgsInvitationOng;
 
